@@ -86,6 +86,12 @@ export class DiscoveryComponent extends OnDestroyMixin implements OnInit, OnDest
       } else {
         return 'fab fa-windows text-muted';
       }
+    } else if (group === 'Kubernetes') {
+      if (colored) {
+        return 'fas fa-dharmachakra kubernetes';
+      } else {
+        return 'fas fa-dharmachakra text-muted';
+      }
     } else if (group === 'EU-SEC Audit API') {
       if (colored) {
         return 'fas fa-shield-alt eu-sec';
