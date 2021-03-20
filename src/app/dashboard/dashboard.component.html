@@ -85,10 +85,31 @@ The following accounts are configured to be continuously scanned by Clouditor.
   </div>
 </div>
 
-<h4 class="mt-4">SaaS</h4>
-
 <div class="row mt-2">
   <div class="col-6">
+    <h4 class="mt-4">CaaS</h4>
+    <div class="card">
+      <div class="card-body" style="text-align: center">
+        <i class="azure big-icon fas fa-dharmachakra"></i>
+        <div *ngIf="!accounts.get('Kubernetes'); else kubernetesConfigured">
+          <div>Not configured yet.</div>
+        </div>
+        <ng-template #kubernetesConfigured>
+          <div>Clouditor is configured to use the {{ accounts.get('Kubernetes').provider }} account
+            <b>{{ accounts.get('Kubernetes').accountId }}</b>.
+            <span *ngIf="accounts.get('Kubernetes').autoDiscovered">It uses the default credentials
+              chain.</span>
+          </div>
+        </ng-template>
+        <a [routerLink]="['/accounts', 'configure', 'Kubernetes']">
+          <button class="btn btn-outline-secondary mt-4"><i class="fas fa-cogs"></i> Configure
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <h4 class="mt-4">SaaS</h4>
     <div class="card">
       <div class="card-body" style="text-align: center">
         <i class="salesforce big-icon fab fa-salesforce"></i>
