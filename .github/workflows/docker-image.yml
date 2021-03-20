@@ -10,3 +10,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag clouditor/ui
+    - name: Push Docker Image
+      run: |
+        docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}      
+        export TAG=`expr substr $GITHUB_SHA 1 8`
+        docker tag clouditor/ui clouditor/ui:$TAG
+        docker push clouditor/ui:$TAG
+        docker push clouditor/ui:latest
+      if: github.ref == 'refs/heads/main'
