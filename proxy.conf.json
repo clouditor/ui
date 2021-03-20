@@ -1,0 +1,10 @@
+{
+  "/engine": {
+    "target": "http://localhost:9999",
+    "secure": false
+  },
+  "/oauth2": {
+    "target": "http://localhost:9999",
+    "secure": false
+  }
+}
