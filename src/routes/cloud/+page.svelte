@@ -8,6 +8,6 @@ This is a list of all cloud services
 
 <ul>
   {#each data.services as service}
-    <li>{service.name}</li>
+    <li><a href="/cloud/{service.id}">{service.name}</a></li>
   {/each}
 </ul>
