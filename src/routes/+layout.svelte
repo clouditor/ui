@@ -1,15 +1,9 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import Button from '$lib/Button.svelte';
   import { redirectLogin } from '$lib/oauth';
-  import type { LayoutData } from './$types';
-
-  export let data: LayoutData;
 </script>
 
-{#if data.error}
-  {data.error.message}
-{:else}
-  <slot />
-{/if}
+<slot />
 
-<Button on:click={() => redirectLogin()}>Login</Button>
+<Button on:click={() => redirectLogin($page.url.href)}>Login</Button>
