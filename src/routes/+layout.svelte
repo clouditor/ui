@@ -1,6 +1,15 @@
-<script>
-  import 'inter-ui/inter.css';
-  import '../app.css';
+<script lang="ts">
+  import Button from '$lib/Button.svelte';
+  import { redirectLogin } from '$lib/oauth';
+  import type { LayoutData } from './$types';
+
+  export let data: LayoutData;
 </script>
 
-<slot />
+{#if data.error}
+  {data.error.message}
+{:else}
+  <slot />
+{/if}
+
+<Button on:click={() => redirectLogin()}>Login</Button>
