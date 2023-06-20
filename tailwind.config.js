@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        clouditor: '#007FC3'
+        clouditor: '#007FC3',
+        'clouditor-light': '#008CD7'
       },
       fontFamily: {
         sans: [

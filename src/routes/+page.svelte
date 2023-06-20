@@ -2,6 +2,8 @@
 
 <p class="text-base">Very awesome stuff here</p>
 
+You can try a<a href="/cloud">list of cloud services</a>
+
 <style lang="postcss">
   :global(html) {
     background-color: theme(colors.gray.100);

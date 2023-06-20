@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
-    "@sveltejs/kit": "^1.5.0",
+    "@sveltejs/kit": "^1.20.4",
     "@tailwindcss/forms": "^0.5.3",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
@@ -22,6 +22,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte": "^2.26.0",
     "inter-ui": "^3.19.3",
+    "oidc-client-ts": "^2.2.4",
     "postcss": "^8.4.24",
     "prettier": "^2.8.0",
     "prettier-plugin-svelte": "^2.8.1",
