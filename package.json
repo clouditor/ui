@@ -12,6 +12,9 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "devDependencies": {
+    "@rgossiaux/svelte-headlessui": "^2.0.0",
+    "@steeze-ui/heroicons": "^2.2.2",
+    "@steeze-ui/svelte-icon": "^1.4.1",
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.20.4",
     "@tailwindcss/forms": "^0.5.3",
