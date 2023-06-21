@@ -1,29 +1,43 @@
 <script context="module" lang="ts">
   import { Icon, type IconSource } from '@steeze-ui/svelte-icon';
   import { page } from '$app/stores';
+  import NavigationItem from '$lib/components/NavigationItem.svelte';
 
+  /**
+   * An interface that contains necessary data to display a navigation item.
+   */
   export interface NavigationItemData {
     name: string;
     href: string;
     icon?: IconSource;
-    routes: string[];
+    isSub?: boolean;
+    isNew?: boolean;
     children?: NavigationItemData[];
-    routeId?: string;
   }
 </script>
 
 <script lang="ts">
+  /**
+   * The data for this navigation item.
+   */
   export let item: NavigationItemData;
-  export let current: boolean = false;
+
+  // React to changes in the route and set the current status (true/false)
+  $: current = $page.url.pathname.startsWith(item.href);
 </script>
 
 <li>
   <a
     href={item.href}
-    class="{current
+    class="
+      {current
       ? 'bg-gray-50 text-clouditor'
       : 'text-gray-700 hover:text-clouditor hover:bg-gray-50'}
-      group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+      {item.isSub
+      ? 'block rounded-md py-2 pr-2 pl-9 text-sm leading-6'
+      : 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'}
+      {item.isNew ? 'border-t' : ''}
+      "
   >
     {#if item.icon}
       <Icon
@@ -37,17 +51,7 @@
   </a>
   <ul class="mt-1 px-2">
     {#each item.children ?? [] as subItem}
-      <li>
-        <a
-          href={subItem.href}
-          class="{current && $page.route.id == subItem.routeId
-            ? 'bg-gray-50 text-clouditor'
-            : 'text-gray-700 hover:text-clouditor hover:bg-gray-50'}
-            block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700"
-        >
-          {subItem.name}
-        </a>
-      </li>
+      <NavigationItem item={subItem} />
     {/each}
   </ul>
 </li>

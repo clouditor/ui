@@ -2,9 +2,7 @@
   import { page } from '$app/stores';
   import Button from '$lib/components/Button.svelte';
   import Sidebar from '$lib/components/Sidebar.svelte';
-  import type { Metric } from '$lib/assessment';
   import { redirectLogin } from '$lib/oauth';
-  import { writable } from 'svelte/store';
   import {
     Dialog,
     DialogOverlay,
@@ -16,10 +14,8 @@
     TransitionChild,
     TransitionRoot
   } from '@rgossiaux/svelte-headlessui';
-  import { Icon } from '@steeze-ui/svelte-icon';
   import { Bars3, Bell, ChevronDown, MagnifyingGlass, XMark } from '@steeze-ui/heroicons';
-
-  const metrics = writable<Metric[]>();
+  import { Icon } from '@steeze-ui/svelte-icon';
 
   const userNavigation = [
     { name: 'Your profile', href: '#' },

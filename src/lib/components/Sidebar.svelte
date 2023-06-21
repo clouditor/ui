@@ -1,33 +1,47 @@
 <script lang="ts">
-  import { Icon } from '@steeze-ui/svelte-icon';
-  import { Users, Calendar, Home, Folder, ChartPie, Cog6Tooth } from '@steeze-ui/heroicons';
-  import type { CloudService } from '$lib/orchestrator';
   import type { NavigationItemData } from '$lib/components/NavigationItem.svelte';
-  import { page } from '$app/stores';
   import NavigationItem from '$lib/components/NavigationItem.svelte';
+  import type { CloudService } from '$lib/orchestrator';
+  import {
+    AdjustmentsHorizontal,
+    ArchiveBox,
+    Calendar,
+    ChartPie,
+    Cog6Tooth,
+    Folder,
+    Home
+  } from '@steeze-ui/heroicons';
+  import { Icon } from '@steeze-ui/svelte-icon';
 
   export let services: CloudService[];
   export let mobile: boolean = false;
 
+  // Build navigation menu with dynamic components
   const navigation: NavigationItemData[] = [
-    { name: 'Dashboard', href: '/dashboard', icon: Home, routes: ['/'] },
+    { name: 'Dashboard', href: '/dashboard', icon: Home },
     {
       name: 'Cloud Services',
       href: '/cloud',
       icon: Folder,
-      routes: ['/cloud', '/cloud[...id]'],
-      children: services.map((s) => {
-        return {
-          name: s.name,
-          href: '/cloud/' + s.id,
-          routes: ['cloud-detail'],
-          routeId: s.id
-        };
-      })
+      children: [
+        ...services.map((s) => {
+          return {
+            name: s.name,
+            href: '/cloud/' + s.id,
+            isSub: true
+          };
+        }),
+        {
+          name: 'New...',
+          href: '/cloud/new',
+          isSub: true,
+          isNew: true
+        }
+      ]
     },
-    { name: 'Metrics', href: '#', icon: Users, routes: ['/metrics'] },
-    { name: 'Catalog Data', href: '#', icon: Calendar, routes: ['/catalogs'] },
-    { name: 'Reports', href: '#', icon: ChartPie, routes: [] }
+    { name: 'Metrics', href: '/metrics', icon: AdjustmentsHorizontal },
+    { name: 'Catalog Data', href: '/catalogs', icon: ArchiveBox },
+    { name: 'Reports', href: '/reports', icon: ChartPie }
   ];
 </script>
 
@@ -52,7 +66,7 @@
       <li>
         <ul class="-mx-2 space-y-1">
           {#each navigation as item}
-            <NavigationItem {item} current={($page.route.id ?? '/').startsWith(item.href)} />
+            <NavigationItem {item} />
           {/each}
         </ul>
       </li>
