@@ -1,8 +1,5 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import Button from '$lib/components/Button.svelte';
   import Sidebar from '$lib/components/Sidebar.svelte';
-  import { redirectLogin } from '$lib/oauth';
   import {
     Dialog,
     DialogOverlay,
@@ -16,6 +13,7 @@
   } from '@rgossiaux/svelte-headlessui';
   import { Bars3, Bell, ChevronDown, MagnifyingGlass, XMark } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
+  import type { LayoutData } from './$types';
 
   const userNavigation = [
     { name: 'Your profile', href: '#' },
@@ -23,6 +21,8 @@
   ];
 
   let sidebarOpen = false;
+
+  export let data: LayoutData;
 </script>
 
 <div>
@@ -64,7 +64,7 @@
                 </button>
               </div>
             </TransitionChild>
-            <Sidebar services={$page.data.services} mobile={true} />
+            <Sidebar services={data.services} mobile={true} />
           </DialogOverlay>
         </TransitionChild>
       </div>
@@ -72,7 +72,7 @@
   </TransitionRoot>
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-    <Sidebar services={$page.data.services} />
+    <Sidebar services={data.services} />
   </div>
   <div class="lg:pl-72">
     <div
@@ -168,7 +168,6 @@
       <div class="px-4 sm:px-6 lg:px-8">
         <!-- Your content -->
         <slot />
-        <Button on:click={() => redirectLogin($page.url.href)}>Login</Button>
       </div>
     </main>
   </div>

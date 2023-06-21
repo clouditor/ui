@@ -1,4 +1,4 @@
-import { listCloudServices } from "$lib/orchestrator"
+import { listCloudServices } from "$lib/api/orchestrator"
 import type { PageLoad } from "./$types"
 
 export const load = (async ({ fetch }) => {

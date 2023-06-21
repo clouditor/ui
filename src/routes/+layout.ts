@@ -3,7 +3,7 @@ import 'inter-ui/inter.css';
 import '../app.css';
 
 import type { LayoutLoad } from './$types';
-import { listCloudServices } from '$lib/orchestrator';
+import { listCloudServices } from '$lib/api/orchestrator';
 
 // Disable SSR because for now we are only a single-page application
 export const ssr = false;

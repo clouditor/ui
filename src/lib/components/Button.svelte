@@ -2,10 +2,16 @@
   export let text: string;
 </script>
 
+<script lang="ts">
+  interface $$Props extends Partial<HTMLButtonElement> {}
+</script>
+
 <button
   type="button"
-  class="rounded-md bg-clouditor px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-clouditor-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clouditor"
+  class="{$$props['disabled'] ? 'bg-gray-500' : 'bg-clouditor hover:bg-clouditor-light'}
+    rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clouditor"
   on:click
+  {...$$props}
 >
   <slot />
 </button>

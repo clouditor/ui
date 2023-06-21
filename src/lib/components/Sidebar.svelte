@@ -1,11 +1,9 @@
 <script lang="ts">
-  import type { NavigationItemData } from '$lib/components/NavigationItem.svelte';
+  import type { CloudService } from '$lib/api/orchestrator';
   import NavigationItem from '$lib/components/NavigationItem.svelte';
-  import type { CloudService } from '$lib/orchestrator';
   import {
     AdjustmentsHorizontal,
     ArchiveBox,
-    Calendar,
     ChartPie,
     Cog6Tooth,
     Folder,
@@ -17,7 +15,7 @@
   export let mobile: boolean = false;
 
   // Build navigation menu with dynamic components
-  const navigation: NavigationItemData[] = [
+  $: navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     {
       name: 'Cloud Services',

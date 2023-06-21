@@ -1,5 +1,5 @@
-import { listResources } from "$lib/discovery";
-import { getCloudService } from "$lib/orchestrator";
+import { listResources } from "$lib/api/discovery";
+import { getCloudService } from "$lib/api/orchestrator";
 import { error } from "@sveltejs/kit";
 import type { LayoutLoad } from "../../$types";
 
