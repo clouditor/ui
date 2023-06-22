@@ -1,47 +1,70 @@
 <script lang="ts">
-  import type { CloudService } from '$lib/api/orchestrator';
+  import type { Catalog, CloudService } from '$lib/api/orchestrator';
   import { EllipsisVertical } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
 
   export let service: CloudService;
+  export let catalogs: Catalog[];
 
-  const catalogs = [
+  interface FancyCatalog extends Catalog {
+    initials: string;
+    enabled: boolean;
+    bgColor: string;
+  }
+
+  console.log(catalogs);
+
+  // TODO: map catalogs to fancy catalogs
+  const fancyCatalogs: FancyCatalog[] = [
     {
+      id: 'EUCS',
       name: 'European Cybersecurity Certification Scheme for Cloud Services (EUCS)',
+      description: 'European Cybersecurity Certification Scheme for Cloud Services',
       initials: 'EUCS',
-      href: '#',
-      controls: 450,
       enabled: true,
-      assuranceLevel: 'High',
-      bgColor: 'bg-[#aa0512]'
+      bgColor: 'bg-[#aa0512]',
+      categories: [],
+      controls: [],
+      allInScope: true,
+      assuranceLevels: ['basic', 'substential', 'high']
     },
+    ...catalogs.map((c) => {
+      return {
+        ...c,
+        enabled: false,
+        initials: 'CD',
+        bgColor: 'bg-clouditor'
+      };
+    }),
     {
-      name: 'Clouditor Demo Catalog',
-      initials: 'CD',
-      href: '#',
-      controls: 10,
-      enabled: true,
-      bgColor: 'bg-clouditor'
-    },
-    {
+      id: 'C5',
       name: 'BSI C5',
+      description: 'The fancy BSI catalog',
       initials: 'C5',
-      href: '#',
-      controls: 0,
-      bgColor: 'bg-gray-500'
+      enabled: false,
+      categories: [],
+      controls: [],
+      bgColor: 'bg-gray-500',
+      allInScope: false,
+      assuranceLevels: []
     },
     {
+      id: 'CCM',
       name: 'CSA CCMv4',
+      description: 'The CCM',
       initials: 'CCM',
-      href: '#',
-      controls: 0,
-      bgColor: 'bg-gray-500'
+      enabled: false,
+      categories: [],
+      controls: [],
+      bgColor: 'bg-gray-500',
+      allInScope: false,
+      assuranceLevels: []
     }
   ];
 </script>
 
 <ul class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-2">
-  {#each catalogs as catalog}
+  {#each fancyCatalogs as catalog}
     <li class="col-span-1 flex rounded-md shadow-sm">
       <div
         class="{catalog.bgColor} flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
@@ -55,11 +78,9 @@
           <a href="#" class="font-medium text-gray-900 hover:text-gray-600">
             {catalog.name}
           </a>
-          {#if catalog.assuranceLevel}
-            <p class="text-xs text-gray-500">
-              Assurance Level <b>{catalog.assuranceLevel}</b>
-            </p>
-          {/if}
+          <p class="text-xs text-gray-500">
+            {catalog.description}
+          </p>
         </div>
         <div class="flex-shrink-0 pr-2">
           <button

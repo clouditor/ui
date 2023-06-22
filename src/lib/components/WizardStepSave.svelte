@@ -5,11 +5,16 @@
 
   export let service: CloudService;
 
-  const dispatch = createEventDispatcher<{ save: { service: CloudService } }>();
+  const dispatch = createEventDispatcher<{ save: { service: CloudService }; cancel: {} }>();
 
   function save() {
     dispatch('save', { service });
   }
+
+  function cancel() {
+    dispatch('cancel');
+  }
 </script>
 
+<Button on:click={cancel}>Cancel</Button>
 <Button on:click={save} disabled={service.name.length == 0}>Save</Button>

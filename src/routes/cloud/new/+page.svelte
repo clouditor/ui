@@ -17,4 +17,4 @@
   }
 </script>
 
-<Wizard current={data.step} bind:service on:save={save} />
+<Wizard current={data.step} {service} catalogs={data.catalogs} on:save={save} />

@@ -3,16 +3,22 @@ import 'inter-ui/inter.css';
 import '../app.css';
 
 import type { LayoutLoad } from './$types';
-import { listCloudServices } from '$lib/api/orchestrator';
+import { listCatalogs, listCloudServices, listMetrics } from '$lib/api/orchestrator';
 
 // Disable SSR because for now we are only a single-page application
 export const ssr = false;
 
 export const load = (async ({ fetch }) => {
     try {
-        const services = await listCloudServices(fetch)
+        // Fetch some often used-data (such as cloud services) and some static
+        // data
+        const [services, metrics] = await Promise.all([
+            listCloudServices(fetch),
+            listMetrics(fetch)
+        ])
         return {
-            services
+            services,
+            metrics,
         }
     } catch (ex) {
         // We have to be careful, that we do NOT throw errors inside the root layout
@@ -20,7 +26,8 @@ export const load = (async ({ fetch }) => {
         // the other places (including sub-layouts) seems to be fine.
         // See https://github.com/sveltejs/kit/issues/10201#issuecomment-1599711576
         return {
-            services: []
+            services: [],
+            metrics: []
         }
     }
 }) satisfies LayoutLoad

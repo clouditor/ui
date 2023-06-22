@@ -5,16 +5,23 @@
   import WizardStepInfo from './WizardStepInfo.svelte';
   import WizardStepSave from './WizardStepSave.svelte';
   import WizardStepCatalog from './WizardStepCatalog.svelte';
-  import type { CloudService } from '$lib/api/orchestrator';
+  import type { Catalog, CloudService } from '$lib/api/orchestrator';
+  import type { SvelteComponent } from 'svelte';
 
   export let current: number = 0;
   export let service: CloudService;
+  export let catalogs: Catalog[];
 
   interface $$Events {
     save: CustomEvent<{ service: CloudService }>;
   }
 
-  const steps = [
+  const steps: {
+    name: string;
+    description: string;
+    href: string;
+    content: typeof SvelteComponent;
+  }[] = [
     {
       name: 'Create cloud service',
       description: 'Please provide a name for the cloud service.',
@@ -87,7 +94,11 @@
             </span>
           </span>
           <div class="mt-5 ml-12 max-w-xl">
-            <svelte:component this={step.content} bind:service on:save />
+            {#if step.content == WizardStepCatalog}
+              <svelte:component this={step.content} {service} {catalogs} on:save />
+            {:else}
+              <svelte:component this={step.content} {service} on:save />
+            {/if}
           </div>
         {:else}
           {#if stepIdx !== steps.length - 1}
