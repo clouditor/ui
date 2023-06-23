@@ -44,6 +44,8 @@ export interface Catalog {
     controls: Control[]
     allInScope: boolean
     assuranceLevels: string[]
+    shortName: string
+    color: string
 }
 
 export interface Category {

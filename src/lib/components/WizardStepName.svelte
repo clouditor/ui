@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { CloudService } from '$lib/api/orchestrator';
+  import type { WizardData } from '$lib/components/Wizard.svelte';
 
-  export let service: CloudService;
+  export let data: WizardData;
 </script>
 
 <div
@@ -14,6 +14,6 @@
     id="name"
     class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
     placeholder="Enter a service name"
-    bind:value={service.name}
+    bind:value={data.service.name}
   />
 </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { CloudService } from '$lib/api/orchestrator';
+  import type { WizardData } from '$lib/components/Wizard.svelte';
 
-  export let service: CloudService;
+  export let data: WizardData;
 </script>
 
 <div class="isolate -space-y-px rounded-md shadow-sm">
@@ -15,7 +15,7 @@
       id="description"
       class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
       placeholder="Enter an optional description"
-      bind:value={service.description}
+      bind:value={data.service.description}
     />
   </div>
   <div
@@ -28,7 +28,7 @@
       id="job-title"
       class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
       placeholder="aws azure prod dev"
-      bind:value={service.tags}
+      bind:value={data.service.tags}
     />
   </div>
 </div>

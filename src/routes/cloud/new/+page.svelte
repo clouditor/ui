@@ -1,19 +1,42 @@
 <script lang="ts">
-  import Wizard from '$lib/components/Wizard.svelte';
-  import { registerCloudService, type CloudService } from '$lib/api/orchestrator';
-  import type { PageData } from './$types';
   import { goto, invalidate } from '$app/navigation';
+  import {
+    registerCloudService,
+    type CloudService,
+    createTargetOfEvaluation
+  } from '$lib/api/orchestrator';
+  import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
+  import type { PageData } from './$types';
 
   export let data: PageData;
 
-  // Create a new cloud service
-  let service = { id: '', name: '' } satisfies CloudService;
+  // Create data for the wizard
+  let wizard: WizardData;
+  restart();
 
-  async function save(event: CustomEvent<{ service: CloudService }>) {
+  async function save(event: CustomEvent<WizardData>) {
+    // First, register the cloud service
     const service = await registerCloudService(event.detail.service);
 
+    // Afterwards, create the targets of evaluation
+    await Promise.all(
+      event.detail.toes.map((toe) => {
+        // Set the correct cloud service id
+        toe.cloudServiceId = service.id;
+        return createTargetOfEvaluation(toe);
+      })
+    );
+
+    // Invalidate the list of cloud services
     await invalidate((url) => url.pathname === '/v1/orchestrator/cloud_services');
     goto(`/cloud/${service.id}`);
+  }
+
+  function restart() {
+    wizard = {
+      service: { id: '', name: '' },
+      toes: []
+    };
   }
 
   function cancel() {
@@ -23,11 +46,17 @@
     }
 
     // Reset cloud service data and reset step to the beginning
-    service = { id: '', name: '' } satisfies CloudService;
+    restart();
 
     // Reset step to the beginning
     goto('?step=0');
   }
 </script>
 
-<Wizard current={data.step} {service} catalogs={data.catalogs} on:save={save} on:cancel={cancel} />
+<Wizard
+  current={data.step}
+  data={wizard}
+  catalogs={data.catalogs}
+  on:save={save}
+  on:cancel={cancel}
+/>

@@ -1,3 +1,12 @@
+<script context="module" lang="ts">
+  // WizardData contains all the data that the wizard creates, such as the cloud
+  // service, its meta-data and optionally some target of evaluations.
+  export interface WizardData {
+    service: CloudService;
+    toes: TargetOfEvaluation[];
+  }
+</script>
+
 <script lang="ts">
   import { Icon } from '@steeze-ui/svelte-icon';
   import { Check } from '@steeze-ui/heroicons';
@@ -5,15 +14,15 @@
   import WizardStepInfo from './WizardStepInfo.svelte';
   import WizardStepSave from './WizardStepSave.svelte';
   import WizardStepCatalog from './WizardStepCatalog.svelte';
-  import type { Catalog, CloudService } from '$lib/api/orchestrator';
+  import type { Catalog, CloudService, TargetOfEvaluation } from '$lib/api/orchestrator';
   import type { SvelteComponent } from 'svelte';
 
   export let current: number = 0;
-  export let service: CloudService;
+  export let data: WizardData;
   export let catalogs: Catalog[];
 
   interface $$Events {
-    save: CustomEvent<{ service: CloudService }>;
+    save: CustomEvent<WizardData>;
     cancel: CustomEvent;
   }
 
@@ -94,13 +103,13 @@
               <span class="text-sm text-gray-500">{step.description}</span>
             </span>
           </span>
-          <div class="mt-5 ml-12 max-w-xl">
+          <div class="mt-5 ml-12 max-w-2xl">
             {#if step.content == WizardStepCatalog}
-              <svelte:component this={step.content} {service} {catalogs} />
+              <svelte:component this={step.content} bind:data {catalogs} />
             {:else if step.content == WizardStepSave}
-              <svelte:component this={step.content} {service} on:save on:cancel />
+              <svelte:component this={step.content} bind:data on:save on:cancel />
             {:else}
-              <svelte:component this={step.content} {service} />
+              <svelte:component this={step.content} bind:data />
             {/if}
           </div>
         {:else}
