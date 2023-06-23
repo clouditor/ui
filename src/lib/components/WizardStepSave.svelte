@@ -16,5 +16,5 @@
   }
 </script>
 
-<Button on:click={cancel}>Cancel</Button>
+<Button on:click={cancel} class="bg-red-800 hover:bg-red-700">Cancel</Button>
 <Button on:click={save} disabled={service.name.length == 0}>Save</Button>

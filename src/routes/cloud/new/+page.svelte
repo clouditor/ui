@@ -15,6 +15,19 @@
     await invalidate((url) => url.pathname === '/v1/orchestrator/cloud_services');
     goto(`/cloud/${service.id}`);
   }
+
+  function cancel() {
+    let really = confirm('Do you really want to cancel?');
+    if (!really) {
+      return;
+    }
+
+    // Reset cloud service data and reset step to the beginning
+    service = { id: '', name: '' } satisfies CloudService;
+
+    // Reset step to the beginning
+    goto('?step=0');
+  }
 </script>
 
-<Wizard current={data.step} {service} catalogs={data.catalogs} on:save={save} />
+<Wizard current={data.step} {service} catalogs={data.catalogs} on:save={save} on:cancel={cancel} />

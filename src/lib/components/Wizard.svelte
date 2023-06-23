@@ -14,6 +14,7 @@
 
   interface $$Events {
     save: CustomEvent<{ service: CloudService }>;
+    cancel: CustomEvent;
   }
 
   const steps: {
@@ -95,9 +96,11 @@
           </span>
           <div class="mt-5 ml-12 max-w-xl">
             {#if step.content == WizardStepCatalog}
-              <svelte:component this={step.content} {service} {catalogs} on:save />
+              <svelte:component this={step.content} {service} {catalogs} />
+            {:else if step.content == WizardStepSave}
+              <svelte:component this={step.content} {service} on:save on:cancel />
             {:else}
-              <svelte:component this={step.content} {service} on:save />
+              <svelte:component this={step.content} {service} />
             {/if}
           </div>
         {:else}
