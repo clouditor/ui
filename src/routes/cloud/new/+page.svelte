@@ -1,10 +1,6 @@
 <script lang="ts">
   import { goto, invalidate } from '$app/navigation';
-  import {
-    registerCloudService,
-    type CloudService,
-    createTargetOfEvaluation
-  } from '$lib/api/orchestrator';
+  import { createTargetOfEvaluation, registerCloudService } from '$lib/api/orchestrator';
   import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
   import type { PageData } from './$types';
 
@@ -13,6 +9,10 @@
   // Create data for the wizard
   let wizard: WizardData;
   restart();
+
+  // Fetch an up-to-date version of all catalogs because we need to select
+  // them as part of the wizard
+  await invalidate((url) => url.pathname == '/v1/orchestrator/catalogs');
 
   async function save(event: CustomEvent<WizardData>) {
     // First, register the cloud service

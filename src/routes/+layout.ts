@@ -12,12 +12,14 @@ export const load = (async ({ fetch }) => {
     try {
         // Fetch some often used-data (such as cloud services) and some static
         // data
-        const [services, metrics] = await Promise.all([
+        const [services, catalogs, metrics] = await Promise.all([
             listCloudServices(fetch),
+            listCatalogs(fetch),
             listMetrics(fetch)
         ])
         return {
             services,
+            catalogs,
             metrics,
         }
     } catch (ex) {
@@ -27,7 +29,8 @@ export const load = (async ({ fetch }) => {
         // See https://github.com/sveltejs/kit/issues/10201#issuecomment-1599711576
         return {
             services: [],
-            metrics: []
+            metrics: [],
+            catalogs: []
         }
     }
 }) satisfies LayoutLoad

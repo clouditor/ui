@@ -43,8 +43,9 @@
     <li class="col-span-1 flex rounded-md shadow-sm">
       <button
         on:click={() => toggle(catalog)}
-        class="{selected.get(catalog.id) ? 'bg-[' + catalog.color + ']' : 'bg-gray-400'}
+        class="{selected.get(catalog.id) ? '' : 'bg-gray-400'}
          flex w-[4.5rem] flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
+        style={selected.get(catalog.id) ? 'background-color: ' + catalog.color : ''}
       >
         {catalog.shortName}
       </button>
