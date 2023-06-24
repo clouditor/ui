@@ -12,7 +12,7 @@
 
   // Fetch an up-to-date version of all catalogs because we need to select
   // them as part of the wizard
-  await invalidate((url) => url.pathname == '/v1/orchestrator/catalogs');
+  invalidate((url) => url.pathname == '/v1/orchestrator/catalogs');
 
   async function save(event: CustomEvent<WizardData>) {
     // First, register the cloud service
