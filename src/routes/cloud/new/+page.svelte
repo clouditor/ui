@@ -1,0 +1,62 @@
+<script lang="ts">
+  import { goto, invalidate } from '$app/navigation';
+  import { createTargetOfEvaluation, registerCloudService } from '$lib/api/orchestrator';
+  import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
+  import type { PageData } from './$types';
+
+  export let data: PageData;
+
+  // Create data for the wizard
+  let wizard: WizardData;
+  restart();
+
+  // Fetch an up-to-date version of all catalogs because we need to select
+  // them as part of the wizard
+  invalidate((url) => url.pathname == '/v1/orchestrator/catalogs');
+
+  async function save(event: CustomEvent<WizardData>) {
+    // First, register the cloud service
+    const service = await registerCloudService(event.detail.service);
+
+    // Afterwards, create the targets of evaluation
+    await Promise.all(
+      event.detail.toes.map((toe) => {
+        // Set the correct cloud service id
+        toe.cloudServiceId = service.id;
+        return createTargetOfEvaluation(toe);
+      })
+    );
+
+    // Invalidate the list of cloud services
+    await invalidate((url) => url.pathname === '/v1/orchestrator/cloud_services');
+    goto(`/cloud/${service.id}`);
+  }
+
+  function restart() {
+    wizard = {
+      service: { id: '', name: '' },
+      toes: []
+    };
+  }
+
+  function cancel() {
+    let really = confirm('Do you really want to cancel?');
+    if (!really) {
+      return;
+    }
+
+    // Reset cloud service data and reset step to the beginning
+    restart();
+
+    // Reset step to the beginning
+    goto('?step=0');
+  }
+</script>
+
+<Wizard
+  current={data.step}
+  data={wizard}
+  catalogs={data.catalogs}
+  on:save={save}
+  on:cancel={cancel}
+/>

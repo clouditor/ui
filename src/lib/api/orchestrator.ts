@@ -1,6 +1,6 @@
 import type { AssessmentResult, Metric, MetricConfiguration, MetricImplementation } from "./assessment";
-import { clouditorize } from '$lib//util';
-import { throwError } from "$lib/errors";
+import { clouditorize } from '$lib/api/util';
+import { throwError } from "$lib/api/errors";
 
 export interface Runtime {
     releaseVersion: string
@@ -17,6 +17,7 @@ export interface CloudService {
     id: string
     name: string
     description?: string
+    tags?: string
 }
 
 export interface TargetOfEvaluation {
@@ -43,6 +44,8 @@ export interface Catalog {
     controls: Control[]
     allInScope: boolean
     assuranceLevels: string[]
+    shortName: string
+    color: string
 }
 
 export interface Category {
