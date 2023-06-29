@@ -1,6 +1,6 @@
 import type { AssessmentResult, Metric, MetricConfiguration, MetricImplementation } from "./assessment";
+import { throwError } from '$lib/api/errors';
 import { clouditorize } from '$lib/api/util';
-import { throwError } from "$lib/api/errors";
 
 export interface Runtime {
     releaseVersion: string
