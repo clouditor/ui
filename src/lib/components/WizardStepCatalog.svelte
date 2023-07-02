@@ -58,20 +58,22 @@
       {#if catalog.assuranceLevels.length > 0 && !selected.get(catalog.id)}
         <Popover
           class="{selected.get(catalog.id) ? '' : 'bg-gray-400'}
-        flex w-[4.5rem] z-10 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
+        flex w-[4.5rem] z-10 flex-shrink-0 items-center justify-center rounded-l-md text-sm text-white"
           style={selected.get(catalog.id) ? 'background-color: ' + catalog.color : ''}
         >
-          <PopoverButton use={[popperRef]} class="h-full">
+          <PopoverButton use={[popperRef]} class="h-full w-full">
             {catalog.shortName}
           </PopoverButton>
           <PopoverPanel use={[[popperContent, popperOptions]]}>
             <div
               class="w-screen max-w-sm flex-auto rounded-3xl bg-white p-4 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5"
             >
-              <p class="text-gray-900 ml-4 mt-4 mr-4">Please choose an assurance level.</p>
-              <p class="text-gray-500 ml-4 mr-4">
-                The selected catalog required the selection of an assurance level.
-              </p>
+              <div class="ml-4 mt-4 mr-4">
+                <p class="text-gray-900 font-medium">Please choose an assurance level</p>
+                <p class="text-gray-500">
+                  The selected catalog requires the selection of an assurance level.
+                </p>
+              </div>
 
               {#each catalog.assuranceLevels as level}
                 <div class="relative rounded-lg p-4 hover:bg-gray-50">
