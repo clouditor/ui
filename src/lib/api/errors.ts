@@ -10,9 +10,9 @@ import { error } from "@sveltejs/kit";
  * @returns the response or an error
  */
 export function throwError(response: Response) {
-    if (!response.ok) {
-        throw error(response.status, response.statusText)
-    }
+  if (!response.ok) {
+    throw error(response.status, response.statusText)
+  }
 
-    return response;
+  return response;
 }
