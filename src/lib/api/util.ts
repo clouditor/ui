@@ -1,18 +1,18 @@
 import { env } from "$env/dynamic/public";
 
 export function trim(s: string, maxLength = 200): string {
-    if (s.length < maxLength) {
-        return s;
-    } else {
-        return s.substring(0, maxLength) + "[...]";
-    }
+  if (s.length < maxLength) {
+    return s;
+  } else {
+    return s.substring(0, maxLength) + "[...]";
+  }
 }
 
 export function short(resourceID: string) {
-    // Split resource by / and take the last index
-    const rr = resourceID.split('/');
+  // Split resource by / and take the last index
+  const rr = resourceID.split('/');
 
-    return rr[rr.length - 1];
+  return rr[rr.length - 1];
 }
 
 /**
@@ -21,14 +21,14 @@ export function short(resourceID: string) {
  * @param url the relative URL resource
  */
 export function clouditorize(url: string): string {
-    let backend = env.PUBLIC_CLOUDITOR_URL;
-    if (backend?.endsWith("/")) {
-        backend = backend.substring(0, backend.length)
-    }
+  let backend = env.PUBLIC_CLOUDITOR_URL;
+  if (backend?.endsWith("/")) {
+    backend = backend.substring(0, backend.length)
+  }
 
-    if (!url.startsWith("/")) {
-        url = `/${url}`
-    }
+  if (!url.startsWith("/")) {
+    url = `/${url}`
+  }
 
-    return backend + url;
+  return backend + url;
 }

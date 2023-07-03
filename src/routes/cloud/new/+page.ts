@@ -1,9 +1,9 @@
 import type { PageLoad } from "./$types"
 
 export const load = (async ({ url }) => {
-    const step = Number.parseInt(url.searchParams.get("step") ?? "0")
+  const step = Number.parseInt(url.searchParams.get("step") ?? "0")
 
-    return {
-        step
-    }
+  return {
+    step
+  }
 }) satisfies PageLoad
