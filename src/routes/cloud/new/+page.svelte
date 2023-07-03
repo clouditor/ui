@@ -15,8 +15,24 @@
   invalidate((url) => url.pathname == '/v1/orchestrator/catalogs');
 
   async function save(event: CustomEvent<WizardData>) {
+    let service = event.detail.service;
+
+    // Make sure, that the tags are a map
+    if (typeof service.tags == 'string') {
+      let entries = service.tags.split(' ');
+      service.tags = [];
+      for (let entry of entries) {
+        let pair = entry.split('=');
+        if (pair.length == 2) {
+          let tag = {};
+          (tag as any)[pair[0]] = pair[1];
+          service.tags.push({ tag: tag });
+        }
+      }
+    }
+
     // First, register the cloud service
-    const service = await registerCloudService(event.detail.service);
+    service = await registerCloudService(service);
 
     // Afterwards, create the targets of evaluation
     await Promise.all(

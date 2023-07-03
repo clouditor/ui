@@ -13,11 +13,15 @@ export interface Dependency {
     version: string
 }
 
+export interface Tag {
+    tag: object
+}
+
 export interface CloudService {
     id: string
     name: string
     description?: string
-    tags?: string
+    tags?: Tag[] | string
 }
 
 export interface TargetOfEvaluation {
