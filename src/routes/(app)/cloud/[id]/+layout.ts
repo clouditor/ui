@@ -1,7 +1,7 @@
-import { listResources } from "$lib/api/discovery";
 import { getCloudService } from "$lib/api/orchestrator";
 import { error } from "@sveltejs/kit";
-import type { LayoutLoad } from "../../$types";
+import type { LayoutLoad } from "./$types";
+import { listResources } from "$lib/api/discovery";
 
 export const load = (async ({ fetch, params }) => {
   if (params.id == undefined) {
@@ -9,6 +9,8 @@ export const load = (async ({ fetch, params }) => {
   }
 
   const service = await getCloudService(params.id, fetch);
+
+  // TODO: replace with statistics endpoint to avoid slow loading of resource data
   const resources = await listResources(service.id, "", fetch);
 
   return {

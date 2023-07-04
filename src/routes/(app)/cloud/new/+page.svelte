@@ -4,6 +4,7 @@
   import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
   import Header from '$lib/components/Header.svelte';
   import type { PageData } from './$types';
+  import { startEvaluation } from '$lib/api/evaluation';
 
   export let data: PageData;
 
@@ -36,13 +37,18 @@
     service = await registerCloudService(service);
 
     // Afterwards, create the targets of evaluation
-    await Promise.all(
+    let toes = await Promise.all(
       event.detail.toes.map((toe) => {
         // Set the correct cloud service id
         toe.cloudServiceId = service.id;
         return createTargetOfEvaluation(toe);
       })
     );
+
+    // And also automatically start the evaluation
+    for (let toe of toes) {
+      startEvaluation(toe);
+    }
 
     // Invalidate the list of cloud services
     await invalidate((url) => url.pathname === '/v1/orchestrator/cloud_services');
