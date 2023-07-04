@@ -3,33 +3,32 @@
   import { removeCloudService } from '$lib/api/orchestrator';
   import Header from '$lib/components/Header.svelte';
   import Tabs from '$lib/components/Tabs.svelte';
-  import {
-    BuildingOffice,
-    Cog6Tooth,
-    PresentationChartLine,
-    User,
-    Users
-  } from '@steeze-ui/heroicons';
-  import type { PageData } from './$types';
+  import { CheckBadge, Cog6Tooth, QueueList, Squares2x2, User } from '@steeze-ui/heroicons';
+  import type { LayoutData } from './$types';
 
-  export let data: PageData;
+  export let data: LayoutData;
 
   $: tabs = [
-    { name: 'Activity', href: '/cloud/' + data.service.id, icon: User, current: false },
+    {
+      name: 'Activity',
+      href: '/cloud/' + data.service.id + '/activity',
+      icon: User,
+      current: false
+    },
     {
       name: 'Discovered Resources',
       href: '/cloud/' + data.service.id + '/resources',
-      icon: BuildingOffice
+      icon: Squares2x2
     },
     {
-      name: 'Assesment Results',
+      name: 'Assessment Results',
       href: '/cloud/' + data.service.id + '/assessments',
-      icon: Users
+      icon: QueueList
     },
     {
       name: 'Compliance',
       href: '/cloud/' + data.service.id + '/compliance',
-      icon: PresentationChartLine
+      icon: CheckBadge
     },
     {
       name: 'Settings',
