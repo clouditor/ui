@@ -165,7 +165,7 @@ export async function getRuntimeInfo(fetch = window.fetch): Promise<Runtime> {
  * 
  * @returns an array of {@link AssessmentResult}s.
  */
-export async function listAssessmentResults(): Promise<AssessmentResult[]> {
+export async function listAssessmentResults(fetch = window.fetch): Promise<AssessmentResult[]> {
   const apiUrl = clouditorize(`/v1/orchestrator/assessment_results?pageSize=1500&orderBy=timestamp&asc=false`);
 
   return fetch(apiUrl, {
