@@ -6,7 +6,7 @@
   // denied from the backend
   page.subscribe((p) => {
     if (p.status == 401) {
-      redirectLogin(p.url.href);
+      redirectLogin('/');
     }
   });
 </script>
