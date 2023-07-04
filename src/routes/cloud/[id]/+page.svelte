@@ -23,6 +23,12 @@
     iconBackground: string;
   }
 
+  function shortResourceId(id: string): string {
+    let parts = id.split('/');
+
+    return parts[parts.length - 1];
+  }
+
   function buildTimeline(results: AssessmentResult[]): Timeline[] {
     const timeline = [];
     let groupedResult = new Map<string, AssessmentResult[]>();
@@ -40,12 +46,13 @@
 
     for (let group of groupedResult.values()) {
       const date = new Date(group[0].timestamp);
+      let formatter = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' });
 
       timeline.push({
-        content: `Assessed ${group.length} metrics for resource`,
-        target: group[0].resourceId,
+        content: `Assessed ${group.length} metrics for ${group[0].resourceTypes[0]}`,
+        target: shortResourceId(group[0].resourceId),
         href: '/cloud/' + data.service.id + '/resources/' + group[0].resourceId,
-        date: date.toDateString(),
+        date: formatter.format(date),
         datetime: group[0].timestamp,
         icon: QueueList,
         iconBackground: 'bg-blue-500'
@@ -56,7 +63,7 @@
       content: 'Created cloud service',
       target: data.service.name,
       href: '#',
-      date: 'Jul 4',
+      date: '4 Jul',
       datetime: '2023-07-04',
       icon: Cloud,
       iconBackground: 'bg-gray-400'
