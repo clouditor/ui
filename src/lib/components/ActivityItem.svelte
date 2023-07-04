@@ -14,12 +14,12 @@
 
 <script lang="ts">
   export let event: ActivityItemData;
-  export let first = false;
+  export let last = false;
 </script>
 
 <li>
   <div class="relative pb-8">
-    {#if !first}
+    {#if !last}
       <span class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
     {/if}
     <div class="relative flex space-x-3">

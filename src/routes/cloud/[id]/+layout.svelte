@@ -62,6 +62,6 @@
 
 <Tabs items={tabs} />
 
-<div class="pt-4">
+<div class="pt-8">
   <slot />
 </div>

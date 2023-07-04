@@ -29,38 +29,46 @@
 
     for (let group of groupedResult.values()) {
       const date = new Date(group[0].timestamp);
-      let formatter: Intl.DateTimeFormat;
-
-      // Display time if its today
-      if (isToday(date)) {
-        formatter = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' });
-      } else {
-        // Otherwise, display date
-        formatter = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' });
-      }
 
       timeline.push({
         content: `Assessed ${group.length} metrics for ${group[0].resourceTypes[0]}`,
         target: shortResourceId(group[0].resourceId),
         href: '/cloud/' + data.service.id + '/resources/' + group[0].resourceId,
-        date: formatter.format(date),
+        date: formatDate(date),
         datetime: group[0].timestamp,
         icon: QueueList,
         iconBackground: 'bg-blue-500'
       });
     }
 
-    timeline.push({
-      content: 'Created cloud service',
-      target: data.service.name,
-      href: '/cloud/' + data.service.id,
-      date: '4 Jul',
-      datetime: '2023-07-04',
-      icon: Cloud,
-      iconBackground: 'bg-gray-400'
-    });
+    if (data.service.metadata?.createdAt != undefined) {
+      const date = new Date(data.service.metadata.createdAt);
+
+      timeline.push({
+        content: 'Created cloud service',
+        target: data.service.name,
+        href: '/cloud/' + data.service.id,
+        date: formatDate(date),
+        datetime: data.service.metadata.createdAt,
+        icon: Cloud,
+        iconBackground: 'bg-gray-400'
+      });
+    }
 
     return timeline;
+  }
+
+  function formatDate(date: Date): string {
+    let formatter: Intl.DateTimeFormat;
+
+    // Display time if its today
+    if (isToday(date)) {
+      formatter = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' });
+    } else {
+      // Otherwise, display date
+      formatter = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' });
+    }
+    return formatter.format(date);
   }
 
   function isToday(date: Date): boolean {
@@ -79,7 +87,7 @@
 <div class="flow-root">
   <ul class="-mb-8">
     {#each timeline as event, eventIdx}
-      <ActivityItem first={eventIdx !== timeline.length - 1} {event} />
+      <ActivityItem last={eventIdx == timeline.length - 1} {event} />
     {/each}
   </ul>
 </div>

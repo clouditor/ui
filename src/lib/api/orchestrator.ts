@@ -22,6 +22,9 @@ export interface CloudService {
   name: string
   description?: string
   tags?: Tag[] | string
+  metadata?: {
+    createdAt: string
+  }
 }
 
 export interface TargetOfEvaluation {

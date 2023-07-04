@@ -165,7 +165,7 @@
     </div>
 
     <main class="py-10">
-      <div class="px-4 sm:px-6 lg:px-8">
+      <div class="px-4 sm:px-6 lg:px-8 max-w-screen-2xl ml-auto mr-auto">
         <!-- Your content -->
         <slot />
       </div>
