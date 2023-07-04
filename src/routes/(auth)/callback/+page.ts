@@ -11,6 +11,7 @@ export const load = (async ({ url }) => {
     if (err instanceof ErrorResponse) {
       throw error(400, `error while fetching OAuth 2.0 response: ${err.error_description}`)
     } else {
+      console.log(err)
       throw error(400, "could not complete OAuth 2.0 flow")
     }
   }
