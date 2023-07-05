@@ -25,7 +25,7 @@
         ...services.map((s) => {
           return {
             name: s.name,
-            href: '/cloud/' + s.id,
+            href: '/cloud/' + s.id + '/activity',
             isSub: true
           };
         }),

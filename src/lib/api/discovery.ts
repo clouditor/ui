@@ -28,11 +28,19 @@ export interface TransportEncryption {
   tlsVersion: string
 }
 
+export interface ResourceProperties {
+  name: string
+  raw: string
+  type: string[]
+  serviceId: string
+  id: string
+}
+
 export interface Resource {
   id: string
   cloudServiceId: string
   resourceType: string
-  properties: string
+  properties: ResourceProperties
 }
 
 export async function startDiscovery(): Promise<boolean> {

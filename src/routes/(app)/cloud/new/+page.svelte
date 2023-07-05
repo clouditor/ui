@@ -2,6 +2,7 @@
   import { goto, invalidate } from '$app/navigation';
   import { createTargetOfEvaluation, registerCloudService } from '$lib/api/orchestrator';
   import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
+  import Header from '$lib/components/Header.svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
@@ -69,9 +70,20 @@
   }
 </script>
 
+<Header
+  name={wizard.service.name}
+  description={wizard.service.description ?? 'A new cloud service'}
+  buttons={false}
+/>
+
+<div class="pt-4 pb-4 text-sm">
+  You can use this page to create a new cloud service. This wizard will guide you through all the
+  necessary steps. To move to the next step, either click on the name of the step or the circle next
+  to it.
+</div>
 <Wizard
   current={data.step}
-  data={wizard}
+  bind:data={wizard}
   catalogs={data.catalogs}
   on:save={save}
   on:cancel={cancel}

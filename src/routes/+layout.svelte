@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import Sidebar from '$lib/components/Sidebar.svelte';
   import {
     Dialog,
@@ -13,7 +14,6 @@
   } from '@rgossiaux/svelte-headlessui';
   import { Bars3, Bell, ChevronDown, MagnifyingGlass, XMark } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
-  import type { LayoutData } from './$types';
 
   const userNavigation = [
     { name: 'Your profile', href: '#' },
@@ -22,7 +22,9 @@
 
   let sidebarOpen = false;
 
-  export let data: LayoutData;
+  // We need to use $page here because of
+  // https://github.com/sveltejs/kit/issues/627#issuecomment-1458539744 and
+  // https://github.com/sveltejs/kit/issues/10201
 </script>
 
 <div>
@@ -64,7 +66,7 @@
                 </button>
               </div>
             </TransitionChild>
-            <Sidebar services={data.services} mobile={true} />
+            <Sidebar services={$page.data.services} mobile={true} />
           </DialogOverlay>
         </TransitionChild>
       </div>
@@ -72,7 +74,7 @@
   </TransitionRoot>
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-    <Sidebar services={data.services} />
+    <Sidebar services={$page.data.services} />
   </div>
   <div class="lg:pl-72">
     <div
@@ -165,7 +167,7 @@
     </div>
 
     <main class="py-10">
-      <div class="px-4 sm:px-6 lg:px-8">
+      <div class="px-4 sm:px-6 lg:px-8 max-w-screen-2xl ml-auto mr-auto">
         <!-- Your content -->
         <slot />
       </div>

@@ -18,7 +18,7 @@
   export let mobile: boolean = false;
 
   // React to changes in the route and set the current status (true/false)
-  $: current = $page.url.pathname.endsWith(item.href);
+  $: current = $page.url.pathname.startsWith(item.href);
 </script>
 
 {#if mobile}
