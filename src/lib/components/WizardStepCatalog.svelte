@@ -1,18 +1,10 @@
 <script lang="ts">
   import type { Catalog, TargetOfEvaluation } from '$lib/api/orchestrator';
-  import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui';
-  import { createPopperActions } from 'svelte-popperjs';
+  import AssuranceLevelPopover from './AssuranceLevelPopover.svelte';
   import type { WizardData } from './Wizard.svelte';
 
   export let data: WizardData;
   export let catalogs: Catalog[];
-
-  const [popperRef, popperContent] = createPopperActions();
-  const popperOptions = {
-    placement: 'bottom-start',
-    strategy: 'fixed',
-    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
-  };
 
   // Reactive property for the selection status of all catalogs
   $: selected = new Map(
@@ -21,6 +13,10 @@
       data.toes.find((toe) => toe.catalogId == catalog.id) !== undefined
     ])
   );
+
+  function assuranceLevelSelected(e: CustomEvent<{ catalog: Catalog; assuranceLevel: string }>) {
+    toggle(e.detail.catalog, e.detail.assuranceLevel);
+  }
 
   /**
    * This function selects a catalog if its not already selected or de-selects
@@ -56,39 +52,11 @@
   {#each catalogs as catalog, idx}
     <li class="col-span-1 flex rounded-md shadow-sm">
       {#if catalog.assuranceLevels.length > 0 && !selected.get(catalog.id)}
-        <Popover
-          class="{selected.get(catalog.id) ? '' : 'bg-gray-400'}
-        flex w-[4.5rem] z-10 flex-shrink-0 items-center justify-center rounded-l-md text-sm text-white"
-          style={selected.get(catalog.id) ? 'background-color: ' + catalog.color : ''}
-        >
-          <PopoverButton use={[popperRef]} class="h-full w-full">
-            {catalog.shortName}
-          </PopoverButton>
-          <PopoverPanel use={[[popperContent, popperOptions]]}>
-            <div
-              class="w-screen max-w-sm flex-auto rounded-3xl bg-white p-4 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5"
-            >
-              <div class="ml-4 mt-4 mr-4">
-                <p class="text-gray-900 font-medium">Please choose an assurance level</p>
-                <p class="text-gray-500">
-                  The selected catalog requires the selection of an assurance level.
-                </p>
-              </div>
-
-              {#each catalog.assuranceLevels as level}
-                <div class="relative rounded-lg p-4 hover:bg-gray-50">
-                  <button
-                    on:click={() => toggle(catalog, level)}
-                    class="font-semibold text-gray-900"
-                  >
-                    {level}
-                    <span class="absolute inset-0" />
-                  </button>
-                </div>
-              {/each}
-            </div>
-          </PopoverPanel>
-        </Popover>
+        <AssuranceLevelPopover
+          {catalog}
+          on:select={assuranceLevelSelected}
+          selected={selected.get(catalog.id) == true}
+        />
       {:else}
         <button
           on:click={() => toggle(catalog)}
