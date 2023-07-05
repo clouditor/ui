@@ -14,8 +14,8 @@
     ])
   );
 
-  function assuranceLevelSelected(e: CustomEvent<{ catalog: Catalog; assuranceLevel: string }>) {
-    toggle(e.detail.catalog, e.detail.assuranceLevel);
+  function assuranceLevelSelected(e: CustomEvent<TargetOfEvaluation>) {
+    toggle(e.detail.catalogId, e.detail.assuranceLevel);
   }
 
   /**
@@ -25,15 +25,15 @@
    * If the catalog needs an assurance level, this must be specified as an extra
    * parameter.
    *
-   * @param catalog the catalog to (de)-select
+   * @param catalog the catalog ID to (de)-select
    * @param assuranceLevel the assurance level, if the catalog needs it
    */
-  function toggle(catalog: Catalog, assuranceLevel?: string) {
+  function toggle(catalogId: string, assuranceLevel?: string) {
     // Check, if catalog already exists in the ToE
-    if (!selected.get(catalog.id)) {
+    if (!selected.get(catalogId)) {
       // Does not exist yet -> create new ToE
       const toe: TargetOfEvaluation = {
-        catalogId: catalog.id,
+        catalogId: catalogId,
         // This will not be the final ID, since we do not know it at this point.
         // This needs to be set by the caller of save()
         cloudServiceId: data.service.id,
@@ -43,23 +43,30 @@
       data.toes = [...data.toes, toe];
     } else {
       // Already exists -> remove it from the ToE list
-      data.toes = data.toes.filter((toe) => toe.catalogId != catalog.id);
+      data.toes = data.toes.filter((toe) => toe.catalogId != catalogId);
     }
   }
+
+  let popover;
 </script>
 
 <ul class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-2">
   {#each catalogs as catalog, idx}
     <li class="col-span-1 flex rounded-md shadow-sm">
       {#if catalog.assuranceLevels.length > 0 && !selected.get(catalog.id)}
-        <AssuranceLevelPopover
-          {catalog}
-          on:select={assuranceLevelSelected}
-          selected={selected.get(catalog.id) == true}
-        />
+        <AssuranceLevelPopover {catalog} service={data.service} on:select={assuranceLevelSelected}>
+          <button
+            class={selected.get(catalog.id)
+              ? ''
+              : 'bg-gray-400 flex w-[4.5rem] flex-shrink-0 items-center rounded-l-md justify-center text-sm text-white h-full'}
+            style={selected.get(catalog.id) ? 'background-color: ' + catalog.color : ''}
+          >
+            {catalog.shortName}
+          </button>
+        </AssuranceLevelPopover>
       {:else}
         <button
-          on:click={() => toggle(catalog)}
+          on:click={() => toggle(catalog.id)}
           class="{selected.get(catalog.id) ? '' : 'bg-gray-400'}
        flex w-[4.5rem] flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
           style={selected.get(catalog.id) ? 'background-color: ' + catalog.color : ''}
