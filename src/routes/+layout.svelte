@@ -66,7 +66,7 @@
                 </button>
               </div>
             </TransitionChild>
-            <Sidebar services={$page.data.services} mobile={true} />
+            <Sidebar services={$page.data.services ?? []} mobile={true} />
           </DialogOverlay>
         </TransitionChild>
       </div>
@@ -74,7 +74,7 @@
   </TransitionRoot>
   <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-    <Sidebar services={$page.data.services} />
+    <Sidebar services={$page.data.services ?? []} />
   </div>
   <div class="lg:pl-72">
     <div

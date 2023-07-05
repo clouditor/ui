@@ -1,3 +1,4 @@
+import { throwError } from './errors';
 import { clouditorize } from './util';
 export interface StartDiscoveryResponse {
   successful: boolean
@@ -66,7 +67,7 @@ export async function listResources(
     `);
 
   if (type != "") {
-    apiUrl += "&filter.type=${type}"
+    apiUrl += `&filter.type=${type}`
   }
 
   const emptyResource: Resource[] = [];
@@ -76,15 +77,9 @@ export async function listResources(
     headers: {
       'Authorization': `Bearer ${localStorage.token}`,
     }
-  }).then(res => {
-    if (!res.ok) {
-      return Promise.reject(res)
-    }
-    return res.json()
-  }).then((response: QueryResponse) => {
-    return response.results;
-  }).catch(error => {
-    console.log("Error calling endpoint '/v1/discovery/resources':", error)
-    return emptyResource;
-  });
+  }).then(throwError)
+    .then((res) => res.json())
+    .then((response: QueryResponse) => {
+      return response.results;
+    });
 }

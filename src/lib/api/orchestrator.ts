@@ -364,7 +364,7 @@ export async function listCloudServices(fetch = window.fetch): Promise<CloudServ
 /**
  * Creates a new target of evaluation.
  */
-export async function createTargetOfEvaluation(target: TargetOfEvaluation): Promise<TargetOfEvaluation | null> {
+export async function createTargetOfEvaluation(target: TargetOfEvaluation): Promise<TargetOfEvaluation> {
   const apiUrl = clouditorize(`/v1/orchestrator/toes`)
 
   return fetch(apiUrl, {
@@ -376,10 +376,6 @@ export async function createTargetOfEvaluation(target: TargetOfEvaluation): Prom
   })
     .then(throwError)
     .then((res) => res.json())
-    .then((response: TargetOfEvaluation) => {
-      return response;
-    })
-
 }
 
 /**
