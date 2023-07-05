@@ -1,12 +1,23 @@
+<script lang="ts" context="module">
+  export interface AssuranceLevelEvent {
+    catalog: Catalog;
+    assuranceLevel: string;
+  }
+</script>
+
 <script lang="ts">
-  import type { Catalog, CloudService, TargetOfEvaluation } from '$lib/api/orchestrator';
+  import type { Catalog } from '$lib/api/orchestrator';
   import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui';
-  import { createPopperActions } from 'svelte-popperjs';
   import { createEventDispatcher } from 'svelte';
+  import { createPopperActions } from 'svelte-popperjs';
 
   const dispatch = createEventDispatcher<{
-    select: TargetOfEvaluation;
+    select: AssuranceLevelEvent;
   }>();
+
+  interface $$Events {
+    select: CustomEvent<AssuranceLevelEvent>;
+  }
 
   const [popperRef, popperContent] = createPopperActions();
   const popperOptions = {
@@ -17,17 +28,15 @@
 
   function select(level: string) {
     dispatch('select', {
-      cloudServiceId: service.id,
-      catalogId: catalog.id,
+      catalog: catalog,
       assuranceLevel: level
     });
   }
 
-  export let service: CloudService;
   export let catalog: Catalog;
 </script>
 
-<Popover class="z-10">
+<Popover class="z-20">
   <PopoverButton as="div" use={[popperRef]} class="w-full h-full">
     <slot />
   </PopoverButton>

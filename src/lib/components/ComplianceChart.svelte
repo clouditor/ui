@@ -1,9 +1,7 @@
 <script lang="ts">
   import type { TargetOfEvaluation } from '$lib/api/orchestrator';
-  import { Chart, type ChartConfiguration } from 'chart.js';
+  import { Chart, type ChartConfiguration } from 'chart.js/auto';
   import { onMount } from 'svelte';
-
-  export let toe: TargetOfEvaluation;
 
   let canvas: HTMLCanvasElement;
 
@@ -55,18 +53,4 @@
 
 <div class="py-3">
   <canvas id="acquisitions" bind:this={canvas} class="h-72 w-72 ml-auto mr-auto" />
-</div>
-<div class="flex justify-between gap-x-4 py-3">
-  <dt class="text-gray-500">Controls in Scope</dt>
-  <dd class="flex items-start gap-x-2">
-    <div class="font-medium text-gray-900">{0}</div>
-  </dd>
-</div>
-<div class="flex justify-between gap-x-4 py-3">
-  <dt class="text-gray-500">Assurance Level</dt>
-  <dd class="flex items-start gap-x-2">
-    <div class="font-medium text-gray-900">
-      {toe.assuranceLevel ?? '-'}
-    </div>
-  </dd>
 </div>

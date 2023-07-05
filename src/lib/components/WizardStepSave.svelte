@@ -20,7 +20,11 @@
   {#if data.service.name.length == 0}
     Please provide at least a name for the new cloud service.
   {:else}
-    This will create a new cloud service called <b>{data.service.name}</b> with
+    {#if data.mode == 'create'}
+      This will create a new cloud service called <b>{data.service.name}</b> with
+    {:else}
+      This will change the cloud service called <b>{data.service.name}</b> with
+    {/if}
     {#if data.toes.length > 0}
       the following targets of evaluation:
       <ul class="list-disc mt-1 ml-4">
@@ -39,5 +43,11 @@
   {/if}
 </div>
 
-<Button on:click={save} disabled={data.service.name.length == 0}>Create</Button>
-<Button on:click={cancel} class="bg-red-800 hover:bg-red-700">Cancel</Button>
+<Button on:click={save} disabled={data.service.name.length == 0}>
+  {#if data.mode == 'create'}
+    Create
+  {:else}
+    Save
+  {/if}
+</Button>
+<Button on:click={cancel} class="bg-red-800 hover:bg-red-700 ml-2">Cancel</Button>

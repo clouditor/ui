@@ -1,17 +1,17 @@
 <script lang="ts">
-  import {
-    createTargetOfEvaluation,
-    type Catalog,
-    type TargetOfEvaluation
-  } from '$lib/api/orchestrator';
+  import { createTargetOfEvaluation, type TargetOfEvaluation } from '$lib/api/orchestrator';
   import CatalogComplianceItem from '$lib/components/CatalogComplianceItem.svelte';
+  import EnableCatalogButton from '$lib/components/EnableCatalogButton.svelte';
   import type { PageData } from './$types';
 
-  $: toeMap = new Map(
-    data.targets.map((t) => {
-      return [t.catalogId, t];
-    })
-  );
+  $: enabledItems = data.catalogs.flatMap((catalog) => {
+    let toe = data.targets.find((toe) => toe.catalogId == catalog.id);
+    if (toe === undefined) {
+      return [];
+    }
+
+    return [{ catalog, toe }];
+  });
 
   export let data: PageData;
 
@@ -21,12 +21,14 @@
 </script>
 
 <ul class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
-  {#each data.catalogs as catalog, i (catalog.id)}
-    <CatalogComplianceItem
-      {catalog}
-      service={data.service}
-      toe={toeMap.get(catalog.id)}
-      on:enable={enable}
-    />
+  {#each enabledItems as item, i (item.catalog.id)}
+    <CatalogComplianceItem {...item} on:enable={enable} />
   {/each}
+  {#if data.leftOverCatalogs.length > 0}
+    <li>
+      <a href="./new">
+        <EnableCatalogButton />
+      </a>
+    </li>
+  {/if}
 </ul>
