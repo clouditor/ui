@@ -50,7 +50,7 @@
 </script>
 
 <ul class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-2">
-  {#each data.catalogs as catalog, idx}
+  {#each data.catalogs as catalog (catalog.id)}
     <li class="col-span-1 flex rounded-md shadow-sm">
       {#if catalog.assuranceLevels.length > 0 && !selected.get(catalog.id)}
         <AssuranceLevelPopover {catalog} on:select={assuranceLevelSelected}>
@@ -58,7 +58,7 @@
             class={selected.get(catalog.id)
               ? ''
               : 'bg-gray-400 flex w-[4.5rem] flex-shrink-0 items-center rounded-l-md justify-center text-sm text-white h-full'}
-            style={selected.get(catalog.id) ? 'background-color: ' + catalog.color : ''}
+            style={selected.get(catalog.id) ? 'background-color: ' + catalog.metadata.color : ''}
           >
             {catalog.shortName}
           </button>
@@ -68,7 +68,7 @@
           on:click={() => toggle(catalog)}
           class="{selected.get(catalog.id) ? '' : 'bg-gray-400'}
        flex w-[4.5rem] flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
-          style={selected.get(catalog.id) ? 'background-color: ' + catalog.color : ''}
+          style={selected.get(catalog.id) ? 'background-color: ' + catalog.metadata.color : ''}
         >
           {catalog.shortName}
         </button>

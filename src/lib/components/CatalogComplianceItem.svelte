@@ -1,23 +1,18 @@
 <script lang="ts">
   import type { Catalog, TargetOfEvaluation } from '$lib/api/orchestrator';
-  import { createEventDispatcher } from 'svelte';
   import ComplianceChart from './ComplianceChart.svelte';
 
   export let catalog: Catalog;
   export let toe: TargetOfEvaluation;
   export let compliance: Map<string, boolean>;
-
-  const dispatch = createEventDispatcher<{ enable: TargetOfEvaluation }>();
-
-  function enable(e: CustomEvent<TargetOfEvaluation>) {
-    dispatch('enable', e.detail);
-  }
 </script>
 
 <li class="overflow-hidden rounded-xl border border-gray-200">
-  <div class="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-    <div class="text-sm font-medium leading-6 text-gray-900">{catalog.name}</div>
-  </div>
+  <a href={'/cloud/' + toe.cloudServiceId + '/compliance/' + catalog.id}>
+    <div class="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+      <div class="text-sm font-medium leading-6 text-gray-900">{catalog.name}</div>
+    </div>
+  </a>
   <dl class="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
     <div class="flex justify-between gap-x-4 py-3">
       <dt class="text-gray-500">Description</dt>

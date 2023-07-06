@@ -12,8 +12,8 @@
         {
           label: toe.catalogId,
           data: [
-            Array.from(compliance.values()).filter((value) => true).length,
-            Array.from(compliance.values()).filter((value) => false).length,
+            Array.from(compliance.values()).filter((value) => !value).length,
+            Array.from(compliance.values()).filter((value) => value).length,
             toe.controlsInScope === undefined
               ? 0
               : toe.controlsInScope?.length - Array.from(compliance.values()).length

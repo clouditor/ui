@@ -33,19 +33,27 @@ export async function startEvaluation(toe: TargetOfEvaluation): Promise<StartEva
 
 export interface ListEvaluationResultsFilter {
   cloudServiceId?: string
+  catalogId?: string
   controlId?: string
 }
 
 export async function listEvaluationResults(
   filter?: ListEvaluationResultsFilter,
+  latestByResourceId = false,
   fetch = window.fetch): Promise<EvaluationResult[]> {
   let apiUrl = clouditorize(`/v1/evaluation/results?`);
 
   if (filter?.cloudServiceId != undefined) {
     apiUrl += `&filter.cloud_service_id=${filter?.cloudServiceId}`
   }
+  if (filter?.catalogId != undefined) {
+    apiUrl += `&filter.catalog_id=${filter?.catalogId}`
+  }
   if (filter?.controlId != undefined) {
     apiUrl += `&filter.control_id=${filter?.controlId}`
+  }
+  if (latestByResourceId) {
+    apiUrl += `&latest_by_resource_id=true`
   }
 
   return fetch(apiUrl, {

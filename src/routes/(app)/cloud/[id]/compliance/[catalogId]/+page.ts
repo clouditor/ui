@@ -7,9 +7,11 @@ export const load = (async ({ fetch, params }) => {
     throw error(405, "Required parameter missing")
   }
 
-  // Retrieve results (or in the future, just the statistics)
-  // TODO: filter according to catalog
-  const evaluations = listEvaluationResults({ cloudServiceId: params.id }, true, fetch)
+  const evaluations = listEvaluationResults(
+    {
+      cloudServiceId: params.id,
+      catalogId: params.catalogId
+    }, true, fetch)
 
   return {
     evaluations
