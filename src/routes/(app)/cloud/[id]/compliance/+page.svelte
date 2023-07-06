@@ -52,7 +52,7 @@
     <CatalogComplianceItem
       {...item}
       on:enable={enable}
-      compliance={compliance.get(item.catalog.id)}
+      compliance={compliance.get(item.catalog.id) ?? new Map()}
     />
   {/each}
   {#if data.leftOverCatalogs.length > 0}
