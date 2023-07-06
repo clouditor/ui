@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { EvaluationResult } from '$lib/api/evaluation';
   import { createTargetOfEvaluation, type TargetOfEvaluation } from '$lib/api/orchestrator';
   import CatalogComplianceItem from '$lib/components/CatalogComplianceItem.svelte';
   import EnableCatalogButton from '$lib/components/EnableCatalogButton.svelte';
@@ -18,11 +19,41 @@
   async function enable(e: CustomEvent<TargetOfEvaluation>) {
     await createTargetOfEvaluation(e.detail);
   }
+
+  // TODO: This should be done in the backend
+  $: compliance = buildCompliance(data.evaluations);
+
+  function buildCompliance(evaluations: EvaluationResult[]): Map<string, Map<string, boolean>> {
+    let all = new Map();
+    let compliance: Map<string, boolean>;
+    for (let result of evaluations) {
+      compliance = all.get(result.controlCatalogId);
+      if (compliance === undefined) {
+        compliance = new Map();
+        all.set(result.controlCatalogId, compliance);
+      }
+
+      let pass = compliance.get(result.controlId) ?? true;
+      if (result.status == 'EVALUATION_STATUS_NOT_COMPLIANT') {
+        compliance.set(result.controlId, false);
+      } else {
+        compliance.set(result.controlId, pass);
+      }
+    }
+
+    console.log(all);
+
+    return all;
+  }
 </script>
 
 <ul class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
   {#each enabledItems as item, i (item.catalog.id)}
-    <CatalogComplianceItem {...item} on:enable={enable} />
+    <CatalogComplianceItem
+      {...item}
+      on:enable={enable}
+      compliance={compliance.get(item.catalog.id)}
+    />
   {/each}
   {#if data.leftOverCatalogs.length > 0}
     <li>

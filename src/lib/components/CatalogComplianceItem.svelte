@@ -5,6 +5,7 @@
 
   export let catalog: Catalog;
   export let toe: TargetOfEvaluation;
+  export let compliance: Map<string, boolean>;
 
   const dispatch = createEventDispatcher<{ enable: TargetOfEvaluation }>();
 
@@ -24,7 +25,7 @@
         <div class="font-medium text-gray-900">{catalog.description}</div>
       </dd>
     </div>
-    <ComplianceChart />
+    <ComplianceChart {compliance} {toe} />
     <div class="flex justify-between gap-x-4 py-3">
       <dt class="text-gray-500">Controls in Scope</dt>
       <dd class="flex items-start gap-x-2">

@@ -10,8 +10,14 @@
       labels: ['Non Compliant', 'Compliant', 'Waiting for Data'],
       datasets: [
         {
-          label: 'EUCS',
-          data: [Math.random() * 300, Math.random() * 50, Math.random() * 100],
+          label: toe.catalogId,
+          data: [
+            Array.from(compliance.values()).filter((value) => true).length,
+            Array.from(compliance.values()).filter((value) => false).length,
+            toe.controlsInScope === undefined
+              ? 0
+              : toe.controlsInScope?.length - Array.from(compliance.values()).length
+          ],
           backgroundColor: ['#991b1b', '#166534', '#d4d4d4'],
           hoverOffset: 4
         }
@@ -49,6 +55,9 @@
 
     new Chart(canvas, config);
   });
+
+  export let compliance: Map<string, boolean>;
+  export let toe: TargetOfEvaluation;
 </script>
 
 <div class="py-3">

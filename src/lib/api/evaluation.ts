@@ -13,8 +13,10 @@ export interface ListEvaluationResultsResponse {
 export interface EvaluationResult {
   id: string
   cloudServiceId: string
-  status: number
+  status: string
   resourceId: string
+  controlCatalogId: string
+  controlId: string
   timestamp: string
 }
 
@@ -39,10 +41,10 @@ export async function listEvaluationResults(
   fetch = window.fetch): Promise<EvaluationResult[]> {
   let apiUrl = clouditorize(`/v1/evaluation/results?`);
 
-  if (filter?.cloudServiceId != "") {
+  if (filter?.cloudServiceId != undefined) {
     apiUrl += `&filter.cloud_service_id=${filter?.cloudServiceId}`
   }
-  if (filter?.controlId != "") {
+  if (filter?.controlId != undefined) {
     apiUrl += `&filter.control_id=${filter?.controlId}`
   }
 
