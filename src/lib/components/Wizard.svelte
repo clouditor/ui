@@ -3,7 +3,9 @@
   // service, its meta-data and optionally some target of evaluations.
   export interface WizardData {
     service: CloudService;
+    catalogs: Catalog[];
     toes: TargetOfEvaluation[];
+    mode: 'create' | 'edit';
   }
 </script>
 
@@ -19,7 +21,6 @@
 
   export let current: number = 0;
   export let data: WizardData;
-  export let catalogs: Catalog[];
 
   interface $$Events {
     save: CustomEvent<WizardData>;
@@ -105,7 +106,7 @@
           </span>
           <div class="mt-5 ml-12 max-w-2xl">
             {#if step.content == WizardStepCatalog}
-              <svelte:component this={step.content} bind:data {catalogs} />
+              <svelte:component this={step.content} bind:data />
             {:else if step.content == WizardStepSave}
               <svelte:component this={step.content} bind:data on:save on:cancel />
             {:else}

@@ -58,7 +58,9 @@
   function restart() {
     wizard = {
       service: { id: '', name: '' },
-      toes: []
+      catalogs: data.catalogs,
+      toes: [],
+      mode: 'create'
     };
   }
 
@@ -87,10 +89,4 @@
   necessary steps. To move to the next step, either click on the name of the step or the circle next
   to it.
 </div>
-<Wizard
-  current={data.step}
-  bind:data={wizard}
-  catalogs={data.catalogs}
-  on:save={save}
-  on:cancel={cancel}
-/>
+<Wizard current={data.step} bind:data={wizard} on:save={save} on:cancel={cancel} />

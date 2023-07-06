@@ -1,20 +1,21 @@
 <script lang="ts">
   import type { Catalog, TargetOfEvaluation } from '$lib/api/orchestrator';
-  import AssuranceLevelPopover from './AssuranceLevelPopover.svelte';
+  import AssuranceLevelPopover, {
+    type AssuranceLevelEvent
+  } from '$lib/components/AssuranceLevelPopover.svelte';
   import type { WizardData } from './Wizard.svelte';
 
   export let data: WizardData;
-  export let catalogs: Catalog[];
 
   // Reactive property for the selection status of all catalogs
   $: selected = new Map(
-    catalogs.map((catalog) => [
+    data.catalogs.map((catalog) => [
       catalog.id,
       data.toes.find((toe) => toe.catalogId == catalog.id) !== undefined
     ])
   );
 
-  function assuranceLevelSelected(e: CustomEvent<{ catalog: Catalog; assuranceLevel: string }>) {
+  function assuranceLevelSelected(e: CustomEvent<AssuranceLevelEvent>) {
     toggle(e.detail.catalog, e.detail.assuranceLevel);
   }
 
@@ -49,14 +50,19 @@
 </script>
 
 <ul class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-2">
-  {#each catalogs as catalog, idx}
+  {#each data.catalogs as catalog, idx}
     <li class="col-span-1 flex rounded-md shadow-sm">
       {#if catalog.assuranceLevels.length > 0 && !selected.get(catalog.id)}
-        <AssuranceLevelPopover
-          {catalog}
-          on:select={assuranceLevelSelected}
-          selected={selected.get(catalog.id) == true}
-        />
+        <AssuranceLevelPopover {catalog} on:select={assuranceLevelSelected}>
+          <button
+            class={selected.get(catalog.id)
+              ? ''
+              : 'bg-gray-400 flex w-[4.5rem] flex-shrink-0 items-center rounded-l-md justify-center text-sm text-white h-full'}
+            style={selected.get(catalog.id) ? 'background-color: ' + catalog.color : ''}
+          >
+            {catalog.shortName}
+          </button>
+        </AssuranceLevelPopover>
       {:else}
         <button
           on:click={() => toggle(catalog)}

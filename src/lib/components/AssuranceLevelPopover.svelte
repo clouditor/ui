@@ -1,12 +1,23 @@
+<script lang="ts" context="module">
+  export interface AssuranceLevelEvent {
+    catalog: Catalog;
+    assuranceLevel: string;
+  }
+</script>
+
 <script lang="ts">
   import type { Catalog } from '$lib/api/orchestrator';
   import { Popover, PopoverButton, PopoverPanel } from '@rgossiaux/svelte-headlessui';
-  import { createPopperActions } from 'svelte-popperjs';
   import { createEventDispatcher } from 'svelte';
+  import { createPopperActions } from 'svelte-popperjs';
 
   const dispatch = createEventDispatcher<{
-    select: { catalog: Catalog; assuranceLevel: string };
+    select: AssuranceLevelEvent;
   }>();
+
+  interface $$Events {
+    select: CustomEvent<AssuranceLevelEvent>;
+  }
 
   const [popperRef, popperContent] = createPopperActions();
   const popperOptions = {
@@ -23,20 +34,13 @@
   }
 
   export let catalog: Catalog;
-  export let selected: boolean;
 </script>
 
-<Popover class="z-10">
-  <div
-    class={selected
-      ? ''
-      : 'bg-gray-400 flex w-[4.5rem] flex-shrink-0 items-center rounded-l-md justify-center text-sm text-white h-full'}
-    style={selected ? 'background-color: ' + catalog.color : ''}
-  >
-    <PopoverButton use={[popperRef]} class="w-full h-full">
-      {catalog.shortName}
-    </PopoverButton>
-  </div>
+<Popover class="z-20">
+  <PopoverButton as="div" use={[popperRef]} class="w-full h-full">
+    <slot />
+  </PopoverButton>
+
   <PopoverPanel use={[[popperContent, popperOptions]]}>
     <div
       class="w-screen max-w-sm flex-auto rounded-3xl bg-white p-4 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5"
