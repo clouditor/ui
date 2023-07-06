@@ -45,7 +45,6 @@
   >
     {#if buttons}
       <Button on:click={remove} class="bg-red-800 hover:bg-red-700">Delete</Button>
-      <Button>Save</Button>
     {/if}
   </div>
 </div>
