@@ -1,12 +1,14 @@
 import { listEvaluationResults } from "$lib/api/evaluation";
+import { getCatalog, listControls } from "$lib/api/orchestrator";
 import { error } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
-import { listControls } from "$lib/api/orchestrator";
 
 export const load = (async ({ fetch, params }) => {
   if (params.id == undefined) {
     throw error(405, "Required parameter missing")
   }
+
+  const catalog = getCatalog(params.catalogId, fetch)
 
   const evaluations = listEvaluationResults(
     {
@@ -18,6 +20,7 @@ export const load = (async ({ fetch, params }) => {
 
   return {
     evaluations,
+    catalog,
     controls
   }
 }) satisfies PageLoad
