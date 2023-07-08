@@ -1,4 +1,4 @@
-import { listTargetsOfEvaluation } from "$lib/api/orchestrator";
+import { listControls, listTargetsOfEvaluation } from "$lib/api/orchestrator";
 import { error } from "@sveltejs/kit";
 import type { LayoutLoad } from "./$types";
 

@@ -17,6 +17,7 @@ export interface EvaluationResult {
   resourceId: string
   controlCatalogId: string
   controlId: string
+  parentControlId?: string
   timestamp: string
 }
 
