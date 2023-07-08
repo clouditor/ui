@@ -7,11 +7,11 @@ export const load = (async ({ fetch, params }) => {
     throw error(405, "Required parameter missing")
   }
 
-  // Retrieve results (or in the future, just the statistics)
-  // TODO: filter according to catalog
-  const evaluations = listEvaluationResults({ cloudServiceId: params.id }, true, fetch)
+  // Retrieve the result of each "parent" (aka the top controls), because in the
+  // overview we are only interested in that
+  const topControlResults = listEvaluationResults({ cloudServiceId: params.id, parentsOnly: true }, true, fetch)
 
   return {
-    evaluations
+    topControlResults
   }
 }) satisfies PageLoad

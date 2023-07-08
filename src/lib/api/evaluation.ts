@@ -35,11 +35,12 @@ export interface ListEvaluationResultsFilter {
   cloudServiceId?: string
   catalogId?: string
   controlId?: string
+  parentsOnly?: boolean
 }
 
 export async function listEvaluationResults(
   filter?: ListEvaluationResultsFilter,
-  latestByResourceId = false,
+  latestByControlId = false,
   fetch = window.fetch): Promise<EvaluationResult[]> {
   let apiUrl = clouditorize(`/v1/evaluation/results?`);
 
@@ -52,8 +53,11 @@ export async function listEvaluationResults(
   if (filter?.controlId != undefined) {
     apiUrl += `&filter.control_id=${filter?.controlId}`
   }
-  if (latestByResourceId) {
-    apiUrl += `&latest_by_resource_id=true`
+  if (filter?.parentsOnly != undefined) {
+    apiUrl += `&filter.parents_only=${filter?.parentsOnly}`
+  }
+  if (latestByControlId) {
+    apiUrl += `&latest_by_control_id=true`
   }
 
   return fetch(apiUrl, {

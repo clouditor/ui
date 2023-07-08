@@ -21,7 +21,7 @@
   }
 
   // TODO: This should be done in the backend
-  $: compliance = buildCompliance(data.evaluations);
+  $: compliance = buildCompliance(data.topControlResults);
 
   function buildCompliance(evaluations: EvaluationResult[]): Map<string, Map<string, boolean>> {
     let all = new Map();

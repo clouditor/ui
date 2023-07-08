@@ -5,6 +5,8 @@
   export let catalog: Catalog;
   export let toe: TargetOfEvaluation;
   export let compliance: Map<string, boolean>;
+
+  $: topLevelControls = toe.controlsInScope?.filter((c) => c.parentControlId === undefined) ?? [];
 </script>
 
 <li class="overflow-hidden rounded-xl border border-gray-200">
@@ -22,9 +24,9 @@
     </div>
     <ComplianceChart {compliance} {toe} />
     <div class="flex justify-between gap-x-4 py-3">
-      <dt class="text-gray-500">Controls in Scope</dt>
+      <dt class="text-gray-500">Top Level Controls in Scope</dt>
       <dd class="flex items-start gap-x-2">
-        <div class="font-medium text-gray-900">{toe.controlsInScope?.length}</div>
+        <div class="font-medium text-gray-900">{topLevelControls.length}</div>
       </dd>
     </div>
     <div class="flex justify-between gap-x-4 py-3">

@@ -6,6 +6,8 @@
   let canvas: HTMLCanvasElement;
 
   onMount(() => {
+    let topLevelControls = toe.controlsInScope?.filter((c) => c.parentControlId === undefined);
+
     const data = {
       labels: ['Non Compliant', 'Compliant', 'Waiting for Data'],
       datasets: [
@@ -14,9 +16,9 @@
           data: [
             Array.from(compliance.values()).filter((value) => !value).length,
             Array.from(compliance.values()).filter((value) => value).length,
-            toe.controlsInScope === undefined
+            topLevelControls === undefined
               ? 0
-              : toe.controlsInScope?.length - Array.from(compliance.values()).length
+              : topLevelControls.length - Array.from(compliance.values()).length
           ],
           backgroundColor: ['#991b1b', '#166534', '#d4d4d4'],
           hoverOffset: 4
