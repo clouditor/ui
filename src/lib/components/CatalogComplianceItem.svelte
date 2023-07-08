@@ -1,10 +1,11 @@
 <script lang="ts">
+  import type { ComplianceStatus } from '$lib/api/evaluation';
   import type { Catalog, TargetOfEvaluation } from '$lib/api/orchestrator';
   import ComplianceChart from './ComplianceChart.svelte';
 
   export let catalog: Catalog;
   export let toe: TargetOfEvaluation;
-  export let compliance: Map<string, boolean>;
+  export let compliance: Map<string, ComplianceStatus>;
 
   $: topLevelControls = toe.controlsInScope?.filter((c) => c.parentControlId === undefined) ?? [];
 </script>

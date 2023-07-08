@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { ComplianceStatus } from '$lib/api/evaluation';
   import type { TargetOfEvaluation } from '$lib/api/orchestrator';
   import { Chart, type ChartConfiguration } from 'chart.js/auto';
   import { onMount } from 'svelte';
@@ -14,11 +15,14 @@
         {
           label: toe.catalogId,
           data: [
-            Array.from(compliance.values()).filter((value) => !value).length,
-            Array.from(compliance.values()).filter((value) => value).length,
-            topLevelControls === undefined
-              ? 0
-              : topLevelControls.length - Array.from(compliance.values()).length
+            Array.from(compliance.values()).filter(
+              (value) => value == 'EVALUATION_STATUS_NOT_COMPLIANT'
+            ).length,
+            Array.from(compliance.values()).filter(
+              (value) => value == 'EVALUATION_STATUS_COMPLIANT'
+            ).length,
+            Array.from(compliance.values()).filter((value) => value == 'EVALUATION_STATUS_PENDING')
+              .length
           ],
           backgroundColor: ['#991b1b', '#166534', '#d4d4d4'],
           hoverOffset: 4
@@ -58,7 +62,7 @@
     new Chart(canvas, config);
   });
 
-  export let compliance: Map<string, boolean>;
+  export let compliance: Map<string, ComplianceStatus>;
   export let toe: TargetOfEvaluation;
 </script>
 

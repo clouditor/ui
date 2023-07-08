@@ -10,10 +10,15 @@ export interface ListEvaluationResultsResponse {
   results: EvaluationResult[]
 }
 
+export type ComplianceStatus =
+  | 'EVALUATION_STATUS_NOT_COMPLIANT'
+  | 'EVALUATION_STATUS_COMPLIANT'
+  | 'EVALUATION_STATUS_PENDING';
+
 export interface EvaluationResult {
   id: string
   cloudServiceId: string
-  status: string
+  status: ComplianceStatus
   resourceId: string
   controlCatalogId: string
   controlId: string

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { EvaluationResult } from '$lib/api/evaluation';
+  import type { ComplianceStatus, EvaluationResult } from '$lib/api/evaluation';
   import { createTargetOfEvaluation, type TargetOfEvaluation } from '$lib/api/orchestrator';
   import CatalogComplianceItem from '$lib/components/CatalogComplianceItem.svelte';
   import EnableCatalogButton from '$lib/components/EnableCatalogButton.svelte';
@@ -23,9 +23,11 @@
   // TODO: This should be done in the backend
   $: compliance = buildCompliance(data.topControlResults);
 
-  function buildCompliance(evaluations: EvaluationResult[]): Map<string, Map<string, boolean>> {
+  function buildCompliance(
+    evaluations: EvaluationResult[]
+  ): Map<string, Map<string, ComplianceStatus>> {
     let all = new Map();
-    let compliance: Map<string, boolean>;
+    let compliance: Map<string, ComplianceStatus>;
     for (let result of evaluations) {
       compliance = all.get(result.controlCatalogId);
       if (compliance === undefined) {
@@ -33,12 +35,7 @@
         all.set(result.controlCatalogId, compliance);
       }
 
-      let pass = compliance.get(result.controlId) ?? true;
-      if (result.status == 'EVALUATION_STATUS_NOT_COMPLIANT') {
-        compliance.set(result.controlId, false);
-      } else {
-        compliance.set(result.controlId, pass);
-      }
+      compliance.set(result.controlId, result.status);
     }
 
     console.log(all);

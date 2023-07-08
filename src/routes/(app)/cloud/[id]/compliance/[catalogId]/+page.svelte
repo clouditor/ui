@@ -51,7 +51,7 @@
       {#if item.result.status == 'EVALUATION_STATUS_COMPLIANT'}
         <Icon src={CheckCircle} theme="solid" class="w-8 h-8 text-green-800" />
       {:else if item.result.status == 'EVALUATION_STATUS_PENDING'}
-        <Icon src={PauseCircle} theme="solid" class="w-8 h-8 text-gray-800" />
+        <Icon src={PauseCircle} theme="solid" class="w-8 h-8 text-gray-400" />
       {:else}
         <Icon src={ExclamationCircle} theme="solid" class="w-8 h-8 text-red-800" />
       {/if}
@@ -70,7 +70,7 @@
             {#if result.status == 'EVALUATION_STATUS_COMPLIANT'}
               <Icon src={CheckCircle} theme="solid" class="w-8 h-8 text-green-800" />
             {:else if result.status == 'EVALUATION_STATUS_PENDING'}
-              <Icon src={PauseCircle} theme="solid" class="w-8 h-8 text-gray-800" />
+              <Icon src={PauseCircle} theme="solid" class="w-8 h-8 text-gray-400" />
             {:else}
               <Icon src={ExclamationCircle} theme="solid" class="w-8 h-8 text-red-800" />
             {/if}
