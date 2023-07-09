@@ -58,19 +58,21 @@
   {#each [...tree] as [_, item] (item.result.id)}
     <Disclosure as="div" class="pt-6" let:open>
       <dt>
-        <DisclosureButton class="flex w-full items-start justify-between text-left text-gray-900">
+        <div class="flex w-full items-start justify-between text-left text-gray-900">
           <ControlComplianceItem
             result={item.result}
             control={data.controls.get(item.result.controlId)}
           />
-          <span class="ml-6 flex h-7 items-center">
-            {#if !open}
-              <Icon src={Plus} class="h-6 w-6" aria-hidden="true" />
-            {:else}
-              <Icon src={Minus} class="h-6 w-6" aria-hidden="true" />
-            {/if}
-          </span>
-        </DisclosureButton>
+          <DisclosureButton>
+            <span class="ml-6 flex h-7 items-center">
+              {#if !open}
+                <Icon src={Plus} class="h-6 w-6" aria-hidden="true" />
+              {:else}
+                <Icon src={Minus} class="h-6 w-6" aria-hidden="true" />
+              {/if}
+            </span>
+          </DisclosureButton>
+        </div>
         <DisclosurePanel as="dd" class="mt-2 pr-12">
           {#each item.children as result (result.controlId)}
             <div class="mt-6 ml-12">

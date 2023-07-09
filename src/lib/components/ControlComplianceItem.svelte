@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { EvaluationResult } from '$lib/api/evaluation';
   import type { Control } from '$lib/api/orchestrator';
+  import { DisclosureButton } from '@rgossiaux/svelte-headlessui';
   import { CheckCircle, PauseCircle, ExclamationCircle } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
 
@@ -20,7 +21,13 @@
   </div>
   <div>
     <h4 class="text-base font-semibold">
-      {result.controlId}{#if control?.name !== undefined && control.name != ''}: {control.name}{/if}
+      {#if control?.parentControlId === undefined}
+        <DisclosureButton>
+          {result.controlId}{#if control?.name !== undefined && control.name != ''}: {control.name}{/if}
+        </DisclosureButton>
+      {:else}
+        {result.controlId}{#if control?.name !== undefined && control.name != ''}: {control.name}{/if}
+      {/if}
     </h4>
     <p class="mt-1 text-sm text-gray-500">
       {control?.description}
