@@ -4,6 +4,7 @@
   import { Icon } from '@steeze-ui/svelte-icon';
   import type { PageData } from './$types';
   import { Disclosure, DisclosureButton, DisclosurePanel } from '@rgossiaux/svelte-headlessui';
+  import ControlComplianceItem from '$lib/components/ControlComplianceItem.svelte';
 
   export let data: PageData;
 
@@ -58,49 +59,10 @@
     <Disclosure as="div" class="pt-6" let:open>
       <dt>
         <DisclosureButton class="flex w-full items-start justify-between text-left text-gray-900">
-          <div class="flex">
-            <div class="mr-4 flex-shrink-0">
-              {#if item.result.status == 'EVALUATION_STATUS_COMPLIANT'}
-                <Icon src={CheckCircle} theme="solid" class="w-8 h-8 text-green-800" />
-              {:else if item.result.status == 'EVALUATION_STATUS_PENDING'}
-                <Icon src={PauseCircle} theme="solid" class="w-8 h-8 text-gray-400" />
-              {:else}
-                <Icon src={ExclamationCircle} theme="solid" class="w-8 h-8 text-red-800" />
-              {/if}
-            </div>
-            <div>
-              <h4 class="text-base font-semibold">
-                {item.result.controlId}: {data.controls.get(item.result.controlId)?.name}
-              </h4>
-              <p class="mt-1 text-sm text-gray-500">
-                {data.controls.get(item.result.controlId)?.description}
-              </p>
-
-              <DisclosurePanel as="dd" class="mt-2 pr-12">
-                {#each item.children as result}
-                  <div class="mt-6 flex">
-                    <div class="mr-4 flex-shrink-0">
-                      {#if result.status == 'EVALUATION_STATUS_COMPLIANT'}
-                        <Icon src={CheckCircle} theme="solid" class="w-8 h-8 text-green-800" />
-                      {:else if result.status == 'EVALUATION_STATUS_PENDING'}
-                        <Icon src={PauseCircle} theme="solid" class="w-8 h-8 text-gray-400" />
-                      {:else}
-                        <Icon src={ExclamationCircle} theme="solid" class="w-8 h-8 text-red-800" />
-                      {/if}
-                    </div>
-                    <div>
-                      <h4 class="text-base font-semibold">
-                        {result.controlId}: {data.controls.get(result.controlId)?.name}
-                      </h4>
-                      <p class="mt-1 text-sm text-gray-500">
-                        {data.controls.get(result.controlId)?.description}
-                      </p>
-                    </div>
-                  </div>
-                {/each}
-              </DisclosurePanel>
-            </div>
-          </div>
+          <ControlComplianceItem
+            result={item.result}
+            control={data.controls.get(item.result.controlId)}
+          />
           <span class="ml-6 flex h-7 items-center">
             {#if !open}
               <Icon src={Plus} class="h-6 w-6" aria-hidden="true" />
@@ -109,6 +71,13 @@
             {/if}
           </span>
         </DisclosureButton>
+        <DisclosurePanel as="dd" class="mt-2 pr-12">
+          {#each item.children as result (result.controlId)}
+            <div class="mt-6 ml-12">
+              <ControlComplianceItem {result} control={data.controls.get(result.controlId)} />
+            </div>
+          {/each}
+        </DisclosurePanel>
       </dt>
     </Disclosure>
   {/each}
