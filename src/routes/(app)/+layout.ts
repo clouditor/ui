@@ -7,6 +7,7 @@ export const load = (async ({ fetch }) => {
     listCatalogs(fetch),
     listMetrics(fetch)
   ])
+
   return {
     services,
     catalogs,

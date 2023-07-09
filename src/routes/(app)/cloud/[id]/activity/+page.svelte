@@ -41,19 +41,17 @@
       });
     }
 
-    if (data.service.metadata?.createdAt != undefined) {
-      const date = new Date(data.service.metadata.createdAt);
+    const date = new Date(data.service.createdAt);
 
-      timeline.push({
-        content: 'Created cloud service',
-        target: data.service.name,
-        href: '/cloud/' + data.service.id,
-        date: formatDate(date),
-        datetime: data.service.metadata.createdAt,
-        icon: Cloud,
-        iconBackground: 'bg-gray-400'
-      });
-    }
+    timeline.push({
+      content: 'Created cloud service',
+      target: data.service.name,
+      href: '/cloud/' + data.service.id,
+      date: formatDate(date),
+      datetime: data.service.createdAt,
+      icon: Cloud,
+      iconBackground: 'bg-gray-400'
+    });
 
     return timeline;
   }

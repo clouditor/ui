@@ -22,9 +22,8 @@ export interface CloudService {
   name: string
   description?: string
   tags?: Tag[] | string
-  metadata?: {
-    createdAt: string
-  }
+  createdAt: string
+  updatedAt: string
 }
 
 export interface TargetOfEvaluation {
@@ -52,7 +51,9 @@ export interface Catalog {
   allInScope: boolean
   assuranceLevels: string[]
   shortName: string
-  color: string
+  metadata: {
+    color: string
+  }
 }
 
 export interface Category {
