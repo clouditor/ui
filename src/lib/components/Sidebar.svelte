@@ -7,7 +7,8 @@
     ChartPie,
     Cog6Tooth,
     Folder,
-    Home
+    Home,
+    InformationCircle
   } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
 
@@ -71,15 +72,15 @@
 
       <li class="mt-auto">
         <a
-          href="/"
+          href="/about"
           class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-clouditor"
         >
           <Icon
-            src={Cog6Tooth}
+            src={InformationCircle}
             class="h-6 w-6 shrink-0 text-gray-400 group-hover:text-clouditor"
             aria-hidden="true"
           />
-          Settings
+          About
         </a>
       </li>
     </ul>

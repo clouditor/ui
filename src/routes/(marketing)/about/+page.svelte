@@ -1,1 +1,67 @@
-Hello
+<script lang="ts">
+  import { CloudArrowUp, LockOpen, PuzzlePiece } from '@steeze-ui/heroicons';
+  import { Icon } from '@steeze-ui/svelte-icon';
+
+  const features = [
+    {
+      name: 'Future proof.',
+      description:
+        "Today's security landscape is changing. The EU Cyber Security/Resilience Act will change how european companies will do business in the cloud. Clouditor is already equipped with rules for the latest EU certifications.",
+      icon: CloudArrowUp
+    },
+    {
+      name: 'Avoid vendor lock-in.',
+      description:
+        'Using our ontology approach, we can easily target multi-cloud environments and our rule engine is equipped with mappings from our metrics to different security standards, such as EUCS or BSI C5.',
+      icon: LockOpen
+    },
+    {
+      name: 'Hollistic.',
+      description:
+        'Using integrations with other tools, such as Codyze, we can provide a hollistic view of the cloud service, from infrastructure to code.',
+      icon: PuzzlePiece
+    }
+  ];
+</script>
+
+<div class="overflow-hidden bg-white py-24 sm:py-24">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div
+      class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2"
+    >
+      <div class="lg:pr-8 lg:pt-4">
+        <div class="lg:max-w-lg">
+          <h2 class="text-base font-semibold leading-7 text-clouditor">Be audit ready, any time</h2>
+          <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Clouditor</p>
+          <p class="mt-6 text-lg leading-8 text-gray-600">
+            Clouditor, developed by Fraunhofer AISEC, is an open-source cloud compliance tool that
+            helps security professionals to get a continuous evaluation of their cloud service.
+          </p>
+          <dl class="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
+            {#each features as feature (feature.name)}
+              <div class="relative pl-9">
+                <dt class="inline font-semibold text-gray-900">
+                  <Icon
+                    src={feature.icon}
+                    class="absolute left-1 top-1 h-5 w-5 text-clouditor"
+                    aria-hidden="true"
+                  />
+                  {feature.name}
+                </dt>
+                {' '}
+                <dd class="inline">{feature.description}</dd>
+              </div>
+            {/each}
+          </dl>
+        </div>
+      </div>
+      <a href="/">
+        <img
+          src="/img/screenshot.png"
+          alt="Product screenshot"
+          class="w-[80rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[80rem] md:-ml-4 lg:-ml-0"
+        />
+      </a>
+    </div>
+  </div>
+</div>
