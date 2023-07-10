@@ -13,53 +13,30 @@
   let currentPage = 1;
   let rowsPerPage = 9;
 
-  let filteredData: AssessmentResult[] = [];
-  let totalPages = Math.ceil(filteredData.length / rowsPerPage);
-  let currentData: AssessmentResult[] = [];
+  $: filteredData =
+    data.filterIds === undefined
+      ? data.results
+      : data.results.filter((result) => {
+          return data.filterIds?.includes(result.id);
+        });
+  $: totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  $: currentData = paginate(filteredData, currentPage);
 
-  onMount(() => {
-    filterData();
-    updateCurrentData();
-  });
-
-  function filterData() {
-    // get query param ids and filter the data accordingly
-    const urlParams = new URLSearchParams(window.location.search);
-    const filterIdParam = urlParams.get('filterIds');
-    let filterIds: String[] = [];
-
-    if (filterIdParam) {
-      filterIds = filterIdParam.split(',');
-    } else {
-      filterIds = [];
-    }
-
-    if (filterIds.length == 0) {
-      filteredData = data.results;
-    } else {
-      filteredData = data.results.filter((assessment) => {
-        return filterIds.includes(assessment.id);
-      });
-    }
-  }
-
-  function updateCurrentData() {
-    const startIndex = (currentPage - 1) * rowsPerPage;
+  function paginate(results: AssessmentResult[], page: number) {
+    const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    currentData = filteredData.slice(startIndex, endIndex);
+    return results.slice(startIndex, endIndex);
   }
 
   function prevPage() {
     if (currentPage > 1) {
       currentPage--;
-      updateCurrentData();
     }
   }
 
   function nextPage() {
     if (currentPage < totalPages) {
       currentPage++;
-      updateCurrentData();
     }
   }
 
@@ -191,7 +168,7 @@
       >
         Previous
       </button>
-      <span class="mx-2 text-gray-500">{currentPage}</span>
+      <span class="mx-2 text-gray-500">{currentPage} / {totalPages}</span>
       <button
         class="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
         on:click={nextPage}

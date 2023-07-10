@@ -33,7 +33,8 @@
     {
       name: 'Settings',
       href: '/cloud/' + data.service.id + '/settings',
-      icon: Cog6Tooth
+      icon: Cog6Tooth,
+      disabled: true
     }
   ];
 
