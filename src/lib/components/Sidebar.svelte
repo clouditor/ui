@@ -5,9 +5,9 @@
     AdjustmentsHorizontal,
     ArchiveBox,
     ChartPie,
-    Cog6Tooth,
     Folder,
-    Home
+    Home,
+    InformationCircle
   } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
 
@@ -16,7 +16,7 @@
 
   // Build navigation menu with dynamic components
   $: navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: Home },
+    { name: 'Dashboard', href: '/dashboard', icon: Home, disabled: true },
     {
       name: 'Cloud Services',
       href: '/cloud',
@@ -38,8 +38,8 @@
       ]
     },
     { name: 'Metrics', href: '/metrics', icon: AdjustmentsHorizontal },
-    { name: 'Catalog Data', href: '/catalogs', icon: ArchiveBox },
-    { name: 'Reports', href: '/reports', icon: ChartPie }
+    { name: 'Catalog Data', href: '/catalogs', icon: ArchiveBox, disabled: true },
+    { name: 'Reports', href: '/reports', icon: ChartPie, disabled: true }
   ];
 </script>
 
@@ -71,15 +71,15 @@
 
       <li class="mt-auto">
         <a
-          href="/"
+          href="/about"
           class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-clouditor"
         >
           <Icon
-            src={Cog6Tooth}
+            src={InformationCircle}
             class="h-6 w-6 shrink-0 text-gray-400 group-hover:text-clouditor"
             aria-hidden="true"
           />
-          Settings
+          About
         </a>
       </li>
     </ul>
