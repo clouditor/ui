@@ -5,7 +5,6 @@
     AdjustmentsHorizontal,
     ArchiveBox,
     ChartPie,
-    Cog6Tooth,
     Folder,
     Home,
     InformationCircle
@@ -17,7 +16,7 @@
 
   // Build navigation menu with dynamic components
   $: navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: Home },
+    { name: 'Dashboard', href: '/dashboard', icon: Home, disabled: true },
     {
       name: 'Cloud Services',
       href: '/cloud',
@@ -39,8 +38,8 @@
       ]
     },
     { name: 'Metrics', href: '/metrics', icon: AdjustmentsHorizontal },
-    { name: 'Catalog Data', href: '/catalogs', icon: ArchiveBox },
-    { name: 'Reports', href: '/reports', icon: ChartPie }
+    { name: 'Catalog Data', href: '/catalogs', icon: ArchiveBox, disabled: true },
+    { name: 'Reports', href: '/reports', icon: ChartPie, disabled: true }
   ];
 </script>
 

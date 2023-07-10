@@ -5,6 +5,7 @@
   import Header from '$lib/components/Header.svelte';
   import type { PageData } from './$types';
   import { startEvaluation } from '$lib/api/evaluation';
+  import BelowHeader from '$lib/components/BelowHeader.svelte';
 
   export let data: PageData;
 
@@ -20,15 +21,15 @@
     let service = event.detail.service;
 
     // Make sure, that the tags are a map
-    if (typeof service.tags == 'string') {
-      let entries = service.tags.split(' ');
-      service.tags = [];
+    if (typeof service.metadata.labels == 'string') {
+      let entries = service.metadata?.labels.split(' ');
+      service.metadata.labels = [];
       for (let entry of entries) {
         let pair = entry.split('=');
         if (pair.length == 2) {
           let tag = {};
           (tag as any)[pair[0]] = pair[1];
-          service.tags.push({ tag: tag });
+          service.metadata.labels.push({ tag: tag });
         }
       }
     }
@@ -60,6 +61,7 @@
       service: {
         id: '',
         name: '',
+        metadata: {},
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       },
@@ -89,9 +91,10 @@
   buttons={false}
 />
 
-<div class="pt-4 pb-4 text-sm">
+<BelowHeader>
   You can use this page to create a new cloud service. This wizard will guide you through all the
   necessary steps. To move to the next step, either click on the name of the step or the circle next
   to it.
-</div>
+</BelowHeader>
+
 <Wizard current={data.step} bind:data={wizard} on:save={save} on:cancel={cancel} />

@@ -5,6 +5,7 @@
   export let name: string;
   export let description: string;
   export let buttons: boolean = true;
+  export let icon: string | false = '';
 
   const dispatch = createEventDispatcher<{ remove: {} }>();
 
@@ -15,16 +16,19 @@
 
 <div class="md:flex md:items-center md:justify-between md:space-x-5">
   <div class="flex items-start space-x-5">
-    <div class="flex-shrink-0">
-      <div class="relative">
-        <img
-          class="h-16 w-16 rounded-full"
-          src="https://images.unsplash.com/photo-1499346030926-9a72daac6c63?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-          alt=""
-        />
-        <span class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true" />
+    {#if icon !== false}
+      <div class="flex-shrink-0">
+        <div class="relative">
+          <img
+            class="h-16 w-16 rounded-full"
+            src="https://images.unsplash.com/photo-1499346030926-9a72daac6c63?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+            alt=""
+          />
+
+          <span class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true" />
+        </div>
       </div>
-    </div>
+    {/if}
     <!--
       Use vertical padding to simulate center alignment when both lines of text are one line,
       but preserve the same layout if the text wraps without making the image jump around.

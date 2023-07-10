@@ -55,7 +55,7 @@
           </dl>
         </div>
       </div>
-      <a href="/">
+      <a href="/cloud">
         <img
           src="/img/screenshot.png"
           alt="Product screenshot"

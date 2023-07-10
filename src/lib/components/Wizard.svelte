@@ -60,7 +60,7 @@
   ];
 </script>
 
-<nav aria-label="Progress">
+<nav aria-label="Progress" class="mt-4">
   <ol class="overflow-hidden">
     {#each steps as step, stepIdx}
       <li class="{stepIdx !== steps.length - 1 ? 'pb-10' : ''} relative">

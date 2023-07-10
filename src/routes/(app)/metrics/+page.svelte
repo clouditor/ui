@@ -1,18 +1,16 @@
 <script lang="ts">
+  import BelowHeader from '$lib/components/BelowHeader.svelte';
+  import Header from '$lib/components/Header.svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
 </script>
 
-<h1 class="text-3xl font-bold underline">Metrics</h1>
+<Header name="Metrics" description="" icon={false} buttons={false} />
+
+<BelowHeader>A list of metrics that Clouditor is aware of.</BelowHeader>
 
 <div class="px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <p class="mt-2 text-sm text-gray-700">A list of all the available metrics.</p>
-    </div>
-    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none" />
-  </div>
   <div class="mt-8 flow-root">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">

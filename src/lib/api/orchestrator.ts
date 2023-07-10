@@ -21,7 +21,9 @@ export interface CloudService {
   id: string
   name: string
   description?: string
-  tags?: Tag[] | string
+  metadata: {
+    labels?: Tag[] | string
+  }
   createdAt: string
   updatedAt: string
 }
