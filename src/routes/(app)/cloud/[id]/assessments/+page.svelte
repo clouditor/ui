@@ -117,9 +117,9 @@
             <tr>
               <td class="px-6 py-4 whitespace-nowrap">
                 {#if assessment.compliant}
-                  <Icon src={Check} class="h-5 w-5 mr-2" />
+                  <Icon src={Check} class="h-5 w-5 mr-2 text-green-500" />
                 {:else}
-                  <Icon src={NoSymbol} class="h-5 w-5 mr-2" />
+                  <Icon src={NoSymbol} class="h-5 w-5 mr-2 text-red-500" />
                 {/if}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
