@@ -6,6 +6,7 @@
     name: string;
     icon: IconSource;
     href: string;
+    disabled?: boolean;
   }
 </script>
 
@@ -22,7 +23,14 @@
 </script>
 
 {#if mobile}
-  <option selected={current}>{item.name}</option>
+  <option selected={current} disabled={item.disabled}>{item.name}</option>
+{:else if item.disabled}
+  <span
+    class="border-transparent text-gray-400 group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium cursor-default"
+  >
+    <Icon src={item.icon} class="text-gray-400 -ml-0.5 mr-2 h-5 w-5" aria-hidden="true" />
+    <span>{item.name}</span>
+  </span>
 {:else}
   <a
     href={item.href}

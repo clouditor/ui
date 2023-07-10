@@ -1,6 +1,6 @@
 <script lang="ts">
   import StarterHint from '$lib/components/StarterHint.svelte';
-  import { NoSymbol, QueueList } from '@steeze-ui/heroicons';
+  import { CheckCircle, NoSymbol, QueueList, XCircle } from '@steeze-ui/heroicons';
   import { Check } from '@steeze-ui/heroicons';
   import type { PageData } from './$types';
   import { onMount } from 'svelte';
@@ -13,53 +13,30 @@
   let currentPage = 1;
   let rowsPerPage = 9;
 
-  let filteredData: AssessmentResult[] = [];
-  let totalPages = Math.ceil(filteredData.length / rowsPerPage);
-  let currentData: AssessmentResult[] = [];
+  $: filteredData =
+    data.filterIds === undefined
+      ? data.results
+      : data.results.filter((result) => {
+          return data.filterIds?.includes(result.id);
+        });
+  $: totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  $: currentData = paginate(filteredData, currentPage);
 
-  onMount(() => {
-    filterData();
-    updateCurrentData();
-  });
-
-  function filterData() {
-    // get query param ids and filter the data accordingly
-    const urlParams = new URLSearchParams(window.location.search);
-    const filterIdParam = urlParams.get('filterIds');
-    let filterIds: String[] = [];
-
-    if (filterIdParam) {
-      filterIds = filterIdParam.split(',');
-    } else {
-      filterIds = [];
-    }
-
-    if (filterIds.length == 0) {
-      filteredData = data.results;
-    } else {
-      filteredData = data.results.filter((assessment) => {
-        return filterIds.includes(assessment.id);
-      });
-    }
-  }
-
-  function updateCurrentData() {
-    const startIndex = (currentPage - 1) * rowsPerPage;
+  function paginate(results: AssessmentResult[], page: number) {
+    const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    currentData = filteredData.slice(startIndex, endIndex);
+    return results.slice(startIndex, endIndex);
   }
 
   function prevPage() {
     if (currentPage > 1) {
       currentPage--;
-      updateCurrentData();
     }
   }
 
   function nextPage() {
     if (currentPage < totalPages) {
       currentPage++;
-      updateCurrentData();
     }
   }
 
@@ -105,6 +82,12 @@
             </th>
             <th
               scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider uppercase w-50"
+            >
+              Metric
+            </th>
+            <th
+              scope="col"
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-50"
             >
               Resource Name
@@ -141,15 +124,22 @@
             <tr>
               <td class="px-6 py-4 whitespace-nowrap">
                 {#if assessment.compliant}
-                  <Icon src={Check} class="h-5 w-5 mr-2 text-green-500" />
+                  <Icon src={CheckCircle} theme="solid" class="h-5 w-5 mr-2 text-green-800" />
                 {:else}
-                  <Icon src={NoSymbol} class="h-5 w-5 mr-2 text-red-500" />
+                  <Icon src={XCircle} theme="solid" class="h-5 w-5 mr-2 text-red-800" />
                 {/if}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span class="text-sm text-gray-900"
                   >{new Date(assessment.timestamp).toLocaleString()}</span
                 >
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-900">
+                  <a href="/metrics/{assessment.metricId}">
+                    {data.metrics.get(assessment.metricId)?.name ?? assessment.metricId}
+                  </a>
+                </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span class="text-sm text-gray-900"
@@ -178,7 +168,7 @@
       >
         Previous
       </button>
-      <span class="mx-2 text-gray-500">{currentPage}</span>
+      <span class="mx-2 text-gray-500">{currentPage} / {totalPages}</span>
       <button
         class="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
         on:click={nextPage}
