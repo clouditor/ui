@@ -16,7 +16,9 @@
     {:else if result.status == 'EVALUATION_STATUS_PENDING'}
       <Icon src={EllipsisHorizontalCircle} theme="solid" class="w-8 h-8 text-gray-400" />
     {:else}
-      <Icon src={XCircle} theme="solid" class="w-8 h-8 text-red-800" />
+      <a href="../../assessments/?filterIds={result.failingAssessmentResultIds.join(',')}">
+        <Icon src={XCircle} theme="solid" class="w-8 h-8 text-red-800" />
+      </a>
     {/if}
   </div>
   <div>

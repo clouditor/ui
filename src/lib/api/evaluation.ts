@@ -23,7 +23,8 @@ export interface EvaluationResult {
   controlCatalogId: string
   controlId: string
   parentControlId?: string
-  timestamp: string
+  timestamp: string,
+  failingAssessmentResultIds: string[]
 }
 
 export async function startEvaluation(toe: TargetOfEvaluation): Promise<StartEvaluationResponse> {
