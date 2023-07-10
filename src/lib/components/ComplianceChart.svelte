@@ -7,10 +7,8 @@
   let canvas: HTMLCanvasElement;
 
   onMount(() => {
-    let topLevelControls = toe.controlsInScope?.filter((c) => c.parentControlId === undefined);
-
     const data = {
-      labels: ['Non Compliant', 'Compliant', 'Waiting for Data'],
+      labels: ['Non Compliant', 'Compliant', 'Manually set to Compliant', 'Waiting for Data'],
       datasets: [
         {
           label: toe.catalogId,
@@ -21,10 +19,13 @@
             Array.from(compliance.values()).filter(
               (value) => value == 'EVALUATION_STATUS_COMPLIANT'
             ).length,
+            Array.from(compliance.values()).filter(
+              (value) => value == 'EVALUATION_STATUS_COMPLIANT_MANUALLY'
+            ).length,
             Array.from(compliance.values()).filter((value) => value == 'EVALUATION_STATUS_PENDING')
               .length
           ],
-          backgroundColor: ['#991b1b', '#166534', '#d4d4d4'],
+          backgroundColor: ['#991b1b', '#166534', '#007fc3', '#d4d4d4'],
           hoverOffset: 4
         }
       ]

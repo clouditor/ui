@@ -1,10 +1,12 @@
 <script lang="ts">
-  import type { EvaluationResult } from '$lib/api/evaluation';
-  import { CheckCircle, ExclamationCircle, Minus, PauseCircle, Plus } from '@steeze-ui/heroicons';
+  import { createEvaluationResult, type EvaluationResult } from '$lib/api/evaluation';
+  import type { Control } from '$lib/api/orchestrator';
+  import ControlComplianceItem from '$lib/components/ControlComplianceItem.svelte';
+  import { Disclosure, DisclosureButton, DisclosurePanel } from '@rgossiaux/svelte-headlessui';
+  import { Minus, Plus } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
   import type { PageData } from './$types';
-  import { Disclosure, DisclosureButton, DisclosurePanel } from '@rgossiaux/svelte-headlessui';
-  import ControlComplianceItem from '$lib/components/ControlComplianceItem.svelte';
+  import { invalidate } from '$app/navigation';
 
   export let data: PageData;
 
@@ -45,6 +47,29 @@
 
     return tree;
   }
+
+  async function addResult(e: CustomEvent<{ control: Control }>) {
+    const comment = prompt('Please provide a message for this manual evaluation result');
+    if (comment === null) {
+      return;
+    }
+
+    let result: EvaluationResult = {
+      id: '',
+      controlId: e.detail.control.id,
+      cloudServiceId: data.service.id,
+      controlCategoryName: e.detail.control.categoryName,
+      controlCatalogId: data.catalog.id,
+      parentControlId: e.detail.control.parentControlId,
+      status: 'EVALUATION_STATUS_COMPLIANT_MANUALLY',
+      timestamp: new Date().toISOString(),
+      failingAssessmentResultIds: [],
+      comment: comment
+    };
+
+    result = await createEvaluationResult(result);
+    invalidate((url) => url.pathname == '/v1/evaluation/results');
+  }
 </script>
 
 <div class="border-b border-gray-200 pb-5">
@@ -62,6 +87,7 @@
           <ControlComplianceItem
             result={item.result}
             control={data.controls.get(item.result.controlId)}
+            on:addResult={addResult}
           />
           <DisclosureButton>
             <span class="ml-6 flex h-7 items-center">

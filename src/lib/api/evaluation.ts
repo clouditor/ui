@@ -13,18 +13,22 @@ export interface ListEvaluationResultsResponse {
 export type ComplianceStatus =
   | 'EVALUATION_STATUS_NOT_COMPLIANT'
   | 'EVALUATION_STATUS_COMPLIANT'
-  | 'EVALUATION_STATUS_PENDING';
+  | 'EVALUATION_STATUS_COMPLIANT_MANUALLY'
+  | 'EVALUATION_STATUS_PENDING'
+  | 'EVALUATION_STATUS_DELEGATED'
+  ;
 
 export interface EvaluationResult {
   id: string
   cloudServiceId: string
   status: ComplianceStatus
-  resourceId: string
   controlCatalogId: string
+  controlCategoryName?: string
   controlId: string
   parentControlId?: string
   timestamp: string,
   failingAssessmentResultIds: string[]
+  comment?: string
 }
 
 export async function startEvaluation(toe: TargetOfEvaluation): Promise<StartEvaluationResponse> {
@@ -77,4 +81,17 @@ export async function listEvaluationResults(
     .then((response: ListEvaluationResultsResponse) => {
       return response.results;
     });
+}
+
+export async function createEvaluationResult(result: EvaluationResult, fetch = window.fetch): Promise<EvaluationResult> {
+  const apiUrl = clouditorize(`/v1/evaluation/results`);
+
+  return fetch(apiUrl, {
+    method: 'POST',
+    body: JSON.stringify(result),
+    headers: {
+      'Authorization': `Bearer ${localStorage.token}`,
+    }
+  }).then(throwError)
+    .then((res) => res.json());
 }
