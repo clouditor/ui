@@ -1,6 +1,6 @@
 <script lang="ts">
   import StarterHint from '$lib/components/StarterHint.svelte';
-  import { NoSymbol, QueueList } from '@steeze-ui/heroicons';
+  import { CheckCircle, NoSymbol, QueueList, XCircle } from '@steeze-ui/heroicons';
   import { Check } from '@steeze-ui/heroicons';
   import type { PageData } from './$types';
   import { onMount } from 'svelte';
@@ -105,6 +105,12 @@
             </th>
             <th
               scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider uppercase w-50"
+            >
+              Metric
+            </th>
+            <th
+              scope="col"
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-50"
             >
               Resource Name
@@ -141,15 +147,22 @@
             <tr>
               <td class="px-6 py-4 whitespace-nowrap">
                 {#if assessment.compliant}
-                  <Icon src={Check} class="h-5 w-5 mr-2 text-green-500" />
+                  <Icon src={CheckCircle} theme="solid" class="h-5 w-5 mr-2 text-green-800" />
                 {:else}
-                  <Icon src={NoSymbol} class="h-5 w-5 mr-2 text-red-500" />
+                  <Icon src={XCircle} theme="solid" class="h-5 w-5 mr-2 text-red-800" />
                 {/if}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span class="text-sm text-gray-900"
                   >{new Date(assessment.timestamp).toLocaleString()}</span
                 >
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-900">
+                  <a href="/metrics/{assessment.metricId}">
+                    {data.metrics.get(assessment.metricId)?.name ?? assessment.metricId}
+                  </a>
+                </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span class="text-sm text-gray-900"
