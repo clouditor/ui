@@ -12,17 +12,41 @@
 
   let currentPage = 1;
   let rowsPerPage = 9;
-  let totalPages = Math.ceil(data.results.length / rowsPerPage);
+
+  let filteredData: AssessmentResult[] = [];
+  let totalPages = Math.ceil(filteredData.length / rowsPerPage);
   let currentData: AssessmentResult[] = [];
 
   onMount(() => {
+    filterData();
     updateCurrentData();
   });
+
+  function filterData() {
+    // get query param ids and filter the data accordingly
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterIdParam = urlParams.get('filterIds');
+    let filterIds: String[] = [];
+
+    if (filterIdParam) {
+      filterIds = filterIdParam.split(',');
+    } else {
+      filterIds = [];
+    }
+
+    if (filterIds.length == 0) {
+      filteredData = data.results;
+    } else {
+      filteredData = data.results.filter((assessment) => {
+        return filterIds.includes(assessment.id);
+      });
+    }
+  }
 
   function updateCurrentData() {
     const startIndex = (currentPage - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    currentData = data.results.slice(startIndex, endIndex);
+    currentData = filteredData.slice(startIndex, endIndex);
   }
 
   function prevPage() {
