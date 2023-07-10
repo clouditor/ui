@@ -1,0 +1,3 @@
+Something different
+
+<slot />
