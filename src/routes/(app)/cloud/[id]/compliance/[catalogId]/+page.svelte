@@ -48,23 +48,18 @@
     return tree;
   }
 
-  async function addResult(e: CustomEvent<{ control: Control }>) {
-    const comment = prompt('Please provide a message for this manual evaluation result');
-    if (comment === null) {
-      return;
-    }
-
+  async function addResult(e: CustomEvent<{ name: string; comment: string }>, control: Control) {
     let result: EvaluationResult = {
       id: '',
-      controlId: e.detail.control.id,
+      controlId: control.id,
       cloudServiceId: data.service.id,
-      controlCategoryName: e.detail.control.categoryName,
+      controlCategoryName: control.categoryName,
       controlCatalogId: data.catalog.id,
-      parentControlId: e.detail.control.parentControlId,
+      parentControlId: control.parentControlId,
       status: 'EVALUATION_STATUS_COMPLIANT_MANUALLY',
       timestamp: new Date().toISOString(),
       failingAssessmentResultIds: [],
-      comment: comment
+      comment: e.detail.comment
     };
 
     result = await createEvaluationResult(result);
@@ -87,7 +82,7 @@
           <ControlComplianceItem
             result={item.result}
             control={data.controls.get(item.result.controlId)}
-            on:addResult={addResult}
+            on:addResult={(e) => addResult(e, data.controls.get(item.result.controlId))}
           />
           <DisclosureButton>
             <span class="ml-6 flex h-7 items-center">

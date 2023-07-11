@@ -4,18 +4,16 @@
   import { DisclosureButton } from '@rgossiaux/svelte-headlessui';
   import { CheckCircle, EllipsisHorizontalCircle, XCircle } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
-  import { createEventDispatcher } from 'svelte';
+  import AddEvaluationResultDialog from './AddEvaluationResultDialog.svelte';
 
   export let result: EvaluationResult;
   export let control: Control | undefined;
 
-  const dispatch = createEventDispatcher<{ addResult: { control: Control } }>();
-
   function addResult() {
-    if (control !== undefined) {
-      dispatch('addResult', { control: control });
-    }
+    open = true;
   }
+
+  let open = false;
 </script>
 
 <div class="flex">
@@ -49,3 +47,5 @@
     </p>
   </div>
 </div>
+
+<AddEvaluationResultDialog bind:open on:addResult />
