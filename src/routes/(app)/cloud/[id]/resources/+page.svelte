@@ -135,27 +135,35 @@
                 scope="col"
                 class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase sm:pl-0"
               >
-                <a href="#" class="group inline-flex" on:click={() => sort('name')}>
+                <button
+                  type="button"
+                  class="group inline-flex uppercase"
+                  on:click={() => sort('name')}
+                >
                   Name
                   <span
                     class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
                   >
                     <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
                   </span>
-                </a>
+                </button>
               </th>
               <th
                 scope="col"
                 class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase sm:pl-0"
               >
-                <a href="#" class="group inline-flex" on:click={() => sort('type')}>
+                <button
+                  type="button"
+                  class="group inline-flex uppercase"
+                  on:click={() => sort('type')}
+                >
                   Type
                   <span
                     class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
                   >
                     <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
                   </span>
-                </a>
+                </button>
               </th>
             </tr>
           </thead>
