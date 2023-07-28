@@ -6,7 +6,9 @@
     Check,
     MagnifyingGlass,
     ChevronUp,
-    ChevronDown
+    ChevronDown,
+    XCircle,
+    Funnel
   } from '@steeze-ui/heroicons';
   import type { PageData } from './$types';
   import { onMount } from 'svelte';
@@ -28,15 +30,28 @@
   let searchString = '';
   let filteredData = data.resources;
 
+  let searchActivated = false;
+
+  let filterOptions: String[] = [];
+
   function filter() {
     const query = searchString.toLowerCase();
     filteredData = data.resources.filter((resource) => {
       return (
-        resource.properties.name.toLowerCase().includes(query) ||
-        resource.resourceType.toLowerCase().includes(query)
+        resource.properties.name.toLowerCase().includes(query) &&
+        (filterOptions.includes(resource.resourceType.split(',')[0]) || filterOptions.length == 0)
       );
     });
     updateCurrentData();
+  }
+
+  function toggleSearch() {
+    searchActivated = !searchActivated;
+    if (!searchActivated) {
+      searchString = '';
+      filteredData = data.resources;
+      updateCurrentData();
+    }
   }
 
   let sortAscending = false;
@@ -62,10 +77,18 @@
     updateCurrentData();
   }
 
+  let types: Set<String> = new Set();
+  let typeArray: String[] = [];
+
   function updateCurrentData() {
     const startIndex = (currentPage - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     currentData = filteredData.slice(startIndex, endIndex);
+    types = data.resources.reduce((acc, resource) => {
+      acc.add(resource.resourceType.split(',')[0]);
+      return acc;
+    }, new Set<String>());
+    typeArray = Array.from(types);
   }
 
   function prevPage() {
@@ -94,23 +117,13 @@
       copyingId = null;
     }
   }
-</script>
 
-<div>
-  <div class="relative mt-2 rounded-md shadow-sm">
-    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-      <Icon src={MagnifyingGlass} class="h-5 w-5 text-gray-400" />
-    </div>
-    <input
-      name="search"
-      id="search"
-      class="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-      placeholder="Search Resources"
-      bind:value={searchString}
-      on:input={filter}
-    />
-  </div>
-</div>
+  let filterOptionsVisible = false;
+
+  function toggleFilterOptions() {
+    filterOptionsVisible = !filterOptionsVisible;
+  }
+</script>
 
 {#if data.resources.length == 0}
   <StarterHint type="discovered resources" icon={Squares2x2}>
@@ -119,6 +132,63 @@
     </span>
   </StarterHint>
 {:else}
+  <div class="max-w-3xl text-center lg:max-w-7xl">
+    <section aria-labelledby="filter-heading">
+      <div class="flex items-center justify-between">
+        <div class="relative inline-block text-left">
+          <div class="hidden sm:flex sm:items-baseline sm:space-x-8">
+            <div id="desktop-menu-0" class="relative inline-block text-left">
+              <div>
+                <button
+                  type="button"
+                  class="group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+                  aria-expanded="false"
+                  on:click={toggleFilterOptions}
+                >
+                  <span>Type</span>
+                  <span
+                    class="ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700"
+                    >{filterOptions.length}</span
+                  >
+                  <Icon
+                    src={Funnel}
+                    class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                  />
+                </button>
+              </div>
+              {#if filterOptionsVisible}
+                <div
+                  class="absolute z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+                >
+                  <form class="space-y-4">
+                    {#each typeArray as type}
+                      <div class="flex items-center">
+                        <input
+                          id="filter-category-0"
+                          name="category[]"
+                          value={type}
+                          type="checkbox"
+                          class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          bind:group={filterOptions}
+                          on:change={filter}
+                        />
+                        <label
+                          for="filter-category-0"
+                          class="ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900"
+                          >{type}</label
+                        >
+                      </div>
+                    {/each}
+                  </form>
+                </div>
+              {/if}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <div class="mt-8 flow-root">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -127,26 +197,61 @@
             <tr>
               <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-40"
+                class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-40"
               >
                 ID
               </th>
               <th
                 scope="col"
-                class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase sm:pl-0"
+                class="py-3 px-3 flex text-left text-xs font-medium text-gray-500 uppercase sm:pl-0"
               >
-                <button
-                  type="button"
-                  class="group inline-flex uppercase"
-                  on:click={() => sort('name')}
-                >
-                  Name
-                  <span
-                    class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
+                <div class="flex items-center my-1">
+                  <button
+                    type="button"
+                    class="group inline-flex uppercase align-middle inset-y-0 left-0"
+                    on:click={() => sort('name')}
                   >
-                    <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
-                  </span>
-                </button>
+                    Name
+                    <span
+                      class="invisible flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
+                    >
+                      <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class="group inline-flex uppercase align-middle inset-y-0 left-0 items-center"
+                    on:click={() => toggleSearch()}
+                  >
+                    <span
+                      class="invisible ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
+                    >
+                      <Icon
+                        src={searchActivated ? XCircle : MagnifyingGlass}
+                        class="h-5 w-5 text-gray-400"
+                      />
+                    </span>
+                  </button>
+                  {#if searchActivated}
+                    <div>
+                      <div class="relative rounded-md shadow-sm">
+                        <div
+                          class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+                        >
+                          <Icon src={MagnifyingGlass} class="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                          name="search"
+                          id="search"
+                          class="block w-full rounded-md border-0 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          placeholder="Search Resources"
+                          bind:value={searchString}
+                          on:input={filter}
+                        />
+                      </div>
+                    </div>
+                  {/if}
+                </div>
               </th>
               <th
                 scope="col"
