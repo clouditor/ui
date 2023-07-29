@@ -14,11 +14,17 @@
   let rowsPerPage = 9;
 
   $: filteredData =
-    data.filterIds === undefined
+    data.filterIds === undefined && data.filterResourceId === undefined
       ? data.results
       : data.results.filter((result) => {
-          return data.filterIds?.includes(result.id);
+          return (
+            (data.filterIds === undefined || data.filterIds?.includes(result.id)) &&
+            (data.filterResourceId === undefined ||
+              result.resourceId.split('/')[result.resourceId.split('/').length - 1] ===
+                data.filterResourceId)
+          );
         });
+
   $: totalPages = Math.ceil(filteredData.length / rowsPerPage);
   $: currentData = paginate(filteredData, currentPage);
 
