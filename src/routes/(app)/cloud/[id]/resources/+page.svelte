@@ -132,63 +132,6 @@
     </span>
   </StarterHint>
 {:else}
-  <div class="max-w-3xl text-center lg:max-w-7xl">
-    <section aria-labelledby="filter-heading">
-      <div class="flex items-center justify-between">
-        <div class="relative inline-block text-left">
-          <div class="hidden sm:flex sm:items-baseline sm:space-x-8">
-            <div id="desktop-menu-0" class="relative inline-block text-left">
-              <div>
-                <button
-                  type="button"
-                  class="group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
-                  aria-expanded="false"
-                  on:click={toggleFilterOptions}
-                >
-                  <span>Type</span>
-                  <span
-                    class="ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700"
-                    >{filterOptions.length}</span
-                  >
-                  <Icon
-                    src={Funnel}
-                    class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                  />
-                </button>
-              </div>
-              {#if filterOptionsVisible}
-                <div
-                  class="absolute z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
-                >
-                  <form class="space-y-4">
-                    {#each typeArray as type}
-                      <div class="flex items-center">
-                        <input
-                          id="filter-category-0"
-                          name="category[]"
-                          value={type}
-                          type="checkbox"
-                          class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          bind:group={filterOptions}
-                          on:change={filter}
-                        />
-                        <label
-                          for="filter-category-0"
-                          class="ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900"
-                          >{type}</label
-                        >
-                      </div>
-                    {/each}
-                  </form>
-                </div>
-              {/if}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
   <div class="mt-8 flow-root">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -205,22 +148,22 @@
                 scope="col"
                 class="py-3 px-3 flex text-left text-xs font-medium text-gray-500 uppercase sm:pl-0"
               >
-                <div class="flex items-center my-1">
+                <div class="group flex items-center my-1">
                   <button
                     type="button"
-                    class="group inline-flex uppercase align-middle inset-y-0 left-0"
+                    class="inline-flex uppercase align-middle inset-y-0 left-0"
                     on:click={() => sort('name')}
                   >
                     Name
                     <span
-                      class="invisible flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
+                      class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
                     >
                       <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
                     </span>
                   </button>
                   <button
                     type="button"
-                    class="group inline-flex uppercase align-middle inset-y-0 left-0 items-center"
+                    class="inline-flex uppercase align-middle inset-y-0 left-0 items-center group-hover:visible group-focus:visible"
                     on:click={() => toggleSearch()}
                   >
                     <span
@@ -255,20 +198,75 @@
               </th>
               <th
                 scope="col"
-                class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase sm:pl-0"
+                class=" py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase sm:pl-0"
               >
-                <button
-                  type="button"
-                  class="group inline-flex uppercase"
-                  on:click={() => sort('type')}
-                >
-                  Type
-                  <span
-                    class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
-                  >
-                    <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
-                  </span>
-                </button>
+                <div class="flex items-center my-1">
+                  <div class="group flex">
+                    <button
+                      type="button"
+                      class="inline-flex uppercase"
+                      on:click={() => sort('type')}
+                    >
+                      Type
+                      <span
+                        class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
+                      >
+                        <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
+                      </span>
+                    </button>
+                    <div
+                      class="invisible max-w-3xl text-center lg:max-w-7xl group-hover:visible group-focus:visible"
+                    >
+                      <div class="flex items-center justify-between">
+                        <div class="flex inline-flex text-left">
+                          <div class="flex">
+                            <button
+                              type="button"
+                              class="inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+                              aria-expanded="false"
+                              on:click={toggleFilterOptions}
+                            >
+                              <Icon
+                                src={Funnel}
+                                class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                              />
+                              <span
+                                class="ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700"
+                                >{filterOptions.length}</span
+                              >
+                            </button>
+                          </div>
+                          {#if filterOptionsVisible}
+                            <div
+                              class="absolute z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            >
+                              <form class="space-y-4">
+                                {#each typeArray as type}
+                                  <div class="flex items-center">
+                                    <input
+                                      id="filter-category-0"
+                                      name="category[]"
+                                      value={type}
+                                      type="checkbox"
+                                      class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      bind:group={filterOptions}
+                                      on:change={filter}
+                                    />
+                                    <label
+                                      for="filter-category-0"
+                                      class="ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900"
+                                      >{type}</label
+                                    >
+                                  </div>
+                                {/each}
+                              </form>
+                            </div>
+                          {/if}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </th>
             </tr>
           </thead>
