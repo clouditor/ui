@@ -1,9 +1,7 @@
 <script lang="ts">
   import StarterHint from '$lib/components/StarterHint.svelte';
   import { CheckCircle, NoSymbol, QueueList, XCircle } from '@steeze-ui/heroicons';
-  import { Check } from '@steeze-ui/heroicons';
   import type { PageData } from './$types';
-  import { onMount } from 'svelte';
   import { Icon } from '@steeze-ui/svelte-icon';
   import type { AssessmentResult } from '$lib/api/assessment';
   import Button from '$lib/components/Button.svelte';
@@ -14,7 +12,8 @@
   let rowsPerPage = 9;
 
   $: filteredData =
-    data.filterIds === undefined && data.filterResourceId === undefined
+    data.filterIds === undefined &&
+    (data.filterResourceId === undefined || data.filterResourceId === null)
       ? data.results
       : data.results.filter((result) => {
           return (
