@@ -8,12 +8,16 @@
     ChevronUp,
     ChevronDown,
     XCircle,
-    Funnel
+    Funnel,
+    ArrowTopRightOnSquare,
+    QueueList
   } from '@steeze-ui/heroicons';
   import type { PageData } from './$types';
   import { onMount } from 'svelte';
   import type { Resource, ResourceProperties } from '$lib/api/discovery';
   import { Icon } from '@steeze-ui/svelte-icon';
+  import { goto } from '$app/navigation';
+  import { listAssessmentResults, listCloudServiceAssessmentResults } from '$lib/api/orchestrator';
 
   export let data: PageData;
 
@@ -123,6 +127,15 @@
   function toggleFilterOptions() {
     filterOptionsVisible = !filterOptionsVisible;
   }
+
+  function goToAssessmentResults(resourceName: string) {
+    goto(`/cloud/${data.service.id}/assessments/?filterResourceId=${resourceName}`);
+  }
+
+  async function countAssessmentResults(resourceId: string) {
+    const results = data.results.filter((result) => result.resourceId === resourceId);
+    return results.length;
+  }
 </script>
 
 {#if data.resources.length == 0}
@@ -141,7 +154,7 @@
               scope="col"
               class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-40"
             >
-              ID
+              Actions
             </th>
             <th
               scope="col"
@@ -266,9 +279,9 @@
         <tbody class="divide-y divide-gray-200 bg-white">
           {#each currentData as resource}
             <tr>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-4 pl-2 whitespace-nowrap">
                 <button
-                  class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
+                  class="inline-flex items-center px-4 py-2 pl-0 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
                   on:click={() => copyId(resource.id)}
                   title={resource.id}
                   disabled={copyingId !== null}
@@ -278,8 +291,27 @@
                   {:else}
                     <Icon src={Clipboard} class="h-5 w-5 mr-2" />
                   {/if}
-                  Copy
+                  Copy ID
                 </button>
+                {#await countAssessmentResults(resource.id) then assessmentResultCount}
+                  <button
+                    class={'inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200' +
+                      (assessmentResultCount === 0 ? ' cursor-not-allowed opacity-50' : '')}
+                    title={'Go to ' +
+                      assessmentResultCount +
+                      ' assessment result' +
+                      (assessmentResultCount === 1 ? '' : 's') +
+                      ' for ' +
+                      resource.properties.name +
+                      '.'}
+                    on:click={() => goToAssessmentResults(resource.properties.name)}
+                    disabled={assessmentResultCount === 0}
+                  >
+                    <Icon src={QueueList} class="h-5 w-5 mr-2" />
+
+                    {assessmentResultCount}
+                  </button>
+                {/await}
               </td>
               <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-0">
                 <span class="text-sm text-gray-900">{resource.properties.name}</span>
