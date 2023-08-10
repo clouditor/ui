@@ -9,13 +9,9 @@ export const load = (async ({ fetch, params, url }) => {
     throw error(405, 'Required parameter missing');
   }
 
-  const filterIds = url.searchParams.get('filterIds')?.split(',');
-  const filterResourceId = url.searchParams.get('filterResourceId');
   const results = await listCloudServiceAssessmentResults(params.id, fetch);
 
   return {
-    filterIds,
-    filterResourceId,
     results
   };
 }) satisfies PageLoad;
