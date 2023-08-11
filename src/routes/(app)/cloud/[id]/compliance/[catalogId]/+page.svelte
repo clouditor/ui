@@ -15,7 +15,14 @@
     children: EvaluationResult[];
   }
 
-  $: tree = buildTree(data.evaluations);
+  $: tree = buildTree(data.evaluations, data.filterStatus);
+
+  const queryParamToStatus: Map<string, string> = new Map([
+    ['Compliant', 'EVALUATION_STATUS_COMPLIANT'],
+    ['NonCompliant', 'EVALUATION_STATUS_NOT_COMPLIANT'],
+    ['ManuallysettoCompliant', 'EVALUATION_STATUS_COMPLIANT_MANUALLY'],
+    ['WaitingforData', 'EVALUATION_STATUS_PENDING']
+  ]);
 
   /**
    * This function builds a tree-like structure out of the evaluation results,
@@ -24,10 +31,17 @@
    *
    * @param results
    */
-  function buildTree(results: EvaluationResult[]): Map<string, TreeItemData> {
+  function buildTree(
+    results: EvaluationResult[],
+    status: string | null
+  ): Map<string, TreeItemData> {
     const tree = new Map<string, TreeItemData>();
 
     for (const result of results) {
+      if (status !== null && result.status !== queryParamToStatus.get(status)) {
+        continue;
+      }
+
       // Top level control is at the first level of the tree
       if (result.parentControlId === undefined) {
         tree.set(result.controlId, {
@@ -41,7 +55,9 @@
           continue;
         }
 
-        parent.children.push(result);
+        if (status !== null && result.status == queryParamToStatus.get(status)) {
+          parent.children.push(result);
+        }
       }
     }
 
