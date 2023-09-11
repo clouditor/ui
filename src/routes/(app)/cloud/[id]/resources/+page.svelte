@@ -18,43 +18,36 @@
   import { Icon } from '@steeze-ui/svelte-icon';
   import { goto } from '$app/navigation';
   import { listAssessmentResults, listCloudServiceAssessmentResults } from '$lib/api/orchestrator';
+  import { page } from '$app/stores';
 
   export let data: PageData;
 
-  let currentPage = 1;
+  $: currentPage = data.page ? data.page : 1;
   let rowsPerPage = 8;
-  let totalPages = Math.ceil(data.resources.length / rowsPerPage);
-  let currentData: Resource[] = [];
+  $: totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+  $: searchString = '';
+
+  $: searchActivated = false;
+
+  $: query = searchString.toLowerCase();
+  $: filteredData = data.resources.filter((resource) => {
+    return (
+      resource.properties.name.toLowerCase().includes(query) &&
+      (filterOptions.length == 0 || filterOptions.includes(resource.resourceType.split(',')[0]))
+    );
+  });
+  $: currentData = paginate(filteredData, currentPage);
   let copyingId: string | null = null;
 
-  onMount(() => {
-    updateCurrentData();
-  });
-
-  let searchString = '';
-  let filteredData = data.resources;
-
-  let searchActivated = false;
-
-  let filterOptions: String[] = [];
-
-  function filter() {
-    const query = searchString.toLowerCase();
-    filteredData = data.resources.filter((resource) => {
-      return (
-        resource.properties.name.toLowerCase().includes(query) &&
-        (filterOptions.includes(resource.resourceType.split(',')[0]) || filterOptions.length == 0)
-      );
-    });
-    updateCurrentData();
-  }
+  let filterOptions: string[];
+  $: filterOptions = [];
 
   function toggleSearch() {
     searchActivated = !searchActivated;
     if (!searchActivated) {
       searchString = '';
       filteredData = data.resources;
-      updateCurrentData();
     }
   }
 
@@ -77,35 +70,46 @@
         });
         break;
     }
-
-    updateCurrentData();
+    currentData = paginate(filteredData, currentPage);
   }
 
   let types: Set<String> = new Set();
   let typeArray: String[] = [];
 
-  function updateCurrentData() {
-    const startIndex = (currentPage - 1) * rowsPerPage;
+  function paginate(results: Resource[], page: number) {
+    if (currentPage > totalPages) {
+      page = totalPages;
+      currentPage = totalPages;
+    }
+
+    const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    currentData = filteredData.slice(startIndex, endIndex);
+
     types = data.resources.reduce((acc, resource) => {
       acc.add(resource.resourceType.split(',')[0]);
       return acc;
     }, new Set<String>());
     typeArray = Array.from(types);
+
+    return results.slice(startIndex, endIndex);
+  }
+
+  function updatePageQuery(currentPage: number) {
+    $page.url.searchParams.set('page', String(currentPage));
+    goto(`?${$page.url.searchParams.toString()}`);
   }
 
   function prevPage() {
     if (currentPage > 1) {
       currentPage--;
-      updateCurrentData();
+      updatePageQuery(currentPage);
     }
   }
 
   function nextPage() {
     if (currentPage < totalPages) {
       currentPage++;
-      updateCurrentData();
+      updatePageQuery(currentPage);
     }
   }
 
@@ -152,18 +156,18 @@
           <tr>
             <th
               scope="col"
-              class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-40"
+              class="px-3 py-3 text-left text-xs font-medium text-gray-500 tracking-wider w-1/4"
             >
               Actions
             </th>
             <th
               scope="col"
-              class="group py-3 px-3 pl-0 align-middle text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              class="group py-3 px-3 pl-0 align-middle text-left text-xs font-medium text-gray-500 tracking-wider w-6/12"
             >
               <div class="flex">
                 <button
                   type="button"
-                  class=" flex items-center uppercase align-middle"
+                  class=" flex items-center align-middle"
                   on:click={() => sort('name')}
                 >
                   Name
@@ -201,7 +205,6 @@
                         class="block w-full h-7 rounded-md border-0 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         placeholder="Search Resources"
                         bind:value={searchString}
-                        on:input={filter}
                       />
                     </div>
                   </div>
@@ -210,10 +213,10 @@
             </th>
             <th
               scope="col"
-              class="group py-3 px-3 text-left text-xs font-medium text-gray-500 uppercase sm:pl-0"
+              class="group py-3 px-3 text-left text-xs font-medium text-gray-500 uppercase sm:pl-0 w-1/4"
             >
               <div class="flex">
-                <button type="button" class="inline-flex uppercase" on:click={() => sort('type')}>
+                <button type="button" class="inline-flex" on:click={() => sort('type')}>
                   Type
                   <span
                     class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
@@ -257,7 +260,6 @@
                                   type="checkbox"
                                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                   bind:group={filterOptions}
-                                  on:change={filter}
                                 />
                                 <label
                                   for="filter-category-0"
@@ -326,15 +328,17 @@
 
       <div class="mt-4">
         <button
-          class="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
+          class={'px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200' +
+            (currentPage === 1 ? ' cursor-not-allowed opacity-50' : '')}
           on:click={prevPage}
           disabled={currentPage === 1}
         >
           Previous
         </button>
-        <span class="mx-2 text-gray-500">{currentPage}</span>
+        <span class="mx-2 text-gray-500">{currentPage} / {totalPages}</span>
         <button
-          class="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
+          class={'px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200' +
+            (currentPage === totalPages ? ' cursor-not-allowed opacity-50' : '')}
           on:click={nextPage}
           disabled={currentPage === totalPages}
         >
