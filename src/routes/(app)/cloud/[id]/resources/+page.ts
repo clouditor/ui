@@ -10,8 +10,10 @@ export const load = (async ({ fetch, params, url }) => {
   }
 
   const results = await listCloudServiceAssessmentResults(params.id, fetch);
+  const page = Number(url.searchParams.get('page'));
 
   return {
-    results
+    results,
+    page
   };
 }) satisfies PageLoad;
