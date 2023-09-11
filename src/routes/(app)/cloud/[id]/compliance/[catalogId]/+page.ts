@@ -1,26 +1,35 @@
-import { listEvaluationResults } from "$lib/api/evaluation";
-import { getCatalog, listControls } from "$lib/api/orchestrator";
-import { error } from "@sveltejs/kit";
-import type { PageLoad } from "./$types";
+import { listEvaluationResults } from '$lib/api/evaluation';
+import { getCatalog, listControls } from '$lib/api/orchestrator';
 
-export const load = (async ({ fetch, params }) => {
+import { error } from '@sveltejs/kit';
+
+import type { PageLoad } from './$types';
+
+export const load = (async ({ fetch, params, url }) => {
   if (params.id == undefined) {
-    throw error(405, "Required parameter missing")
+    throw error(405, 'Required parameter missing');
   }
 
-  const catalog = getCatalog(params.catalogId, fetch)
+  const catalog = getCatalog(params.catalogId, fetch);
 
   const evaluations = listEvaluationResults(
     {
       cloudServiceId: params.id,
       catalogId: params.catalogId
-    }, true, fetch)
+    },
+    true,
+    fetch
+  );
 
-  const controls = new Map((await listControls(params.catalogId, undefined, fetch)).map(c => [c.id, c]))
+  const controls = new Map(
+    (await listControls(params.catalogId, undefined, fetch)).map((c) => [c.id, c])
+  );
+  const filterStatus = url.searchParams.get('status');
 
   return {
     evaluations,
     catalog,
-    controls
-  }
-}) satisfies PageLoad
+    controls,
+    filterStatus
+  };
+}) satisfies PageLoad;
