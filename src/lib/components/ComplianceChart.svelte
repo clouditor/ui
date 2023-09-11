@@ -62,7 +62,6 @@
   };
 
   onMount(() => {
-    //const canvas = document.getElementById('chart')! as HTMLCanvasElement;
     let chart = new Chart(canvas, config);
 
     canvas.onclick = (evt) => {
