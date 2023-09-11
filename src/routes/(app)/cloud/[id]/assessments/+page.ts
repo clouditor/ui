@@ -11,11 +11,13 @@ export const load = (async ({ fetch, params, url }) => {
 
   const filterIds = url.searchParams.get('filterIds')?.split(',');
   const filterResourceId = url.searchParams.get('filterResourceId');
+  const page = Number(url.searchParams.get('page'));
   const results = await listCloudServiceAssessmentResults(params.id, fetch);
 
   return {
     filterIds,
     filterResourceId,
+    page,
     results
   };
 }) satisfies PageLoad;
