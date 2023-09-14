@@ -153,7 +153,7 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap truncate max-w-0">
                     <span class="text-sm text-gray-900">
-                      <a href="/metrics/{assessment.metricId}">
+                      <a href="/metrics/{data.service.id}/{assessment.metricId}">
                         {data.metrics.get(assessment.metricId)?.name ?? assessment.metricId}
                       </a>
                     </span>
