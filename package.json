@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@rgossiaux/svelte-headlessui": "^2.0.0",
-    "@steeze-ui/heroicons": "^2.2.2",
+    "@steeze-ui/heroicons": "^2.2.3",
     "@steeze-ui/svelte-icon": "^1.4.1",
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.27.0",
