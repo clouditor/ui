@@ -1,0 +1,41 @@
+name: build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Docker Image
+        run: |
+          docker build -t ghcr.io/clouditor/ui .
+      - name: Login Docker Registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+        if: github.ref == 'refs/heads/main'
+      - name: Push Docker Image
+        run: |
+          docker push ghcr.io/clouditor/ui
+        if: github.ref == 'refs/heads/main'
+      - name: Push Docker Image (as Version)
+        run: |
+          export VERSION=`expr substr $GITHUB_REF 12 5`
+          docker tag ghcr.io/clouditor/ui ghcr.io/clouditor/ui:$VERSION
+          docker push ghcr.io/clouditor/ui:$VERSION
+        if: startsWith(github.ref, 'refs/tags')
