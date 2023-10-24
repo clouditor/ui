@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import type { ComplianceStatus } from '$lib/api/evaluation';
   import type { TargetOfEvaluation } from '$lib/api/orchestrator';
-  import { ArcElement, Chart, type ChartConfiguration, type ChartData } from 'chart.js/auto';
+  import { Chart, type ChartConfiguration, type ChartData } from 'chart.js/auto';
   import { onMount } from 'svelte';
 
   let canvas: HTMLCanvasElement;
@@ -52,8 +52,6 @@
 
     canvas.onclick = (evt) => {
       const res = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
-
-      console.log(res);
 
       if (res.length === 0) {
         return;
@@ -136,18 +134,19 @@
   <div class="relative flex items-start mb-2">
     <div class="flex h-6 items-center">
       <input
-        id="merge"
-        aria-describedby="merge-description"
-        name="merge"
+        id="merge-{toe.catalogId}"
+        aria-describedby="merge-description-{toe.catalogId}"
+        name="merge-{toe.catalogId}"
         type="checkbox"
         class="h-4 w-4 rounded border-gray-300 text-clouditor focus:ring-clouditor"
         bind:checked={merge}
       />
     </div>
     <div class="ml-3 text-sm leading-6">
-      <label for="merge" class="font-medium text-gray-900">Merge manual results</label>
-      {' '}
-      <span id="merge-description" class="text-gray-500">
+      <label for="merge-{toe.catalogId}" class="font-medium text-gray-900"
+        >Merge manual results</label
+      >
+      <span id="merge-description-{toe.catalogId}" class="text-gray-500">
         <span class="sr-only">Merge manual results </span>
         with automatic results.
       </span>
