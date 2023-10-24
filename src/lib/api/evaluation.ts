@@ -44,6 +44,17 @@ export async function startEvaluation(toe: TargetOfEvaluation): Promise<StartEva
   }).then((res) => res.json())
 }
 
+export async function stopEvaluation(toe: TargetOfEvaluation): Promise<{}> {
+  const apiUrl = clouditorize(`/v1/evaluation/evaluate/${toe.cloudServiceId}/${toe.catalogId}/stop`)
+
+  return fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${localStorage.token}`,
+    }
+  }).then((res) => res.json())
+}
+
 export interface ListEvaluationResultsFilter {
   cloudServiceId?: string
   catalogId?: string

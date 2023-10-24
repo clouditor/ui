@@ -1,6 +1,15 @@
 <script lang="ts">
-  import type { ComplianceStatus, EvaluationResult } from '$lib/api/evaluation';
-  import { createTargetOfEvaluation, type TargetOfEvaluation } from '$lib/api/orchestrator';
+  import { invalidate } from '$app/navigation';
+  import {
+    stopEvaluation,
+    type ComplianceStatus,
+    type EvaluationResult
+  } from '$lib/api/evaluation';
+  import {
+    createTargetOfEvaluation,
+    removeTargetOfEvaluation,
+    type TargetOfEvaluation
+  } from '$lib/api/orchestrator';
   import CatalogComplianceItem from '$lib/components/CatalogComplianceItem.svelte';
   import EnableCatalogButton from '$lib/components/EnableCatalogButton.svelte';
   import type { PageData } from './$types';
@@ -15,10 +24,6 @@
   });
 
   export let data: PageData;
-
-  async function enable(e: CustomEvent<TargetOfEvaluation>) {
-    await createTargetOfEvaluation(e.detail);
-  }
 
   // TODO: This should be done in the backend
   $: compliance = buildCompliance(data.topControlResults);
@@ -42,13 +47,27 @@
 
     return all;
   }
+
+  async function remove(e: CustomEvent<{ toe: TargetOfEvaluation }>) {
+    let really = confirm('Do you really want to remove this target of evaluation?');
+
+    if (!really) {
+      return;
+    }
+
+    await stopEvaluation(e.detail.toe);
+    await removeTargetOfEvaluation(e.detail.toe);
+
+    // refresh our ToEs
+    invalidate((url) => url.pathname == `/v1/orchestrator/cloud_services/${data.service.id}/toes`);
+  }
 </script>
 
 <ul class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
   {#each enabledItems as item, i (item.catalog.id)}
     <CatalogComplianceItem
       {...item}
-      on:enable={enable}
+      on:remove={remove}
       compliance={compliance.get(item.catalog.id) ?? new Map()}
     />
   {/each}
