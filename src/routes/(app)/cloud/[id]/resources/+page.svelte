@@ -1,24 +1,24 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import type { Resource } from '$lib/api/discovery';
   import StarterHint from '$lib/components/StarterHint.svelte';
   import {
-    Squares2x2,
-    Clipboard,
     Check,
-    MagnifyingGlass,
-    ChevronUp,
     ChevronDown,
-    XCircle,
+    ChevronUp,
+    Clipboard,
     Funnel,
-    ArrowTopRightOnSquare,
-    QueueList
+    MagnifyingGlass,
+    QueueList,
+    Squares2x2,
+    XCircle
   } from '@steeze-ui/heroicons';
-  import type { PageData } from './$types';
-  import { onMount } from 'svelte';
-  import type { Resource, ResourceProperties } from '$lib/api/discovery';
   import { Icon } from '@steeze-ui/svelte-icon';
-  import { goto } from '$app/navigation';
-  import { listAssessmentResults, listCloudServiceAssessmentResults } from '$lib/api/orchestrator';
-  import { page } from '$app/stores';
+  import type { PageData } from './$types';
+  import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
+  import GraphEdge from '$lib/components/GraphEdge.svelte';
+  import GraphNode from '$lib/components/GraphNode.svelte';
 
   export let data: PageData;
 
@@ -140,7 +140,41 @@
     const results = data.results.filter((result) => result.resourceId === resourceId);
     return results.length;
   }
+
+  const nodes = [
+    { id: 'N1', label: 'Start' },
+    { id: 'N2', label: '4' },
+    { id: 'N4', label: '8' },
+    { id: 'N5', label: '15' },
+    { id: 'N3', label: '16' },
+    { id: 'N6', label: '23' },
+    { id: 'N7', label: '42' },
+    { id: 'N8', label: 'End' }
+  ];
+
+  const edges = [
+    /*{ id: 'E1', source: 'N1', target: 'N2' },
+    { id: 'E2', source: 'N2', target: 'N3' },
+    { id: 'E3', source: 'N3', target: 'N6' },
+    { id: 'E4', source: 'N2', target: 'N4' },
+    { id: 'E5', source: 'N4', target: 'N5' },
+    { id: 'E6', source: 'N5', target: 'N4', label: '2' },
+    { id: 'E7', source: 'N5', target: 'N6' },
+    { id: 'E8', source: 'N6', target: 'N7' },
+    { id: 'E9', source: 'N7', target: 'N7', label: '3' },
+    { id: 'E10', source: 'N7', target: 'N8' }*/
+  ];
 </script>
+
+<DiscoveryGraph>
+  {#each nodes as node}
+    <GraphNode {node} />
+  {/each}
+
+  {#each edges as edge}
+    <GraphEdge {edge} />
+  {/each}
+</DiscoveryGraph>
 
 {#if data.resources.length == 0}
   <StarterHint type="discovered resources" icon={Squares2x2}>
