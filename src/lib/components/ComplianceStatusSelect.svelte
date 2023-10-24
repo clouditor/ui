@@ -14,7 +14,8 @@
   const publishingOptions = [
     {
       name: 'Compliant',
-      description: 'This job posting can be viewed by anyone who has the link.',
+      description:
+        'This evaluation result will be considered as compliant. It will be marked as manually evaluated.',
       bgColor: 'bg-green-800',
       hoverColor: 'hover:bg-green-900 focus:ring-green-800',
       divideColor: 'divide-green-900',
@@ -22,7 +23,8 @@
     },
     {
       name: 'Non-Compliant',
-      description: 'This job posting will no longer be publicly accessible.',
+      description:
+        'This evaluation result will be considered as compliant. It will be marked as manually evaluated.',
       bgColor: 'bg-red-800',
       hoverColor: 'hover:bg-red-900 focus:ring-red-900',
       divideColor: 'divide-red-900',
@@ -36,7 +38,7 @@
     status == 'EVALUATION_STATUS_COMPLIANT_MANUALLY' ? publishingOptions[0] : publishingOptions[1];
 </script>
 
-<Listbox bind:value={status}>
+<Listbox bind:value={status} class="mt-2">
   <ListboxLabel class="sr-only">Change published status</ListboxLabel>
   <div class="relative">
     <div class="inline-flex divide-x {selected.divideColor} rounded-md shadow-sm">
