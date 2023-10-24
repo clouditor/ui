@@ -1,4 +1,14 @@
+<script lang="ts" context="module">
+  export interface AddEvaluationResultEvent {
+    name: string;
+    comment: string;
+    validUntil: Date;
+    status: ComplianceStatus;
+  }
+</script>
+
 <script lang="ts">
+  import type { ComplianceStatus } from '$lib/api/evaluation';
   import {
     Dialog,
     DialogOverlay,
@@ -7,16 +17,27 @@
     TransitionRoot
   } from '@rgossiaux/svelte-headlessui';
   import { createEventDispatcher } from 'svelte';
+  import ComplianceStatusSelect from './ComplianceStatusSelect.svelte';
   export let open = false;
   let name: string;
   let comment: string;
 
-  const dispatch = createEventDispatcher<{ addResult: { name: string; comment: string } }>();
+  const dispatch = createEventDispatcher<{
+    addResult: AddEvaluationResultEvent;
+  }>();
+
+  interface $$Events {
+    addResult: CustomEvent<AddEvaluationResultEvent>;
+  }
 
   function submit() {
-    dispatch('addResult', { comment: comment, name: name });
+    let date = new Date();
+    date.setDate(date.getDate() + 30);
+    dispatch('addResult', { comment: comment, name: name, validUntil: date, status: status });
     open = false;
   }
+
+  let status: ComplianceStatus = 'EVALUATION_STATUS_COMPLIANT_MANUALLY';
 </script>
 
 <TransitionRoot show={open}>
@@ -52,21 +73,19 @@
                   </DialogTitle>
                   <p class="mt-1 text-sm leading-6 text-gray-600">
                     Using this form, you can provide a manual evaluation result that will be
-                    considered as <b>compliant</b>.
+                    considered as <ComplianceStatusSelect bind:status />
                   </p>
-
-                  <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                  <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-4">
-                      <label
-                        for="username"
-                        class="block text-sm font-medium leading-6 text-gray-900">Name</label
-                      >
+                      <label for="name" class="block text-sm font-medium leading-6 text-gray-900">
+                        Name
+                      </label>
                       <div class="mt-2">
                         <input
                           type="text"
-                          name="first-name"
-                          id="first-name"
-                          autocomplete="given-name"
+                          name="name"
+                          id="name"
+                          autocomplete="name"
                           class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clouditor sm:text-sm sm:leading-6"
                           bind:value={name}
                         />
@@ -74,9 +93,9 @@
                     </div>
 
                     <div class="col-span-full">
-                      <label for="about" class="block text-sm font-medium leading-6 text-gray-900"
-                        >Comment</label
-                      >
+                      <label for="about" class="block text-sm font-medium leading-6 text-gray-900">
+                        Comment
+                      </label>
                       <div class="mt-2">
                         <textarea
                           id="about"
@@ -90,6 +109,24 @@
                         Please consider that an auditor will judge the fulfillment of this control
                         based on your comment.
                       </p>
+                    </div>
+
+                    <div class="sm:col-span-4">
+                      <label
+                        for="validity"
+                        class="block text-sm font-medium leading-6 text-gray-900">Validity</label
+                      >
+                      <div class="mt-2">
+                        <input
+                          type="text"
+                          name="first-name"
+                          id="first-name"
+                          autocomplete="given-name"
+                          class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clouditor sm:text-sm sm:leading-6"
+                          value="1 month"
+                          disabled
+                        />
+                      </div>
                     </div>
                   </div>
                   <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">

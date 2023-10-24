@@ -1,12 +1,13 @@
 <script lang="ts">
+  import { invalidate } from '$app/navigation';
   import { createEvaluationResult, type EvaluationResult } from '$lib/api/evaluation';
   import type { Control } from '$lib/api/orchestrator';
+  import type { AddEvaluationResultEvent } from '$lib/components/AddEvaluationResultDialog.svelte';
   import ControlComplianceItem from '$lib/components/ControlComplianceItem.svelte';
   import { Disclosure, DisclosureButton, DisclosurePanel } from '@rgossiaux/svelte-headlessui';
   import { Minus, Plus } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
   import type { PageData } from './$types';
-  import { invalidate } from '$app/navigation';
 
   export let data: PageData;
 
@@ -64,7 +65,11 @@
     return tree;
   }
 
-  async function addResult(e: CustomEvent<{ name: string; comment: string }>, control: Control) {
+  async function addResult(e: CustomEvent<AddEvaluationResultEvent>, control?: Control) {
+    if (control == undefined) {
+      return;
+    }
+
     let result: EvaluationResult = {
       id: '',
       controlId: control.id,
@@ -72,10 +77,11 @@
       controlCategoryName: control.categoryName,
       controlCatalogId: data.catalog.id,
       parentControlId: control.parentControlId,
-      status: 'EVALUATION_STATUS_COMPLIANT_MANUALLY',
+      status: e.detail.status,
       timestamp: new Date().toISOString(),
       failingAssessmentResultIds: [],
-      comment: e.detail.comment
+      comment: e.detail.comment,
+      validUntil: e.detail.validUntil.toISOString()
     };
 
     result = await createEvaluationResult(result);

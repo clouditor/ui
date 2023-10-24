@@ -14,6 +14,7 @@ export type ComplianceStatus =
   | 'EVALUATION_STATUS_NOT_COMPLIANT'
   | 'EVALUATION_STATUS_COMPLIANT'
   | 'EVALUATION_STATUS_COMPLIANT_MANUALLY'
+  | 'EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY'
   | 'EVALUATION_STATUS_PENDING'
   | 'EVALUATION_STATUS_DELEGATED'
   ;
@@ -28,7 +29,8 @@ export interface EvaluationResult {
   parentControlId?: string
   timestamp: string,
   failingAssessmentResultIds: string[]
-  comment?: string
+  comment?: string,
+  validUntil?: string
 }
 
 export async function startEvaluation(toe: TargetOfEvaluation): Promise<StartEvaluationResponse> {
