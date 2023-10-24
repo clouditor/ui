@@ -21,6 +21,7 @@
   const queryParamToStatus: Map<string, string> = new Map([
     ['Compliant', 'EVALUATION_STATUS_COMPLIANT'],
     ['NonCompliant', 'EVALUATION_STATUS_NOT_COMPLIANT'],
+    ['ManuallysettoNonCompliant', 'EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY'],
     ['ManuallysettoCompliant', 'EVALUATION_STATUS_COMPLIANT_MANUALLY'],
     ['WaitingforData', 'EVALUATION_STATUS_PENDING']
   ]);
