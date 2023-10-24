@@ -24,7 +24,7 @@ export const load = (async ({ fetch, params, url }) => {
   const controls = new Map(
     (await listControls(params.catalogId, undefined, fetch)).map((c) => [c.id, c])
   );
-  const filterStatus = url.searchParams.get('status');
+  const filterStatus = url.searchParams.getAll('status');
 
   return {
     evaluations,

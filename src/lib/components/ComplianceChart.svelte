@@ -2,11 +2,11 @@
   import { goto } from '$app/navigation';
   import type { ComplianceStatus } from '$lib/api/evaluation';
   import type { TargetOfEvaluation } from '$lib/api/orchestrator';
-  import { Chart, type ChartConfiguration, type ChartData } from 'chart.js/auto';
+  import { ArcElement, Chart, type ChartConfiguration, type ChartData } from 'chart.js/auto';
   import { onMount } from 'svelte';
 
   let canvas: HTMLCanvasElement;
-  let chart: Chart;
+  let chart: Chart<'doughnut', { status: string[]; num: number }[]>;
   export let compliance: Map<string, ComplianceStatus>;
   export let toe: TargetOfEvaluation;
 
@@ -15,10 +15,13 @@
   $: data = buildData(merge);
   $: updateChart(data);
 
-  let config: ChartConfiguration = {
+  let config: ChartConfiguration<'doughnut', { status: string[]; num: number }[]> = {
     type: 'doughnut',
     data: buildData(merge),
     options: {
+      parsing: {
+        key: 'num'
+      },
       animation: false,
       plugins: {
         tooltip: {
@@ -55,23 +58,26 @@
       if (res.length === 0) {
         return;
       } else {
-        goto(
-          `/cloud/${toe.cloudServiceId}/compliance/${toe.catalogId}/?status=${data.labels[
-            res[0].index
-          ].replace(/\s/g, '')}`
-        );
+        const data = chart.data.datasets[0].data[res[0].index];
+        const params = new URLSearchParams();
+
+        for (const s of data.status) {
+          params.append('status', s);
+        }
+
+        goto(`/cloud/${toe.cloudServiceId}/compliance/${toe.catalogId}?${params.toString()}`);
       }
     };
   });
 
-  function updateChart(data: ChartData) {
+  function updateChart(data: ChartData<'doughnut', { status: string[]; num: number }[]>) {
     if (chart) {
       chart.data = data;
       chart.update();
     }
   }
 
-  function buildData(merge: boolean) {
+  function buildData(merge: boolean): ChartData<'doughnut', { status: string[]; num: number }[]> {
     if (merge) {
       return {
         labels: ['Non Compliant', 'Compliant', 'Waiting for Data'],
@@ -79,19 +85,12 @@
           {
             label: toe.catalogId,
             data: [
-              Array.from(compliance.values()).filter(
-                (value) =>
-                  value == 'EVALUATION_STATUS_NOT_COMPLIANT' ||
-                  value == 'EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY'
-              ).length,
-              Array.from(compliance.values()).filter(
-                (value) =>
-                  value == 'EVALUATION_STATUS_COMPLIANT' ||
-                  value == 'EVALUATION_STATUS_COMPLIANT_MANUALLY'
-              ).length,
-              Array.from(compliance.values()).filter(
-                (value) => value == 'EVALUATION_STATUS_PENDING'
-              ).length
+              filter([
+                'EVALUATION_STATUS_NOT_COMPLIANT',
+                'EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY'
+              ]),
+              filter(['EVALUATION_STATUS_COMPLIANT', 'EVALUATION_STATUS_COMPLIANT_MANUALLY']),
+              filter(['EVALUATION_STATUS_PENDING'])
             ],
             backgroundColor: ['#991b1b', '#166534', '#d4d4d4'],
             hoverOffset: 4
@@ -111,21 +110,11 @@
           {
             label: toe.catalogId,
             data: [
-              Array.from(compliance.values()).filter(
-                (value) => value == 'EVALUATION_STATUS_NOT_COMPLIANT'
-              ).length,
-              Array.from(compliance.values()).filter(
-                (value) => value == 'EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY'
-              ).length,
-              Array.from(compliance.values()).filter(
-                (value) => value == 'EVALUATION_STATUS_COMPLIANT'
-              ).length,
-              Array.from(compliance.values()).filter(
-                (value) => value == 'EVALUATION_STATUS_COMPLIANT_MANUALLY'
-              ).length,
-              Array.from(compliance.values()).filter(
-                (value) => value == 'EVALUATION_STATUS_PENDING'
-              ).length
+              filter(['EVALUATION_STATUS_NOT_COMPLIANT']),
+              filter(['EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY']),
+              filter(['EVALUATION_STATUS_COMPLIANT']),
+              filter(['EVALUATION_STATUS_COMPLIANT_MANUALLY']),
+              filter(['EVALUATION_STATUS_PENDING'])
             ],
             backgroundColor: ['#991b1b', 'rgb(185 28 28)', '#166534', 'rgb(21 128 61)', '#d4d4d4'],
             hoverOffset: 4
@@ -133,6 +122,13 @@
         ]
       };
     }
+  }
+
+  function filter(status: string[]) {
+    return {
+      status: status,
+      num: Array.from(compliance.values()).filter((value) => status.includes(value)).length
+    };
   }
 </script>
 
