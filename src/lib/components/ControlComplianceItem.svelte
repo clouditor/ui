@@ -21,7 +21,9 @@
     {#if result.status == 'EVALUATION_STATUS_COMPLIANT'}
       <Icon src={CheckCircle} theme="solid" class="w-8 h-8 text-green-800" />
     {:else if result.status == 'EVALUATION_STATUS_COMPLIANT_MANUALLY'}
-      <Icon src={CheckCircle} theme="solid" class="w-8 h-8 text-clouditor" />
+      <Icon src={CheckCircle} theme="solid" class="w-8 h-8 text-green-800" />
+    {:else if result.status == 'EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY'}
+      <Icon src={XCircle} theme="solid" class="w-8 h-8 text-red-800" />
     {:else if result.status == 'EVALUATION_STATUS_PENDING'}
       <button on:click={addResult}>
         <Icon src={EllipsisHorizontalCircle} theme="solid" class="w-8 h-8 text-gray-400" />
