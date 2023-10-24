@@ -29,7 +29,7 @@
     const tree = new Map<string, TreeItemData>();
 
     for (const result of results) {
-      if (status !== null && !status.includes(result.status)) {
+      if (status !== null && !status.includes(result.status) && status.length != 0) {
         continue;
       }
 
@@ -46,7 +46,7 @@
           continue;
         }
 
-        if (status !== null && status.includes(result.status)) {
+        if (status !== null && (status.includes(result.status) || status.length == 0)) {
           parent.children.push(result);
         }
       }

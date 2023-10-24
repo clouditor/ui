@@ -1,28 +1,46 @@
 <script lang="ts">
   import type { ComplianceStatus } from '$lib/api/evaluation';
   import type { Catalog, TargetOfEvaluation } from '$lib/api/orchestrator';
+  import { Pause, Stop, Trash } from '@steeze-ui/heroicons';
   import ComplianceChart from './ComplianceChart.svelte';
+  import { Icon } from '@steeze-ui/svelte-icon';
+  import { createEventDispatcher } from 'svelte';
+  import Button from './Button.svelte';
 
   export let catalog: Catalog;
   export let toe: TargetOfEvaluation;
   export let compliance: Map<string, ComplianceStatus>;
 
-  $: topLevelControls = catalog.controls;
+  const dispatch = createEventDispatcher<{
+    remove: { toe: TargetOfEvaluation };
+  }>();
+
+  interface $$Events {
+    remove: CustomEvent<{ toe: TargetOfEvaluation }>;
+  }
+
+  function remove() {
+    dispatch('remove', { toe });
+  }
 </script>
 
 <li class="overflow-hidden rounded-xl border border-gray-200">
-  <a href={'/cloud/' + toe.cloudServiceId + '/compliance/' + catalog.id}>
-    <div class="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+  <div class="flex justify-between items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+    <a href={'/cloud/' + toe.cloudServiceId + '/compliance/' + catalog.id}>
       <div class="text-sm font-medium leading-6 text-gray-900">{catalog.name}</div>
+      <div class="text-sm text-gray-500">{catalog.description}</div>
+    </a>
+    <div class="flex gap-x-1.5">
+      <!--<Button>
+        <Icon src={Pause} class="h-4 w-4" />
+      </Button>-->
+      <Button on:click={remove} on:keydown={remove} class="bg-red-800 hover:bg-red-700">
+        <Icon src={Trash} class="h-4 w-4" />
+      </Button>
     </div>
-  </a>
+  </div>
+
   <dl class="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
-    <div class="flex justify-between gap-x-4 py-3">
-      <dt class="text-gray-500">Description</dt>
-      <dd class="flex items-start gap-x-2">
-        <div class="font-medium text-gray-900">{catalog.description}</div>
-      </dd>
-    </div>
     <ComplianceChart {compliance} {toe} />
     <div class="flex justify-between gap-x-4 py-3">
       <dt class="text-gray-500">Controls in Scope</dt>
