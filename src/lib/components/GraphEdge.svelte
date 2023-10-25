@@ -6,9 +6,13 @@
   const { getCyInstance } = getContext('graphSharedState');
   const cy = getCyInstance();
 
-  cy.add({
-    group: 'edges',
-    id: edge.id,
-    data: { ...edge }
-  });
+  try {
+    cy.add({
+      group: 'edges',
+      id: edge.id,
+      data: { ...edge }
+    });
+  } catch (err) {
+    console.log(err);
+  }
 </script>
