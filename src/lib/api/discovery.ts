@@ -95,7 +95,7 @@ export async function listResources(
 
 
 export async function listGraphEdges(fetch = window.fetch): Promise<GraphEdge[]> {
-  const apiUrl = clouditorize(`/v1/discovery/graph/edges`);
+  const apiUrl = clouditorize(`/v1/discovery/graph/edges?&pageSize=1500`);
 
   return fetch(apiUrl, {
     method: 'GET',

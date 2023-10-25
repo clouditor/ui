@@ -20,10 +20,12 @@
       ? data.results
       : data.results.filter((result) => {
           return (
-            (data.filterIds === undefined || data.filterIds?.includes(result.id)) &&
-            (data.filterResourceId === undefined ||
-              result.resourceId.split('/')[result.resourceId.split('/').length - 1] ===
-                data.filterResourceId)
+            data.filterIds === undefined ||
+            (data.filterIds?.includes(result.id) &&
+              (data.filterResourceId === null ||
+                data.filterResourceId === undefined ||
+                result.resourceId.split('/')[result.resourceId.split('/').length - 1] ===
+                  data.filterResourceId))
           );
         });
 

@@ -140,10 +140,17 @@
     const results = data.results.filter((result) => result.resourceId === resourceId);
     return results.length;
   }
+
+  $: nodes = data.resources.map((n) => {
+    return {
+      id: n.id,
+      label: n.properties.name
+    };
+  });
 </script>
 
 <DiscoveryGraph>
-  {#each data.resources as node}
+  {#each nodes as node}
     <GraphNode {node} />
   {/each}
 

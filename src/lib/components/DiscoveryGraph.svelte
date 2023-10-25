@@ -14,7 +14,26 @@
     cytoscape.use(dagre);
 
     cy = cytoscape({
-      container: graph
+      container: graph,
+      style: [
+        {
+          selector: 'node',
+          style: {
+            width: '50',
+            height: '50',
+            'font-size': '18',
+            'font-weight': 'bold',
+            content: `data(label)`,
+            'text-valign': 'center',
+            'text-wrap': 'wrap',
+            'text-max-width': '140',
+            'background-color': 'gold',
+            'border-color': 'orange',
+            'border-width': '3',
+            color: 'darkred'
+          }
+        }
+      ]
     });
 
     cy.on('add', () => {
