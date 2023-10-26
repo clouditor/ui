@@ -2,6 +2,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import type { Resource } from '$lib/api/discovery';
+  import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
   import StarterHint from '$lib/components/StarterHint.svelte';
   import {
     Check,
@@ -15,11 +16,8 @@
     XCircle
   } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
-  import type { PageData } from './$types';
-  import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
-  import GraphEdge from '$lib/components/GraphEdge.svelte';
-  import GraphNode from '$lib/components/GraphNode.svelte';
   import type { EdgeDefinition, NodeDefinition } from 'cytoscape';
+  import type { PageData } from './$types';
 
   export let data: PageData;
 
@@ -141,25 +139,7 @@
     const results = data.results.filter((result) => result.resourceId === resourceId);
     return results.length;
   }
-
-  $: nodes = data.resources.map((n) => {
-    return {
-      data: {
-        id: n.id,
-        label: n.properties.name,
-        type: n.resourceType.split(',').reduce((a, v) => ({ ...a, [v]: true }), {})
-      }
-    } satisfies NodeDefinition;
-  });
-
-  $: edges = data.edges.map((e) => {
-    return {
-      data: e
-    } satisfies EdgeDefinition;
-  });
 </script>
-
-<DiscoveryGraph {nodes} {edges} />
 
 {#if data.resources.length == 0}
   <StarterHint type="discovered resources" icon={Squares2x2}>
