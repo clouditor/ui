@@ -5,18 +5,21 @@
   const features = [
     {
       name: 'Future proof.',
+      path: '/about/page1',
       description:
         "Today's security landscape is changing. The EU Cyber Security/Resilience Act will change how european companies will do business in the cloud. Clouditor is already equipped with rules for the latest EU certifications.",
       icon: CloudArrowUp
     },
     {
       name: 'Avoid vendor lock-in.',
+      path: '/about/page2',
       description:
         'Using our ontology approach, we can easily target multi-cloud environments and our rule engine is equipped with mappings from our metrics to different security standards, such as EUCS or BSI C5.',
       icon: LockOpen
     },
     {
       name: 'Hollistic.',
+      path: '/about/page3',
       description:
         'Using integrations with other tools, such as Codyze, we can provide a hollistic view of the cloud service, from infrastructure to code.',
       icon: PuzzlePiece
@@ -32,7 +35,9 @@
       <div class="lg:pr-8 lg:pt-4">
         <div class="lg:max-w-lg">
           <h2 class="text-base font-semibold leading-7 text-clouditor">Be audit ready, any time</h2>
-          <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Clouditor</p>
+          <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <a href="/about/start">Clouditor</a>
+          </p>
           <p class="mt-6 text-lg leading-8 text-gray-600">
             Clouditor, developed by Fraunhofer AISEC, is an open-source cloud compliance tool that
             helps security professionals to get a continuous evaluation of their cloud service.
@@ -46,7 +51,7 @@
                     class="absolute left-1 top-1 h-5 w-5 text-clouditor"
                     aria-hidden="true"
                   />
-                  {feature.name}
+                  <a href={feature.path}>{feature.name}</a>
                 </dt>
                 {' '}
                 <dd class="inline">{feature.description}</dd>
@@ -55,13 +60,7 @@
           </dl>
         </div>
       </div>
-      <a href="/cloud">
-        <img
-          src="/img/screenshot.png"
-          alt="Product screenshot"
-          class="w-[80rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[80rem] md:-ml-4 lg:-ml-0"
-        />
-      </a>
+      <slot />
     </div>
   </div>
 </div>
