@@ -19,6 +19,7 @@
   import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
   import GraphEdge from '$lib/components/GraphEdge.svelte';
   import GraphNode from '$lib/components/GraphNode.svelte';
+  import type { EdgeDefinition, NodeDefinition } from 'cytoscape';
 
   export let data: PageData;
 
@@ -143,21 +144,22 @@
 
   $: nodes = data.resources.map((n) => {
     return {
-      id: n.id,
-      label: n.properties.name
-    };
+      data: {
+        id: n.id,
+        label: n.properties.name,
+        type: n.resourceType.split(',').reduce((a, v) => ({ ...a, [v]: true }), {})
+      }
+    } satisfies NodeDefinition;
+  });
+
+  $: edges = data.edges.map((e) => {
+    return {
+      data: e
+    } satisfies EdgeDefinition;
   });
 </script>
 
-<DiscoveryGraph>
-  {#each nodes as node}
-    <GraphNode {node} />
-  {/each}
-
-  {#each data.edges as edge}
-    <GraphEdge {edge} />
-  {/each}
-</DiscoveryGraph>
+<DiscoveryGraph {nodes} {edges} />
 
 {#if data.resources.length == 0}
   <StarterHint type="discovered resources" icon={Squares2x2}>
