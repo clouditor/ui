@@ -1,14 +1,27 @@
 <script lang="ts">
-  import cytoscape, { type EdgeDefinition, type NodeDefinition } from 'cytoscape';
+  import cytoscape, {
+    type EdgeDefinition,
+    type ElementDefinition,
+    type NodeDefinition
+  } from 'cytoscape';
   import cola from 'cytoscape-cola';
   import dagre from 'cytoscape-dagre';
   import euler from 'cytoscape-euler';
-  import { onMount, setContext } from 'svelte';
+  import { createEventDispatcher, onMount, setContext } from 'svelte';
+  import type { AddEvaluationResultEvent } from './AddEvaluationResultDialog.svelte';
 
   export let edges: EdgeDefinition[];
   export let nodes: NodeDefinition[];
   let graph: HTMLElement;
   let cy: cytoscape.Core;
+
+  const dispatch = createEventDispatcher<{
+    select: NodeDefinition;
+  }>();
+
+  interface $$Events {
+    select: CustomEvent<NodeDefinition>;
+  }
 
   setContext('graphSharedState', {
     getCyInstance: () => cy
@@ -33,13 +46,24 @@
     cy = cytoscape({
       container: graph,
       layout: {
-        name: 'cola'
+        name: 'cola',
+        infinite: true
       },
       style: [
         {
           selector: 'node',
           style: {
-            content: `data(label)`
+            content: `data(label)`,
+            'font-family': `"Inter var", sans-serif`,
+            'font-size': '0.7em'
+          }
+        },
+        {
+          selector: 'label',
+          style: {
+            'text-background-color': 'white',
+            'text-background-shape': 'roundrectangle',
+            'text-background-opacity': 1
           }
         },
         {
@@ -65,6 +89,10 @@
         nodes: nodes,
         edges: edges
       }
+    });
+
+    cy.nodes().on('click', function (e) {
+      dispatch('select', { id: e.target.id(), data: e.target.data() });
     });
   });
 </script>
