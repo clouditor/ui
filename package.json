@@ -12,6 +12,7 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "devDependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@rgossiaux/svelte-headlessui": "^2.0.0",
     "@steeze-ui/heroicons": "^2.2.3",
     "@steeze-ui/svelte-icon": "^1.4.1",

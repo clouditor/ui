@@ -5,11 +5,7 @@
     type ComplianceStatus,
     type EvaluationResult
   } from '$lib/api/evaluation';
-  import {
-    createTargetOfEvaluation,
-    removeTargetOfEvaluation,
-    type TargetOfEvaluation
-  } from '$lib/api/orchestrator';
+  import { removeTargetOfEvaluation, type TargetOfEvaluation } from '$lib/api/orchestrator';
   import CatalogComplianceItem from '$lib/components/CatalogComplianceItem.svelte';
   import EnableCatalogButton from '$lib/components/EnableCatalogButton.svelte';
   import type { PageData } from './$types';

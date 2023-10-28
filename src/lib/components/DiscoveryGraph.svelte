@@ -1,14 +1,9 @@
 <script lang="ts">
-  import cytoscape, {
-    type EdgeDefinition,
-    type ElementDefinition,
-    type NodeDefinition
-  } from 'cytoscape';
+  import cytoscape, { type EdgeDefinition, type NodeDefinition } from 'cytoscape';
   import cola from 'cytoscape-cola';
   import dagre from 'cytoscape-dagre';
   import euler from 'cytoscape-euler';
   import { createEventDispatcher, onMount, setContext } from 'svelte';
-  import type { AddEvaluationResultEvent } from './AddEvaluationResultDialog.svelte';
 
   export let edges: EdgeDefinition[];
   export let nodes: NodeDefinition[];
@@ -55,14 +50,9 @@
           style: {
             content: `data(label)`,
             'font-family': `"Inter var", sans-serif`,
-            'font-size': '0.7em'
-          }
-        },
-        {
-          selector: 'label',
-          style: {
+            'font-size': '8px',
             'text-background-color': 'white',
-            'text-background-shape': 'roundrectangle',
+            'text-background-shape': 'rectangle',
             'text-background-opacity': 1
           }
         },
