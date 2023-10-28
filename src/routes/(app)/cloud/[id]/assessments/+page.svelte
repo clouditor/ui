@@ -7,6 +7,8 @@
   import Button from '$lib/components/Button.svelte';
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
+  import AssessmentIcon from '$lib/components/AssessmentIcon.svelte';
+  import { Result } from 'postcss';
 
   export let data: PageData;
 
@@ -142,11 +144,7 @@
               {:else}
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    {#if assessment.compliant}
-                      <Icon src={CheckCircle} theme="solid" class="h-5 w-5 mr-2 text-green-800" />
-                    {:else}
-                      <Icon src={XCircle} theme="solid" class="h-5 w-5 mr-2 text-red-800" />
-                    {/if}
+                    <AssessmentIcon result={assessment} />
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span class="text-sm text-gray-900"

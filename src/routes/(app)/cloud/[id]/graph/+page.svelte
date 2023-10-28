@@ -2,9 +2,8 @@
   import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
   import type { NodeDefinition, EdgeDefinition, ElementDefinition } from 'cytoscape';
   import type { PageData } from './$types';
-  import { add_attribute } from 'svelte/internal';
-  import { CheckCircle, XCircle } from '@steeze-ui/heroicons';
-  import { Icon } from '@steeze-ui/svelte-icon';
+  import { page } from '$app/stores';
+  import NodeDetail from '$lib/components/NodeDetail.svelte';
 
   export let data: PageData;
 
@@ -24,41 +23,36 @@
     } satisfies EdgeDefinition;
   });
 
-  let node: NodeDefinition | undefined;
+  $: selected = data.resources.find((r) => {
+    return r.id == data.id;
+  });
+
   function select(e: CustomEvent<ElementDefinition>) {
-    console.log(e.detail);
-    node = e.detail;
+    data.id = e.detail.data.id ?? null;
+    replaceHistory();
   }
 
-  $: results = data.results.filter((r) => r.resourceId == node?.data.id);
+  // a crude attempt to implement shallow routing until
+  // https://github.com/sveltejs/kit/pull/9847 is merged
+  function replaceHistory() {
+    const url = new URL($page.url);
+    if (data.id != null) {
+      url.searchParams.set('id', data.id);
+    }
+
+    history.replaceState({}, '', url);
+  }
+
+  $: results = data.results.filter((r) => r.resourceId == data.id);
 </script>
 
-<div class="grid md:grid-cols-5">
-  <div class="md:col-span-4">
+<div class="grid md:grid-cols-10">
+  <div class="md:col-span-7">
     <DiscoveryGraph {nodes} {edges} on:select={select} />
   </div>
-  <div>
-    {#if node}
-      ID: {node.data.id}<br />
-      Type: {Object.keys(node.data.type)}
-
-      Assessment Results:
-      <ul>
-        {#each results as result}
-          <li class="flex">
-            {#if result.compliant}
-              <Icon src={CheckCircle} theme="solid" class="h-5 w-5 mr-2 text-green-800" />
-            {:else}
-              <Icon src={XCircle} theme="solid" class="h-5 w-5 mr-2 text-red-800" />
-            {/if}
-            <a href={`/cloud/${data.service.id}/assessments/?filterIds=${result.id}`}>
-              {result.metricId}
-            </a>
-          </li>
-        {/each}
-      </ul>
-    {:else}
-      Nothing selected
+  <div class="md:col-span-3">
+    {#if selected}
+      <NodeDetail {selected} {results} metrics={data.metrics} />
     {/if}
   </div>
 </div>
