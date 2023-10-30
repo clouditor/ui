@@ -27,8 +27,12 @@
     return r.id == data.id;
   });
 
-  function select(e: CustomEvent<ElementDefinition>) {
-    data.id = e.detail.data.id ?? null;
+  function select(e: CustomEvent<ElementDefinition | null>) {
+    if (e.detail == null) {
+      data.id = null;
+    } else {
+      data.id = e.detail.data.id ?? null;
+    }
     replaceHistory();
   }
 
@@ -38,6 +42,8 @@
     const url = new URL($page.url);
     if (data.id != null) {
       url.searchParams.set('id', data.id);
+    } else {
+      url.searchParams.set('id', '');
     }
 
     history.replaceState({}, '', url);
