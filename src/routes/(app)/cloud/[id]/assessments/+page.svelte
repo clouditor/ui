@@ -159,11 +159,13 @@
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap truncate max-w-xs">
-                    <span class="text-sm text-gray-900"
-                      >{assessment.resourceId.split('/')[
-                        assessment.resourceId.split('/').length - 1
-                      ]}</span
-                    >
+                    <span class="text-sm text-gray-900">
+                      <a href={`/cloud/${data.service.id}/graph/?id=${assessment.resourceId}`}>
+                        {assessment.resourceId.split('/')[
+                          assessment.resourceId.split('/').length - 1
+                        ]}
+                      </a>
+                    </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span class="text-sm text-gray-900">{assessment.resourceTypes[0]}</span>

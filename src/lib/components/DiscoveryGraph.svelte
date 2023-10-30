@@ -7,6 +7,8 @@
 
   export let edges: EdgeDefinition[];
   export let nodes: NodeDefinition[];
+  export let initialSelect: string | null;
+
   let graph: HTMLElement;
   let cy: cytoscape.Core;
 
@@ -80,6 +82,10 @@
         edges: edges
       }
     });
+
+    if (initialSelect) {
+      cy.nodes(`node[id="${initialSelect}"]`).select();
+    }
 
     cy.nodes().on('click', function (e) {
       dispatch('select', { id: e.target.id(), data: e.target.data() });

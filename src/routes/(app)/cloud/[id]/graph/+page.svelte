@@ -48,7 +48,7 @@
 
 <div class="grid md:grid-cols-10">
   <div class="md:col-span-7">
-    <DiscoveryGraph {nodes} {edges} on:select={select} />
+    <DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={data.id} />
   </div>
   <div class="md:col-span-3">
     {#if selected}

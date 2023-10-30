@@ -77,7 +77,11 @@
                 </div>
                 <div class="pl-7 text-sm leading-6">
                   <label for="privacy-public" class="font-medium text-gray-900">
-                    {metrics.get(result.metricId)?.name}
+                    <a
+                      href={`/cloud/${selected.cloudServiceId}/assessments/?filterIds=${result.id}`}
+                    >
+                      {metrics.get(result.metricId)?.name}
+                    </a>
                   </label>
                   <p id="privacy-public-description" class="text-gray-500">
                     {metrics.get(result.metricId)?.description}
