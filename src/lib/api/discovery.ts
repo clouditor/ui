@@ -46,6 +46,7 @@ export interface ResourceProperties {
   type: string[]
   serviceId: string
   id: string
+  labels: object
 }
 
 export interface Resource {
@@ -95,7 +96,7 @@ export async function listResources(
 
 
 export async function listGraphEdges(fetch = window.fetch): Promise<GraphEdge[]> {
-  const apiUrl = clouditorize(`/v1/discovery/graph/edges?&pageSize=1500`);
+  const apiUrl = clouditorize(`/v1experimental/discovery/graph/edges?&pageSize=1500`);
 
   return fetch(apiUrl, {
     method: 'GET',

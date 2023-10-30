@@ -2,9 +2,6 @@
   import type { AssessmentResult, Metric } from '$lib/api/assessment';
   import type { Resource } from '$lib/api/discovery';
   import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
-  import { CircleStack, CodeBracket, CpuChip, Trash } from '@steeze-ui/heroicons';
-  import Fa from 'svelte-fa';
-  import AssessmentIcon from './AssessmentIcon.svelte';
   import {
     faDatabase,
     faGenderless,
@@ -14,6 +11,7 @@
     faServer,
     faWarehouse
   } from '@fortawesome/free-solid-svg-icons';
+  import AssessmentIcon from './AssessmentIcon.svelte';
 
   export let selected: Resource;
   export let results: AssessmentResult[];
@@ -68,23 +66,8 @@
   </div>
   <div class="flex-1 px-4 sm:px-6">
     <div class="space-y-6 pb-5 pt-6">
-      <div>
-        <h3 class="text-sm font-medium leading-6 text-gray-900">Resource Types</h3>
-        <div class="mt-2">
-          <div class="flex space-x-2">
-            {#each selected.resourceType.split(',').filter((r) => r != 'Resource') as type (type)}
-              <div
-                class="flex rounded-full h-8 w-8 hover:opacity-75 bg-gray-200 align-middle"
-                title={type}
-              >
-                <Fa class="inline-block h-full mt-2 w-8 align-middle" icon={icon(type)} />
-              </div>
-            {/each}
-          </div>
-        </div>
-      </div>
-      <div>
-        {#if results.length > 0}
+      {#if results.length > 0}
+        <div>
           <div class="text-sm font-medium leading-6 text-gray-900">Assessment Results</div>
           <div class="mt-2 space-y-4">
             {#each results as result}
@@ -103,7 +86,30 @@
               </div>
             {/each}
           </div>
-        {/if}
+        </div>
+      {/if}
+      <div>
+        <h3 class="text-sm font-medium leading-6 text-gray-900">Labels</h3>
+        <div class="mt-2">
+          <div class="flex space-x-2">
+            <div class="px-4 pt-5 sm:px-0 sm:pt-0">
+              <dl class="space-y-8 sm:space-y-6">
+                {#each Object.entries(selected.properties.labels ?? {}) as entry}
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                      {entry[0]}
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 truncate ...">
+                      <p>
+                        {entry[1]}
+                      </p>
+                    </dd>
+                  </div>
+                {/each}
+              </dl>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
