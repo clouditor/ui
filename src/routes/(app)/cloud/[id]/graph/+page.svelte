@@ -52,13 +52,9 @@
   $: results = data.results.filter((r) => r.resourceId == data.id);
 </script>
 
-<div class="grid md:grid-cols-10">
-  <div class="md:col-span-7">
-    <DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={data.id} />
-  </div>
-  <div class="md:col-span-3">
-    {#if selected}
-      <NodeDetail {selected} {results} metrics={data.metrics} />
-    {/if}
-  </div>
+<DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={data.id} />
+<div class="absolute top-64 right-8 max-w-md">
+  {#if selected}
+    <NodeDetail {selected} {results} metrics={data.metrics} />
+  {/if}
 </div>

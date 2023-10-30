@@ -42,6 +42,12 @@
   const account = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
 </svg>`;
+  const vm = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+</svg>`;
+  const func = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+</svg>`;
 
   onMount(() => {
     cytoscape.use(euler);
@@ -60,7 +66,7 @@
           style: {
             content: `data(label)`,
             'font-family': `"Inter var", sans-serif`,
-            'font-size': '8px',
+            'font-size': '0.8em',
             'text-background-color': 'white',
             'text-background-shape': 'rectangle',
             'text-background-opacity': 1
@@ -86,6 +92,38 @@
           style: {
             shape: 'rectangle',
             'background-image': svg(compute, '#007FC3')
+          }
+        },
+        {
+          selector: 'node[type\\.VirtualMachine]',
+          style: {
+            shape: 'rectangle',
+            'background-image': svg(vm, 'black'),
+            'background-fit': 'cover',
+            'background-color': 'white'
+          }
+        },
+        {
+          selector: 'node[type\\.VirtualMachine]:selected',
+          style: {
+            shape: 'rectangle',
+            'background-image': svg(vm, '#007FC3')
+          }
+        },
+        {
+          selector: 'node[type\\.Function]',
+          style: {
+            shape: 'rectangle',
+            'background-image': svg(func, 'black'),
+            'background-fit': 'cover',
+            'background-color': 'white'
+          }
+        },
+        {
+          selector: 'node[type\\.Function]:selected',
+          style: {
+            shape: 'rectangle',
+            'background-image': svg(func, '#007FC3')
           }
         },
         {
