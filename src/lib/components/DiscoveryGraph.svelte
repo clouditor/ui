@@ -1,13 +1,15 @@
 <script lang="ts">
-  import cytoscape, { type EdgeDefinition, type NodeDefinition } from 'cytoscape';
+  import cytoscape, { type EdgeDefinition, type NodeDefinition, Stylesheet } from 'cytoscape';
   import cola from 'cytoscape-cola';
   import dagre from 'cytoscape-dagre';
   import euler from 'cytoscape-euler';
   import { createEventDispatcher, onMount, setContext } from 'svelte';
+  import type { Style } from 'svelte/types/compiler/interfaces';
 
   export let edges: EdgeDefinition[];
   export let nodes: NodeDefinition[];
   export let initialSelect: string | null;
+  export let overlay: boolean;
 
   let graph: HTMLElement;
   let cy: cytoscape.Core;
@@ -60,153 +62,7 @@
         name: 'cola',
         infinite: true
       },
-      style: [
-        {
-          selector: 'node',
-          style: {
-            content: `data(label)`,
-            'font-family': `"Inter var", sans-serif`,
-            'font-size': '0.8em',
-            'text-background-color': 'white',
-            'text-background-shape': 'rectangle',
-            'text-background-opacity': 1
-          }
-        },
-        {
-          selector: 'node:selected',
-          style: {
-            'background-color': '#007FC3'
-          }
-        },
-        {
-          selector: 'node[type\\.Compute]',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(compute, 'black'),
-            'background-fit': 'cover',
-            'background-color': 'white'
-          }
-        },
-        {
-          selector: 'node[type\\.Compute]:selected',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(compute, '#007FC3')
-          }
-        },
-        {
-          selector: 'node[type\\.VirtualMachine]',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(vm, 'black'),
-            'background-fit': 'cover',
-            'background-color': 'white'
-          }
-        },
-        {
-          selector: 'node[type\\.VirtualMachine]:selected',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(vm, '#007FC3')
-          }
-        },
-        {
-          selector: 'node[type\\.Function]',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(func, 'black'),
-            'background-fit': 'cover',
-            'background-color': 'white'
-          }
-        },
-        {
-          selector: 'node[type\\.Function]:selected',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(func, '#007FC3')
-          }
-        },
-        {
-          selector: 'node[type\\.Storage]',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(storage, 'black'),
-            'background-fit': 'cover',
-            'background-color': 'white'
-          }
-        },
-        {
-          selector: 'node[type\\.Storage]:selected',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(storage, '#007FC3')
-          }
-        },
-        {
-          selector: 'node[type\\.Networking]',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(network, 'black'),
-            'background-fit': 'cover',
-            'background-color': 'white'
-          }
-        },
-        {
-          selector: 'node[type\\.Networking]:selected',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(network, '#007FC3')
-          }
-        },
-        {
-          selector: 'node[type\\.NetworkService]',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(server, 'black'),
-            'background-fit': 'cover',
-            'background-color': 'white'
-          }
-        },
-        {
-          selector: 'node[type\\.NetworkService]:selected',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(server, '#007FC3')
-          }
-        },
-        {
-          selector: 'node[type\\.ResourceGroup]',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(group, 'black'),
-            'background-fit': 'cover',
-            'background-color': 'white'
-          }
-        },
-        {
-          selector: 'node[type\\.ResourceGroup]:selected',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(group, '#007FC3')
-          }
-        },
-        {
-          selector: 'node[type\\.Account]',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(account, 'black'),
-            'background-fit': 'cover',
-            'background-color': 'white'
-          }
-        },
-        {
-          selector: 'node[type\\.Account]:selected',
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(account, '#007FC3')
-          }
-        }
-      ],
+      style: style(overlay),
       elements: {
         nodes: nodes,
         edges: edges
@@ -231,6 +87,99 @@
   function svg(raw: string, color: string): string {
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(raw.replace('currentColor', color));
   }
+
+  function style(overlay: boolean): Stylesheet[] {
+    let styles: Stylesheet[] = [];
+    styles.push({
+      selector: 'node',
+      style: {
+        content: `data(label)`,
+        'font-family': `"Inter var", sans-serif`,
+        'font-size': '0.8em',
+        'text-background-color': 'white',
+        'text-background-shape': 'rectangle',
+        'text-background-opacity': 1,
+        'text-wrap': 'ellipsis',
+        'text-max-width': '100px',
+        'text-margin-x': 0,
+        'text-margin-y': -2
+      }
+    });
+
+    styles = styles.concat([
+      ...nodeStyle('Storage', storage, overlay),
+      ...nodeStyle('ResourceGroup', group, overlay),
+      ...nodeStyle('Account', account, overlay),
+      ...nodeStyle('Networking', network, overlay),
+      ...nodeStyle('NetworkService', server, overlay),
+      ...nodeStyle('Compute', compute, overlay),
+      ...nodeStyle('VirtalMachine', vm, overlay),
+      ...nodeStyle('Function', func, overlay)
+    ]);
+
+    return styles;
+  }
+
+  function nodeStyle(type: string, icon: string, overlay: boolean): Stylesheet[] {
+    let styles: Stylesheet[] = [
+      {
+        selector: `node[type\\.${type}]`,
+        style: {
+          shape: 'rectangle',
+          'background-image': svg(icon, 'black'),
+          'background-fit': 'cover',
+          'background-color': 'white'
+        }
+      },
+      {
+        selector: `node[type\\.${type}]:selected`,
+        style: {
+          shape: 'rectangle',
+          'background-image': svg(icon, '#007FC3')
+        }
+      }
+    ];
+
+    if (overlay) {
+      styles = styles.concat([
+        {
+          selector: `node[type\\.${type}][status=1]`,
+          style: {
+            shape: 'rectangle',
+            'background-image': svg(icon, '#166534'),
+            'background-fit': 'cover',
+            'background-color': 'white',
+            color: '#166534'
+          }
+        },
+        {
+          selector: `node[type\\.${type}][status=2]`,
+          style: {
+            shape: 'rectangle',
+            'background-image': svg(icon, '#991b1b'),
+            'background-fit': 'cover',
+            'background-color': 'white',
+            color: '#991b1b'
+          }
+        },
+        {
+          selector: `node[type\\.${type}]:selected`,
+          style: {
+            shape: 'rectangle',
+            'background-image': svg(icon, '#007FC3')
+          }
+        }
+      ]);
+    }
+
+    return styles;
+  }
+
+  $: (() => {
+    if (cy) {
+      cy.style(style(overlay));
+    }
+  })();
 </script>
 
-<div class="graph" bind:this={graph} style="width: 100%; min-height: 600px" />
+<div class="graph min-h-[65vh] max-w-7xl" bind:this={graph} />

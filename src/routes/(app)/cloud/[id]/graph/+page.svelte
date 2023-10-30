@@ -7,10 +7,32 @@
 
   export let data: PageData;
 
+  enum Status {
+    WAITING,
+    GOOD,
+    BAD
+  }
+
   $: nodes = data.resources.map((n) => {
+    let status = Status.WAITING;
+
+    // fetch assessment results
+    let results = data.results.filter((r) => {
+      return r.resourceId == n.id;
+    });
+
+    if (results.length >= 1) {
+      if (results.filter((r) => r.compliant == false).length > 0) {
+        status = Status.BAD;
+      } else {
+        status = Status.GOOD;
+      }
+    }
+
     return {
       data: {
         id: n.id,
+        status: status,
         label: n.properties.name,
         type: n.resourceType.split(',').reduce((a, v) => ({ ...a, [v]: true }), {})
       }
@@ -33,6 +55,7 @@
     } else {
       data.id = e.detail.data.id ?? null;
     }
+
     replaceHistory();
   }
 
@@ -50,10 +73,33 @@
   }
 
   $: results = data.results.filter((r) => r.resourceId == data.id);
+
+  let overlay = false;
 </script>
 
-<DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={data.id} />
-<div class="absolute top-64 right-8 max-w-md">
+<div class="absolute right-8 z-10 flex items-start mb-2">
+  <div class="flex h-6 items-center">
+    <input
+      id="overlay"
+      aria-describedby="overlay-description"
+      name="overlay"
+      type="checkbox"
+      class="h-4 w-4 rounded border-gray-300 text-clouditor focus:ring-clouditor"
+      bind:checked={overlay}
+    />
+  </div>
+  <div class="ml-3 text-sm leading-6">
+    <label for="overlay" class="font-medium text-gray-900">Show overlay</label>
+    <span id="overlay-description" class="text-gray-500">
+      <span class="sr-only">Show overlay </span>
+      of assessment results.
+    </span>
+  </div>
+</div>
+
+<DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={data.id} {overlay} />
+
+<div class="absolute top-64 right-8 max-w-md z-20">
   {#if selected}
     <NodeDetail {selected} {results} metrics={data.metrics} />
   {/if}
