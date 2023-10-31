@@ -1,16 +1,6 @@
 <script lang="ts">
   import type { AssessmentResult, Metric } from '$lib/api/assessment';
   import type { Resource } from '$lib/api/discovery';
-  import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
-  import {
-    faDatabase,
-    faGenderless,
-    faMicrochip,
-    faNetworkWired,
-    faObjectGroup,
-    faServer,
-    faWarehouse
-  } from '@fortawesome/free-solid-svg-icons';
   import AssessmentIcon from './AssessmentIcon.svelte';
 
   export let selected: Resource;
@@ -21,29 +11,6 @@
   function name(id: string) {
     let rr = id.split('/');
     return rr[rr.length - 1];
-  }
-
-  function icon(type: string): IconDefinition {
-    switch (type) {
-      case 'Networking':
-        return faNetworkWired;
-      case 'NetworkService':
-        return faServer;
-      case 'Compute':
-        return faMicrochip;
-      case 'Storage':
-        return faDatabase;
-      case 'StorageService':
-        return faWarehouse;
-      case 'ObjectStorageService':
-        return faWarehouse;
-      case 'ObjectStorage':
-        return faDatabase;
-      case 'ResourceGroup':
-        return faObjectGroup;
-      default:
-        return faGenderless;
-    }
   }
 </script>
 

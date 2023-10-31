@@ -9,8 +9,8 @@
     ServerStack,
     Share
   } from '@steeze-ui/heroicons';
-  import { Icon, type IconSource } from '@steeze-ui/svelte-icon';
-  import cytoscape, { Stylesheet, type EdgeDefinition, type NodeDefinition } from 'cytoscape';
+  import type { IconSource } from '@steeze-ui/svelte-icon';
+  import cytoscape, { type EdgeDefinition, type NodeDefinition, type Stylesheet } from 'cytoscape';
   import cola from 'cytoscape-cola';
   import { createEventDispatcher, onMount, setContext } from 'svelte';
 
