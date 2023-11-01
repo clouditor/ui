@@ -3,7 +3,7 @@
   import { removeCloudService } from '$lib/api/orchestrator';
   import Header from '$lib/components/Header.svelte';
   import Tabs from '$lib/components/Tabs.svelte';
-  import { CheckBadge, Cog6Tooth, QueueList, Squares2x2, User } from '@steeze-ui/heroicons';
+  import { CheckBadge, Cog6Tooth, QueueList, Squares2x2, Sun, User } from '@steeze-ui/heroicons';
   import type { LayoutData } from './$types';
 
   export let data: LayoutData;
@@ -19,6 +19,11 @@
       name: 'Discovered Resources',
       href: '/cloud/' + data.service.id + '/resources',
       icon: Squares2x2
+    },
+    {
+      name: 'Resource Graph',
+      href: '/cloud/' + data.service.id + '/graph',
+      icon: Sun
     },
     {
       name: 'Assessment Results',

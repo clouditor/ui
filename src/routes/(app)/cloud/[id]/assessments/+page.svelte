@@ -7,6 +7,8 @@
   import Button from '$lib/components/Button.svelte';
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
+  import AssessmentIcon from '$lib/components/AssessmentIcon.svelte';
+  import { Result } from 'postcss';
 
   export let data: PageData;
 
@@ -20,10 +22,12 @@
       ? data.results
       : data.results.filter((result) => {
           return (
-            (data.filterIds === undefined || data.filterIds?.includes(result.id)) &&
-            (data.filterResourceId === undefined ||
-              result.resourceId.split('/')[result.resourceId.split('/').length - 1] ===
-                data.filterResourceId)
+            data.filterIds === undefined ||
+            (data.filterIds?.includes(result.id) &&
+              (data.filterResourceId === null ||
+                data.filterResourceId === undefined ||
+                result.resourceId.split('/')[result.resourceId.split('/').length - 1] ===
+                  data.filterResourceId))
           );
         });
 
@@ -140,11 +144,7 @@
               {:else}
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    {#if assessment.compliant}
-                      <Icon src={CheckCircle} theme="solid" class="h-5 w-5 mr-2 text-green-800" />
-                    {:else}
-                      <Icon src={XCircle} theme="solid" class="h-5 w-5 mr-2 text-red-800" />
-                    {/if}
+                    <AssessmentIcon result={assessment} />
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span class="text-sm text-gray-900"
@@ -154,16 +154,18 @@
                   <td class="px-6 py-4 whitespace-nowrap truncate max-w-0">
                     <span class="text-sm text-gray-900">
                       <a href="/metrics/{data.service.id}/{assessment.metricId}">
-                        {data.metrics.get(assessment.metricId)?.name ?? assessment.metricId}
+                        {assessment.metricId}
                       </a>
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap truncate max-w-xs">
-                    <span class="text-sm text-gray-900"
-                      >{assessment.resourceId.split('/')[
-                        assessment.resourceId.split('/').length - 1
-                      ]}</span
-                    >
+                    <span class="text-sm text-gray-900">
+                      <a href={`/cloud/${data.service.id}/graph/?id=${assessment.resourceId}`}>
+                        {assessment.resourceId.split('/')[
+                          assessment.resourceId.split('/').length - 1
+                        ]}
+                      </a>
+                    </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <span class="text-sm text-gray-900">{assessment.resourceTypes[0]}</span>

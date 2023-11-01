@@ -1,11 +1,22 @@
 import { throwError } from './errors';
 import { clouditorize } from './util';
+
+export interface GraphEdge {
+  id: string
+  source: string
+  target: string
+}
+
 export interface StartDiscoveryResponse {
   successful: boolean
 }
 
 export interface QueryResponse {
   results: Resource[]
+}
+
+export interface ListGraphEdgesResponse {
+  edges: GraphEdge[]
 }
 
 export interface ListResourcesRequest {
@@ -35,6 +46,7 @@ export interface ResourceProperties {
   type: string[]
   serviceId: string
   id: string
+  labels: object
 }
 
 export interface Resource {
@@ -70,8 +82,6 @@ export async function listResources(
     apiUrl += `&filter.type=${type}`
   }
 
-  const emptyResource: Resource[] = [];
-
   return fetch(apiUrl, {
     method: 'GET',
     headers: {
@@ -81,5 +91,21 @@ export async function listResources(
     .then((res) => res.json())
     .then((response: QueryResponse) => {
       return response.results;
+    });
+}
+
+
+export async function listGraphEdges(fetch = window.fetch): Promise<GraphEdge[]> {
+  const apiUrl = clouditorize(`/v1experimental/discovery/graph/edges?&pageSize=1500`);
+
+  return fetch(apiUrl, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.token}`,
+    }
+  }).then(throwError)
+    .then((res) => res.json())
+    .then((response: ListGraphEdgesResponse) => {
+      return response.edges;
     });
 }

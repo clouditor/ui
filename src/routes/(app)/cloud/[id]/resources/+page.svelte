@@ -1,24 +1,23 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import type { Resource } from '$lib/api/discovery';
+  import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
   import StarterHint from '$lib/components/StarterHint.svelte';
   import {
-    Squares2x2,
-    Clipboard,
     Check,
-    MagnifyingGlass,
-    ChevronUp,
     ChevronDown,
-    XCircle,
+    ChevronUp,
+    Clipboard,
     Funnel,
-    ArrowTopRightOnSquare,
-    QueueList
+    MagnifyingGlass,
+    QueueList,
+    Squares2x2,
+    XCircle
   } from '@steeze-ui/heroicons';
-  import type { PageData } from './$types';
-  import { onMount } from 'svelte';
-  import type { Resource, ResourceProperties } from '$lib/api/discovery';
   import { Icon } from '@steeze-ui/svelte-icon';
-  import { goto } from '$app/navigation';
-  import { listAssessmentResults, listCloudServiceAssessmentResults } from '$lib/api/orchestrator';
-  import { page } from '$app/stores';
+  import type { EdgeDefinition, NodeDefinition } from 'cytoscape';
+  import type { PageData } from './$types';
 
   export let data: PageData;
 
