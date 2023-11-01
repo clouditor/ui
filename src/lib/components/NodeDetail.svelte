@@ -149,7 +149,11 @@
                       </dt>
                       <dd class="mt-1 text-sm text-gray-900sm:col-span-2 w-96">
                         <p class="truncate ...">
-                          {v}
+                          {#if k == 'url'}
+                            <a href={v} target="_blank">{v}</a>
+                          {:else}
+                            {v}
+                          {/if}
                         </p>
                       </dd>
                     </div>
