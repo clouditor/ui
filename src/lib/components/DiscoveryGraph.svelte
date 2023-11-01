@@ -1,7 +1,10 @@
 <script lang="ts">
   import {
+    BuildingLibrary,
     CircleStack,
     Cloud,
+    CodeBracket,
+    CodeBracketSquare,
     CommandLine,
     ComputerDesktop,
     CpuChip,
@@ -126,7 +129,9 @@
       ...nodeStyle('NetworkService', ServerStack, overlay),
       ...nodeStyle('Compute', CpuChip, overlay),
       ...nodeStyle('VirtualMachine', ComputerDesktop, overlay),
-      ...nodeStyle('Function', CommandLine, overlay)
+      ...nodeStyle('Function', CommandLine, overlay),
+      ...nodeStyle('Application', CodeBracketSquare, overlay),
+      ...nodeStyle('Library', BuildingLibrary, overlay)
     ]);
 
     return styles;

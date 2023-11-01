@@ -101,6 +101,6 @@
 
 <div class="absolute top-64 right-8 max-w-md z-20">
   {#if selected}
-    <NodeDetail {selected} {results} metrics={data.metrics} />
+    <NodeDetail {selected} {results} metrics={data.metrics} tab={data.tab ?? 'results'} />
   {/if}
 </div>
