@@ -4,5 +4,5 @@
       alt="Product screenshot"
       style="margin-top: 60px;top: 200;transform: scale(0.9);"
     />
-  </a>
+</a>
   
