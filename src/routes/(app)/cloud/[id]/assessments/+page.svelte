@@ -1,14 +1,12 @@
 <script lang="ts">
-  import StarterHint from '$lib/components/StarterHint.svelte';
-  import { CheckCircle, NoSymbol, QueueList, XCircle } from '@steeze-ui/heroicons';
-  import type { PageData } from './$types';
-  import { Icon } from '@steeze-ui/svelte-icon';
-  import type { AssessmentResult } from '$lib/api/assessment';
-  import Button from '$lib/components/Button.svelte';
-  import { page } from '$app/stores';
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import type { AssessmentResult } from '$lib/api/assessment';
   import AssessmentIcon from '$lib/components/AssessmentIcon.svelte';
-  import { Result } from 'postcss';
+  import Button from '$lib/components/Button.svelte';
+  import StarterHint from '$lib/components/StarterHint.svelte';
+  import { QueueList } from '@steeze-ui/heroicons';
+  import type { PageData } from './$types';
 
   export let data: PageData;
 
@@ -16,22 +14,26 @@
   let rowsPerPage = 9;
   $: totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
-  $: filteredData =
-    data.filterIds === undefined &&
-    (data.filterResourceId === undefined || data.filterResourceId === null)
-      ? data.results
-      : data.results.filter((result) => {
-          return (
-            data.filterIds === undefined ||
-            (data.filterIds?.includes(result.id) &&
-              (data.filterResourceId === null ||
-                data.filterResourceId === undefined ||
-                result.resourceId.split('/')[result.resourceId.split('/').length - 1] ===
-                  data.filterResourceId))
-          );
-        });
-
+  $: filteredData = filter(data.results, data.filterIds, data.filterResourceId);
   $: currentData = paginate(filteredData, currentPage);
+
+  function filter(
+    results: AssessmentResult[],
+    ids: string[],
+    resourceId: string | null
+  ): AssessmentResult[] {
+    if (ids.length > 0) {
+      results = results.filter((r) => ids.includes(r.id));
+    }
+
+    if (resourceId !== null) {
+      results = results.filter(
+        (r) => r.resourceId.split('/')[r.resourceId.split('/').length - 1] == resourceId
+      );
+    }
+
+    return results;
+  }
 
   function paginate(results: AssessmentResult[], page: number) {
     const startIndex = (page - 1) * rowsPerPage;
@@ -69,6 +71,8 @@
     showModalId = null;
   }
 </script>
+
+{data.filterResourceId}
 
 {#if data.resources.length == 0}
   <StarterHint type="assessment results" icon={QueueList}>
