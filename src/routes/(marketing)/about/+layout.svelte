@@ -7,7 +7,7 @@
       name: 'Future proof.',
       path: '/about/page1',
       description:
-        "Today's security landscape is changing. The EU Cyber Security/Resilience Act will change how european companies will do business in the cloud. Clouditor is already equipped with rules for the latest EU certifications.",
+        "Today's security landscape is changing. The EU Cyber Security/Resilience Act will change how European companies will do business in the cloud. Clouditor is already equipped with rules for the latest EU certifications.",
       icon: CloudArrowUp
     },
     {
@@ -18,10 +18,10 @@
       icon: LockOpen
     },
     {
-      name: 'Hollistic.',
+      name: 'Holistic.',
       path: '/about/page3',
       description:
-        'Using integrations with other tools, such as Codyze, we can provide a hollistic view of the cloud service, from infrastructure to code.',
+        'Using integrations with other tools, such as Codyze, we can provide a holistic view of the cloud service, from infrastructure to code.',
       icon: PuzzlePiece
     }
   ];
@@ -34,7 +34,7 @@
     >
       <div class="lg:pr-8 lg:pt-4">
         <div class="lg:max-w-lg">
-          <h2 class="text-base font-semibold leading-7 text-clouditor">Be audit ready, any time</h2>
+          <h2 class="text-base font-semibold leading-7 text-clouditor">Be audit-ready, any time</h2>
           <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             <a href="/about/start">Clouditor</a>
           </p>
