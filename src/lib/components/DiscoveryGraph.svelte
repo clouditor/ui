@@ -131,7 +131,8 @@
       ...nodeStyle('VirtualMachine', ComputerDesktop, overlay),
       ...nodeStyle('Function', CommandLine, overlay),
       ...nodeStyle('Application', CodeBracketSquare, overlay),
-      ...nodeStyle('Library', BuildingLibrary, overlay)
+      ...nodeStyle('Library', BuildingLibrary, overlay),
+      ...nodeStyle('TranslationUnitDeclaration', CodeBracket, overlay)
     ]);
 
     return styles;
