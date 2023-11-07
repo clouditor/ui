@@ -93,7 +93,7 @@
     </div>
   </div>
 
-  <div class="absolute right-12 z-10 flex items-start mt-4">
+  <div class="relative left-4 z-10 flex items-start mt-4">
     <div class="flex h-6 items-center">
       <input
         id="overlay"
