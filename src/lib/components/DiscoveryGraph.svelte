@@ -56,7 +56,10 @@
       elements: {
         nodes: nodes,
         edges: edges
-      }
+      },
+      minZoom: 0.5,
+      maxZoom: 2,
+      wheelSensitivity: 0.6
     });
 
     if (initialSelect) {
