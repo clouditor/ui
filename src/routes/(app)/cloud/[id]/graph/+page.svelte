@@ -1,9 +1,12 @@
 <script lang="ts">
-  import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
+  import DiscoveryGraph, { shouldCenter } from '$lib/components/DiscoveryGraph.svelte';
   import type { NodeDefinition, EdgeDefinition, ElementDefinition } from 'cytoscape';
   import type { PageData } from './$types';
   import { page } from '$app/stores';
   import NodeDetail from '$lib/components/NodeDetail.svelte';
+  import Button from '$lib/components/Button.svelte';
+  import { ViewfinderCircle } from '@steeze-ui/heroicons';
+  import { Icon } from '@steeze-ui/svelte-icon';
 
   export let data: PageData;
 
@@ -77,27 +80,43 @@
   let overlay = false;
 </script>
 
-<div class="absolute right-8 z-10 flex items-start mb-2">
-  <div class="flex h-6 items-center">
-    <input
-      id="overlay"
-      aria-describedby="overlay-description"
-      name="overlay"
-      type="checkbox"
-      class="h-4 w-4 rounded border-gray-300 text-clouditor focus:ring-clouditor"
-      bind:checked={overlay}
-    />
+<div class="overflow-hidden rounded-xl border border-gray-200">
+  <div class="flex justify-between items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-4">
+    <div class="text-sm text-gray-500">
+      This graph provides an overview over all discovered resources of the Cloud service,
+      infrastructure as well as application source-code.
+    </div>
+    <div class="flex gap-x-1.5">
+      <Button on:click={(e) => ($shouldCenter = true)}>
+        <Icon src={ViewfinderCircle} class="h-4 w-4" />
+      </Button>
+    </div>
   </div>
-  <div class="ml-3 text-sm leading-6">
-    <label for="overlay" class="font-medium text-gray-900">Show overlay</label>
-    <span id="overlay-description" class="text-gray-500">
-      <span class="sr-only">Show overlay </span>
-      of assessment results.
-    </span>
-  </div>
-</div>
 
-<DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={data.id} {overlay} />
+  <div class="relative left-4 z-10 flex items-start mt-4">
+    <div class="flex h-6 items-center">
+      <input
+        id="overlay"
+        aria-describedby="overlay-description"
+        name="overlay"
+        type="checkbox"
+        class="h-4 w-4 rounded border-gray-300 text-clouditor focus:ring-clouditor"
+        bind:checked={overlay}
+      />
+    </div>
+    <div class="ml-3 text-sm leading-6">
+      <label for="overlay" class="font-medium text-gray-900">Show overlay</label>
+      <span id="overlay-description" class="text-gray-500">
+        <span class="sr-only">Show overlay </span>
+        of assessment results
+      </span>
+    </div>
+  </div>
+
+  <dl class="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+    <DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={data.id} {overlay} />
+  </dl>
+</div>
 
 <div class="absolute top-64 right-8 max-w-md z-20">
   {#if selected}

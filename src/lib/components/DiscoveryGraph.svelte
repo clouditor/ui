@@ -1,3 +1,8 @@
+<script lang="ts" context="module">
+  import { writable } from 'svelte/store';
+  export const shouldCenter = writable<Boolean>(false);
+</script>
+
 <script lang="ts">
   import {
     BuildingLibrary,
@@ -44,13 +49,17 @@
       container: graph,
       layout: {
         name: 'cola',
-        infinite: true
+        infinite: true,
+        fit: false
       },
       style: style(overlay),
       elements: {
         nodes: nodes,
         edges: edges
-      }
+      },
+      minZoom: 0.5,
+      maxZoom: 2,
+      wheelSensitivity: 0.6
     });
 
     if (initialSelect) {
@@ -92,7 +101,7 @@
     return (
       'data:image/svg+xml;utf8,' +
       encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="${color}" class="w-6 h-6">
+        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="${color}">
           ${icon.default.path?.map(
             (p) =>
               `<path ${Object.entries(p)
@@ -110,14 +119,15 @@
       style: {
         content: `data(label)`,
         'font-family': `"Inter var", sans-serif`,
-        'font-size': '0.8em',
+        'font-size': '1em',
         'text-background-color': 'white',
         'text-background-shape': 'rectangle',
         'text-background-opacity': 1,
         'text-wrap': 'ellipsis',
         'text-max-width': '100px',
         'text-margin-x': 0,
-        'text-margin-y': -2
+        'text-margin-y': -2,
+        color: '#111827'
       }
     });
 
@@ -144,7 +154,7 @@
         selector: `node[type\\.${type}]`,
         style: {
           shape: 'rectangle',
-          'background-image': svg(icon, 'black'),
+          'background-image': svg(icon, '#111827'),
           'background-fit': 'cover',
           'background-color': 'white'
         }
@@ -153,7 +163,8 @@
         selector: `node[type\\.${type}]:selected`,
         style: {
           shape: 'rectangle',
-          'background-image': svg(icon, '#007FC3')
+          'background-image': svg(icon, '#007FC3'),
+          color: '#007FC3'
         }
       }
     ];
@@ -184,7 +195,8 @@
           selector: `node[type\\.${type}]:selected`,
           style: {
             shape: 'rectangle',
-            'background-image': svg(icon, '#007FC3')
+            'background-image': svg(icon, '#007FC3'),
+            color: '#007FC3'
           }
         }
       ]);
@@ -196,8 +208,13 @@
   $: (() => {
     if (cy) {
       cy.style(style(overlay));
+
+      if ($shouldCenter) {
+        cy.reset();
+        $shouldCenter = false;
+      }
     }
   })();
 </script>
 
-<div class="graph min-h-[65vh] max-w-7xl" bind:this={graph} />
+<div class="graph h-[calc(100vh-23rem)] max-w-7xl" bind:this={graph} />

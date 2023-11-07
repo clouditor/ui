@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { ComplianceStatus } from '$lib/api/evaluation';
   import type { Catalog, TargetOfEvaluation } from '$lib/api/orchestrator';
-  import { Pause, Stop, Trash } from '@steeze-ui/heroicons';
-  import ComplianceChart from './ComplianceChart.svelte';
+  import { Trash } from '@steeze-ui/heroicons';
   import { Icon } from '@steeze-ui/svelte-icon';
   import { createEventDispatcher } from 'svelte';
   import Button from './Button.svelte';
+  import ComplianceChart from './ComplianceChart.svelte';
 
   export let catalog: Catalog;
   export let toe: TargetOfEvaluation;
