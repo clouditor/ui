@@ -154,7 +154,8 @@
         selector: `node[type\\.${type}]:selected`,
         style: {
           shape: 'rectangle',
-          'background-image': svg(icon, '#007FC3')
+          'background-image': svg(icon, '#007FC3'),
+          color: '#007FC3'
         }
       }
     ];
@@ -185,7 +186,8 @@
           selector: `node[type\\.${type}]:selected`,
           style: {
             shape: 'rectangle',
-            'background-image': svg(icon, '#007FC3')
+            'background-image': svg(icon, '#007FC3'),
+            color: '#007FC3'
           }
         }
       ]);
