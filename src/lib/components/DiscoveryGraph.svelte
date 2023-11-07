@@ -116,7 +116,7 @@
       style: {
         content: `data(label)`,
         'font-family': `"Inter var", sans-serif`,
-        'font-size': '0.8em',
+        'font-size': '1em',
         'text-background-color': 'white',
         'text-background-shape': 'rectangle',
         'text-background-opacity': 1,
