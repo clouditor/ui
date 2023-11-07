@@ -92,7 +92,7 @@
     return (
       'data:image/svg+xml;utf8,' +
       encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="${color}" class="w-6 h-6">
+        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="${color}">
           ${icon.default.path?.map(
             (p) =>
               `<path ${Object.entries(p)
