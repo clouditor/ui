@@ -44,7 +44,8 @@
       container: graph,
       layout: {
         name: 'cola',
-        infinite: true
+        infinite: true,
+        fit: false
       },
       style: style(overlay),
       elements: {
