@@ -72,8 +72,6 @@
   }
 </script>
 
-{data.filterResourceId}
-
 {#if data.resources.length == 0}
   <StarterHint type="assessment results" icon={QueueList}>
     <span slot="component">Clouditor Assessment component</span>

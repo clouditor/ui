@@ -1,3 +1,8 @@
+<script lang="ts" context="module">
+  import { writable } from 'svelte/store';
+  export const shouldCenter = writable<Boolean>(false);
+</script>
+
 <script lang="ts">
   import {
     BuildingLibrary,
@@ -200,8 +205,13 @@
   $: (() => {
     if (cy) {
       cy.style(style(overlay));
+
+      if ($shouldCenter) {
+        cy.reset();
+        $shouldCenter = false;
+      }
     }
   })();
 </script>
 
-<div class="graph min-h-[65vh] max-w-7xl" bind:this={graph} />
+<div class="graph h-[calc(100vh-23rem)] max-w-7xl" bind:this={graph} />
