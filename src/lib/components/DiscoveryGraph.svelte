@@ -118,7 +118,8 @@
         'text-wrap': 'ellipsis',
         'text-max-width': '100px',
         'text-margin-x': 0,
-        'text-margin-y': -2
+        'text-margin-y': -2,
+        color: '#111827'
       }
     });
 
@@ -145,7 +146,7 @@
         selector: `node[type\\.${type}]`,
         style: {
           shape: 'rectangle',
-          'background-image': svg(icon, 'black'),
+          'background-image': svg(icon, '#111827'),
           'background-fit': 'cover',
           'background-color': 'white'
         }
