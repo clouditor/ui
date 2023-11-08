@@ -4,10 +4,10 @@
 
   const features = [
     {
-      name: 'Future proof.',
+      name: 'Future-proof.',
       path: '/about/page1',
       description:
-        "Today's security landscape is changing. The EU Cyber Security/Resilience Act will change how European companies will do business in the cloud. Clouditor is already equipped with rules for the latest EU certifications.",
+        "Today's security landscape is changing. The EU Cyber Resilience Act will change how European companies will do business in the cloud. Clouditor is already equipped with rules for the latest EU certifications.",
       icon: CloudArrowUp
     },
     {
