@@ -151,6 +151,17 @@
                         <p class="truncate ...">
                           {#if k == 'url'}
                             <a href={v} target="_blank">{v}</a>
+                          {:else if k == 'creationTime'}
+                            <time datetime={new Date(v * 1000).toISOString()}>
+                              {Intl.DateTimeFormat(navigator.language, {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                day: 'numeric'
+                              }).format(v * 1000)}
+                            </time>
                           {:else}
                             {v}
                           {/if}
