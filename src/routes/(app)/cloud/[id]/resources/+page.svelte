@@ -131,8 +131,8 @@
     filterOptionsVisible = !filterOptionsVisible;
   }
 
-  function goToAssessmentResults(resourceName: string) {
-    goto(`/cloud/${data.service.id}/assessments/?filterResourceId=${resourceName}`);
+  function goToAssessmentResults(resourceId: string) {
+    goto(`/cloud/${data.service.id}/assessments/?filterResourceId=${resourceId}`);
   }
 
   async function countAssessmentResults(resourceId: string) {
@@ -305,7 +305,7 @@
                       ' for ' +
                       resource.properties.name +
                       '.'}
-                    on:click={() => goToAssessmentResults(resource.properties.name)}
+                    on:click={() => goToAssessmentResults(resource.properties.id)}
                     disabled={assessmentResultCount === 0}
                   >
                     <Icon src={QueueList} class="h-5 w-5 mr-2" />
