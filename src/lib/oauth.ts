@@ -4,7 +4,7 @@ import { type OidcClientSettings, OidcClient } from "oidc-client-ts";
 
 const settings: OidcClientSettings = {
   authority: env.PUBLIC_OAUTH_AUTHORITY,
-  client_id: "dashboard",
+  client_id: env.PUBLIC_OAUTH_CLIENT_ID,
   redirect_uri: env.PUBLIC_OAUTH_REDIRECT_URI,
   scope: "profile"
 };
