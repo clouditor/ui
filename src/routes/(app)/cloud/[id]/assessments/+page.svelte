@@ -134,10 +134,12 @@
                     class=" inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75 max-w-80"
                   >
                     <div class="bg-white rounded shadow-lg p-6">
-                      <pre class="overflow-y-auto bg-gray-100 rounded p-4">
-                    {JSON.stringify(assessment, null, 5)}
-                    </pre>
-                      <Button on:click={closeModal}>Close</Button>
+                      <pre class="overflow-y-auto bg-gray-100 rounded p-4">{JSON.stringify(
+                          assessment,
+                          null,
+                          5
+                        )}</pre>
+                      <Button on:click={closeModal} class="mt-2">Close</Button>
                     </div>
                   </div>
                 </tr>
