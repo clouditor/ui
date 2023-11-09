@@ -13,6 +13,7 @@
     CommandLine,
     ComputerDesktop,
     CpuChip,
+    Folder,
     RectangleGroup,
     ServerStack,
     Share
@@ -142,7 +143,8 @@
       ...nodeStyle('Function', CommandLine, overlay),
       ...nodeStyle('Application', CodeBracketSquare, overlay),
       ...nodeStyle('Library', BuildingLibrary, overlay),
-      ...nodeStyle('TranslationUnitDeclaration', CodeBracket, overlay)
+      ...nodeStyle('TranslationUnitDeclaration', CodeBracket, overlay),
+      ...nodeStyle('CodeRepository', Folder, overlay)
     ]);
 
     return styles;
