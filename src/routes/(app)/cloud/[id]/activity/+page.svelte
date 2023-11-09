@@ -33,7 +33,7 @@
       timeline.push({
         content: `Assessed ${group.length} metrics for ${group[0].resourceTypes[0]}`,
         target: shortResourceId(group[0].resourceId),
-        href: '/cloud/' + data.service.id + '/resources/' + group[0].resourceId,
+        href: '/cloud/' + data.service.id + '/graph/?id=' + group[0].resourceId,
         date: formatDate(date),
         datetime: group[0].timestamp,
         icon: QueueList,
