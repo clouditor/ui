@@ -27,9 +27,7 @@
     }
 
     if (resourceId !== null) {
-      results = results.filter(
-        (r) => r.resourceId.split('/')[r.resourceId.split('/').length - 1] == resourceId
-      );
+      results = results.filter((r) => r.resourceId == resourceId);
     }
 
     return results;
