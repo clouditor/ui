@@ -32,7 +32,7 @@ jobs:
       - name: Login Docker Registry
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
       - name: Push Docker Image
         run: |
           docker push ghcr.io/clouditor/ui
