@@ -69,7 +69,7 @@
   {/each}
   {#if data.leftOverCatalogs.length > 0}
     <li>
-      <a href="/v1/orchestrator/cloud_services/{data.service.id}/compliance/new">
+      <a href="/cloud/{data.service.id}/compliance/new">
         <EnableCatalogButton />
       </a>
     </li>

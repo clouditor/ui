@@ -64,7 +64,8 @@
     });
 
     if (initialSelect) {
-      cy.nodes(`node[id="${initialSelect}"]`).select();
+      var node = cy.nodes(`node[id="${initialSelect}"]`);
+      node.select();
     }
 
     cy.on('tap', function (e) {
@@ -219,4 +220,4 @@
   })();
 </script>
 
-<div class="graph h-[calc(100vh-23rem)] max-w-7xl" bind:this={graph} />
+<div class="graph h-[calc(100vh-25rem)] max-w-7xl" bind:this={graph} />
