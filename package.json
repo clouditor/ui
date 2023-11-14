@@ -27,7 +27,7 @@
     "chart.js": "^4.4.0",
     "cytoscape": "^3.26.0",
     "cytoscape-cola": "^2.5.1",
-    "eslint": "^8.28.0",
+    "eslint": "^8.53.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte": "^2.34.0",
     "flat": "^6.0.1",
