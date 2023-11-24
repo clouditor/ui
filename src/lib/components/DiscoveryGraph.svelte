@@ -14,6 +14,8 @@
     ComputerDesktop,
     CpuChip,
     Folder,
+    Key,
+    LockClosed,
     RectangleGroup,
     ServerStack,
     Share
@@ -145,7 +147,9 @@
       ...nodeStyle('Application', CodeBracketSquare, overlay),
       ...nodeStyle('Library', BuildingLibrary, overlay),
       ...nodeStyle('TranslationUnitDeclaration', CodeBracket, overlay),
-      ...nodeStyle('CodeRepository', Folder, overlay)
+      ...nodeStyle('CodeRepository', Folder, overlay),
+      ...nodeStyle('KeyVault', LockClosed, overlay),
+      ...nodeStyle('Key', Key, overlay)
     ]);
 
     return styles;
