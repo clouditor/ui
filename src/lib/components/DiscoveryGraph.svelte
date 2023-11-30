@@ -13,6 +13,7 @@
     CommandLine,
     ComputerDesktop,
     CpuChip,
+    Document,
     Folder,
     Key,
     LockClosed,
@@ -149,7 +150,8 @@
       ...nodeStyle('TranslationUnitDeclaration', CodeBracket, overlay),
       ...nodeStyle('CodeRepository', Folder, overlay),
       ...nodeStyle('KeyVault', LockClosed, overlay),
-      ...nodeStyle('Key', Key, overlay)
+      ...nodeStyle('Key', Key, overlay),
+      ...nodeStyle('Object', Document, overlay)
     ]);
 
     return styles;
