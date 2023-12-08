@@ -28,7 +28,7 @@
     "cytoscape": "^3.27.0",
     "cytoscape-cola": "^2.5.1",
     "eslint": "^8.55.0",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.35.1",
     "flat": "^6.0.1",
     "inter-ui": "^3.19.3",
