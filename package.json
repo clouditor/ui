@@ -34,7 +34,7 @@
     "inter-ui": "^3.19.3",
     "oidc-client-ts": "^2.4.0",
     "postcss": "^8.4.31",
-    "prettier": "^2.8.0",
+    "prettier": "^3.1.1",
     "prettier-plugin-svelte": "^2.8.1",
     "svelte": "^3.54.0",
     "svelte-check": "^3.6.2",
