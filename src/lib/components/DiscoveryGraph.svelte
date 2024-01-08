@@ -1,89 +1,89 @@
 <script lang="ts" context="module">
-  import { writable } from 'svelte/store';
-  export const shouldCenter = writable<Boolean>(false);
+	import { writable } from 'svelte/store';
+	export const shouldCenter = writable<Boolean>(false);
 </script>
 
 <script lang="ts">
-  import {
-    BuildingLibrary,
-    CircleStack,
-    Cloud,
-    CodeBracket,
-    CodeBracketSquare,
-    CommandLine,
-    ComputerDesktop,
-    CpuChip,
-    Document,
-    Folder,
-    Key,
-    LockClosed,
-    RectangleGroup,
-    ServerStack,
-    Share
-  } from '@steeze-ui/heroicons';
-  import type { IconSource } from '@steeze-ui/svelte-icon';
-  import cytoscape, { type EdgeDefinition, type NodeDefinition, type Stylesheet } from 'cytoscape';
-  import cola from 'cytoscape-cola';
-  import { createEventDispatcher, onMount, setContext } from 'svelte';
+	import {
+		BuildingLibrary,
+		CircleStack,
+		Cloud,
+		CodeBracket,
+		CodeBracketSquare,
+		CommandLine,
+		ComputerDesktop,
+		CpuChip,
+		Document,
+		Folder,
+		Key,
+		LockClosed,
+		RectangleGroup,
+		ServerStack,
+		Share
+	} from '@steeze-ui/heroicons';
+	import type { IconSource } from '@steeze-ui/svelte-icon';
+	import cytoscape, { type EdgeDefinition, type NodeDefinition, type Stylesheet } from 'cytoscape';
+	import cola from 'cytoscape-cola';
+	import { createEventDispatcher, onMount, setContext } from 'svelte';
 
-  export let edges: EdgeDefinition[];
-  export let nodes: NodeDefinition[];
-  export let initialSelect: string | null;
-  export let overlay: boolean;
+	export let edges: EdgeDefinition[];
+	export let nodes: NodeDefinition[];
+	export let initialSelect: string | null;
+	export let overlay: boolean;
 
-  let graph: HTMLElement;
-  let cy: cytoscape.Core;
+	let graph: HTMLElement;
+	let cy: cytoscape.Core;
 
-  const dispatch = createEventDispatcher<{
-    select: NodeDefinition | null;
-  }>();
+	const dispatch = createEventDispatcher<{
+		select: NodeDefinition | null;
+	}>();
 
-  interface $$Events {
-    select: CustomEvent<NodeDefinition | null>;
-  }
+	interface $$Events {
+		select: CustomEvent<NodeDefinition | null>;
+	}
 
-  setContext('graphSharedState', {
-    getCyInstance: () => cy
-  });
+	setContext('graphSharedState', {
+		getCyInstance: () => cy
+	});
 
-  onMount(() => {
-    cytoscape.use(cola);
+	onMount(() => {
+		cytoscape.use(cola);
 
-    cy = cytoscape({
-      container: graph,
-      layout: {
-        name: 'cola',
-        infinite: true,
-        fit: false
-      },
-      style: style(overlay),
-      elements: {
-        nodes: nodes,
-        edges: edges
-      },
-      minZoom: 0.5,
-      maxZoom: 2,
-      wheelSensitivity: 0.6
-    });
+		cy = cytoscape({
+			container: graph,
+			layout: {
+				name: 'cola',
+				infinite: true,
+				fit: false
+			},
+			style: style(overlay),
+			elements: {
+				nodes: nodes,
+				edges: edges
+			},
+			minZoom: 0.5,
+			maxZoom: 2,
+			wheelSensitivity: 0.6
+		});
 
-    if (initialSelect) {
-      var node = cy.nodes(`node[id="${initialSelect}"]`);
-      node.select();
-    }
+		if (initialSelect) {
+			var node = cy.nodes(`node[id="${initialSelect}"]`);
+			node.select();
+		}
 
-    cy.on('tap', function (e) {
-      var target = e.target;
+		cy.on('tap', function (e) {
+			var target = e.target;
 
-      if (target === cy) {
-        dispatch('select', null);
-      } else {
-        dispatch('select', { id: target.id(), data: target.data() });
-      }
-    });
-  });
+			if (target === cy) {
+				dispatch('select', null);
+			} else {
+				dispatch('select', { id: target.id(), data: target.data() });
+			}
+		});
+	});
 
-  function svg(icon: IconSource, color: string): string {
-    /*
+	function svg(icon: IconSource, color: string): string {
+		/*
     var svg = document.createElement('svg');
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     svg.setAttribute('fill', 'none');
@@ -103,127 +103,127 @@
     let output = svg.outerHTML;
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(output);
     */
-    return (
-      'data:image/svg+xml;utf8,' +
-      encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="${color}">
+		return (
+			'data:image/svg+xml;utf8,' +
+			encodeURIComponent(
+				`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="${color}">
           ${icon.default.path?.map(
-            (p) =>
-              `<path ${Object.entries(p)
-                .map(([k, v]) => `${k}="${v}"`)
-                .join(' ')} />`
-          )}</svg>`
-      )
-    );
-  }
+						(p) =>
+							`<path ${Object.entries(p)
+								.map(([k, v]) => `${k}="${v}"`)
+								.join(' ')} />`
+					)}</svg>`
+			)
+		);
+	}
 
-  function style(overlay: boolean): Stylesheet[] {
-    let styles: Stylesheet[] = [];
-    styles.push({
-      selector: 'node',
-      style: {
-        content: `data(label)`,
-        'font-family': `"Inter var", sans-serif`,
-        'font-size': '1em',
-        'text-background-color': 'white',
-        'text-background-shape': 'rectangle',
-        'text-background-opacity': 1,
-        'text-wrap': 'ellipsis',
-        'text-max-width': '100px',
-        'text-margin-x': 0,
-        'text-margin-y': -2,
-        color: '#111827'
-      }
-    });
+	function style(overlay: boolean): Stylesheet[] {
+		let styles: Stylesheet[] = [];
+		styles.push({
+			selector: 'node',
+			style: {
+				content: `data(label)`,
+				'font-family': `"Inter var", sans-serif`,
+				'font-size': '1em',
+				'text-background-color': 'white',
+				'text-background-shape': 'rectangle',
+				'text-background-opacity': 1,
+				'text-wrap': 'ellipsis',
+				'text-max-width': '100px',
+				'text-margin-x': 0,
+				'text-margin-y': -2,
+				color: '#111827'
+			}
+		});
 
-    styles = styles.concat([
-      ...nodeStyle('Storage', CircleStack, overlay),
-      ...nodeStyle('ResourceGroup', RectangleGroup, overlay),
-      ...nodeStyle('Account', Cloud, overlay),
-      ...nodeStyle('Networking', Share, overlay),
-      ...nodeStyle('NetworkService', ServerStack, overlay),
-      ...nodeStyle('Compute', CpuChip, overlay),
-      ...nodeStyle('VirtualMachine', ComputerDesktop, overlay),
-      ...nodeStyle('Function', CommandLine, overlay),
-      ...nodeStyle('Application', CodeBracketSquare, overlay),
-      ...nodeStyle('Library', BuildingLibrary, overlay),
-      ...nodeStyle('TranslationUnitDeclaration', CodeBracket, overlay),
-      ...nodeStyle('CodeRepository', Folder, overlay),
-      ...nodeStyle('KeyVault', LockClosed, overlay),
-      ...nodeStyle('Key', Key, overlay),
-      ...nodeStyle('Object', Document, overlay)
-    ]);
+		styles = styles.concat([
+			...nodeStyle('Storage', CircleStack, overlay),
+			...nodeStyle('ResourceGroup', RectangleGroup, overlay),
+			...nodeStyle('Account', Cloud, overlay),
+			...nodeStyle('Networking', Share, overlay),
+			...nodeStyle('NetworkService', ServerStack, overlay),
+			...nodeStyle('Compute', CpuChip, overlay),
+			...nodeStyle('VirtualMachine', ComputerDesktop, overlay),
+			...nodeStyle('Function', CommandLine, overlay),
+			...nodeStyle('Application', CodeBracketSquare, overlay),
+			...nodeStyle('Library', BuildingLibrary, overlay),
+			...nodeStyle('TranslationUnitDeclaration', CodeBracket, overlay),
+			...nodeStyle('CodeRepository', Folder, overlay),
+			...nodeStyle('KeyVault', LockClosed, overlay),
+			...nodeStyle('Key', Key, overlay),
+			...nodeStyle('Object', Document, overlay)
+		]);
 
-    return styles;
-  }
+		return styles;
+	}
 
-  function nodeStyle(type: string, icon: IconSource, overlay: boolean): Stylesheet[] {
-    let styles: Stylesheet[] = [
-      {
-        selector: `node[type\\.${type}]`,
-        style: {
-          shape: 'rectangle',
-          'background-image': svg(icon, '#111827'),
-          'background-fit': 'cover',
-          'background-color': 'white'
-        }
-      },
-      {
-        selector: `node[type\\.${type}]:selected`,
-        style: {
-          shape: 'rectangle',
-          'background-image': svg(icon, '#007FC3'),
-          color: '#007FC3'
-        }
-      }
-    ];
+	function nodeStyle(type: string, icon: IconSource, overlay: boolean): Stylesheet[] {
+		let styles: Stylesheet[] = [
+			{
+				selector: `node[type\\.${type}]`,
+				style: {
+					shape: 'rectangle',
+					'background-image': svg(icon, '#111827'),
+					'background-fit': 'cover',
+					'background-color': 'white'
+				}
+			},
+			{
+				selector: `node[type\\.${type}]:selected`,
+				style: {
+					shape: 'rectangle',
+					'background-image': svg(icon, '#007FC3'),
+					color: '#007FC3'
+				}
+			}
+		];
 
-    if (overlay) {
-      styles = styles.concat([
-        {
-          selector: `node[type\\.${type}][status=1]`,
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(icon, '#166534'),
-            'background-fit': 'cover',
-            'background-color': 'white',
-            color: '#166534'
-          }
-        },
-        {
-          selector: `node[type\\.${type}][status=2]`,
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(icon, '#991b1b'),
-            'background-fit': 'cover',
-            'background-color': 'white',
-            color: '#991b1b'
-          }
-        },
-        {
-          selector: `node[type\\.${type}]:selected`,
-          style: {
-            shape: 'rectangle',
-            'background-image': svg(icon, '#007FC3'),
-            color: '#007FC3'
-          }
-        }
-      ]);
-    }
+		if (overlay) {
+			styles = styles.concat([
+				{
+					selector: `node[type\\.${type}][status=1]`,
+					style: {
+						shape: 'rectangle',
+						'background-image': svg(icon, '#166534'),
+						'background-fit': 'cover',
+						'background-color': 'white',
+						color: '#166534'
+					}
+				},
+				{
+					selector: `node[type\\.${type}][status=2]`,
+					style: {
+						shape: 'rectangle',
+						'background-image': svg(icon, '#991b1b'),
+						'background-fit': 'cover',
+						'background-color': 'white',
+						color: '#991b1b'
+					}
+				},
+				{
+					selector: `node[type\\.${type}]:selected`,
+					style: {
+						shape: 'rectangle',
+						'background-image': svg(icon, '#007FC3'),
+						color: '#007FC3'
+					}
+				}
+			]);
+		}
 
-    return styles;
-  }
+		return styles;
+	}
 
-  $: (() => {
-    if (cy) {
-      cy.style(style(overlay));
+	$: (() => {
+		if (cy) {
+			cy.style(style(overlay));
 
-      if ($shouldCenter) {
-        cy.reset();
-        $shouldCenter = false;
-      }
-    }
-  })();
+			if ($shouldCenter) {
+				cy.reset();
+				$shouldCenter = false;
+			}
+		}
+	})();
 </script>
 
 <div class="graph h-[calc(100vh-25rem)] max-w-7xl" bind:this={graph} />

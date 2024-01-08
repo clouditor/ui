@@ -1,23 +1,23 @@
-import { getCloudService } from "$lib/api/orchestrator";
-import { error } from "@sveltejs/kit";
-import type { LayoutLoad } from "./$types";
-import { listResources } from "$lib/api/discovery";
+import { getCloudService } from '$lib/api/orchestrator';
+import { error } from '@sveltejs/kit';
+import type { LayoutLoad } from './$types';
+import { listResources } from '$lib/api/discovery';
 
 export const load = (async ({ fetch, params }) => {
-  if (params.id == undefined) {
-    throw error(405, "Required parameter missing")
-  }
+	if (params.id == undefined) {
+		throw error(405, 'Required parameter missing');
+	}
 
-  const service = await getCloudService(params.id, fetch);
+	const service = await getCloudService(params.id, fetch);
 
-  // TODO: replace with statistics endpoint to avoid slow loading of resource data
-  const resources = await listResources(service.id, "", fetch);
+	// TODO: replace with statistics endpoint to avoid slow loading of resource data
+	const resources = await listResources(service.id, '', fetch);
 
-  return {
-    service: service,
-    resources: resources,
-    statistics: {
-      discoveredResources: resources.length,
-    }
-  }
-}) satisfies LayoutLoad
+	return {
+		service: service,
+		resources: resources,
+		statistics: {
+			discoveredResources: resources.length
+		}
+	};
+}) satisfies LayoutLoad;

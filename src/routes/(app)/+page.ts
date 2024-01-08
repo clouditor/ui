@@ -1,6 +1,6 @@
-import { redirect } from "@sveltejs/kit"
-import type { PageLoad } from "./$types"
+import { redirect } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
 
 export const load = (async () => {
-    throw redirect(301, "/cloud")
-}) satisfies PageLoad
+	throw redirect(301, '/cloud');
+}) satisfies PageLoad;

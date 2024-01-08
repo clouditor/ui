@@ -4,19 +4,19 @@ import { listGraphEdges } from '$lib/api/discovery';
 import { listAssessmentResults } from '$lib/api/orchestrator';
 
 export const load = (async ({ fetch, params, url }) => {
-  if (params.id == undefined) {
-    throw error(405, 'Required parameter missing');
-  }
+	if (params.id == undefined) {
+		throw error(405, 'Required parameter missing');
+	}
 
-  const results = listAssessmentResults(fetch, true);
-  const edges = await listGraphEdges(fetch);
-  const id = url.searchParams.get('id');
-  const tab = url.searchParams.get('tab');
+	const results = listAssessmentResults(fetch, true);
+	const edges = await listGraphEdges(fetch);
+	const id = url.searchParams.get('id');
+	const tab = url.searchParams.get('tab');
 
-  return {
-    results,
-    edges,
-    id,
-    tab
-  };
+	return {
+		results,
+		edges,
+		id,
+		tab
+	};
 }) satisfies PageLoad;

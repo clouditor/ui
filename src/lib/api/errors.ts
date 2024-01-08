@@ -1,4 +1,4 @@
-import { error } from "@sveltejs/kit";
+import { error } from '@sveltejs/kit';
 
 /**
  * Throws an {@link error} if an HTTP status other than OK is contained in
@@ -10,9 +10,9 @@ import { error } from "@sveltejs/kit";
  * @returns the response or an error
  */
 export function throwError(response: Response) {
-  if (!response.ok) {
-    throw error(response.status, response.statusText)
-  }
+	if (!response.ok) {
+		throw error(response.status, response.statusText);
+	}
 
-  return response;
+	return response;
 }

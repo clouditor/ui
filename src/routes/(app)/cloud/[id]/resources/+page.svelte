@@ -1,349 +1,349 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
-  import { page } from '$app/stores';
-  import type { Resource } from '$lib/api/discovery';
-  import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
-  import StarterHint from '$lib/components/StarterHint.svelte';
-  import {
-    Check,
-    ChevronDown,
-    ChevronUp,
-    Clipboard,
-    Funnel,
-    MagnifyingGlass,
-    QueueList,
-    Squares2x2,
-    XCircle
-  } from '@steeze-ui/heroicons';
-  import { Icon } from '@steeze-ui/svelte-icon';
-  import type { EdgeDefinition, NodeDefinition } from 'cytoscape';
-  import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import type { Resource } from '$lib/api/discovery';
+	import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
+	import StarterHint from '$lib/components/StarterHint.svelte';
+	import {
+		Check,
+		ChevronDown,
+		ChevronUp,
+		Clipboard,
+		Funnel,
+		MagnifyingGlass,
+		QueueList,
+		Squares2x2,
+		XCircle
+	} from '@steeze-ui/heroicons';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import type { EdgeDefinition, NodeDefinition } from 'cytoscape';
+	import type { PageData } from './$types';
 
-  export let data: PageData;
+	export let data: PageData;
 
-  $: currentPage = data.page ? data.page : 1;
-  let rowsPerPage = 8;
-  $: totalPages = Math.ceil(filteredData.length / rowsPerPage);
+	$: currentPage = data.page ? data.page : 1;
+	let rowsPerPage = 8;
+	$: totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
-  $: searchString = '';
+	$: searchString = '';
 
-  $: searchActivated = false;
+	$: searchActivated = false;
 
-  $: query = searchString.toLowerCase();
-  $: filteredData = data.resources.filter((resource) => {
-    return (
-      resource.properties.name.toLowerCase().includes(query) &&
-      (filterOptions.length == 0 || filterOptions.includes(resource.resourceType.split(',')[0]))
-    );
-  });
-  $: currentData = paginate(filteredData, currentPage);
-  let copyingId: string | null = null;
+	$: query = searchString.toLowerCase();
+	$: filteredData = data.resources.filter((resource) => {
+		return (
+			resource.properties.name.toLowerCase().includes(query) &&
+			(filterOptions.length == 0 || filterOptions.includes(resource.resourceType.split(',')[0]))
+		);
+	});
+	$: currentData = paginate(filteredData, currentPage);
+	let copyingId: string | null = null;
 
-  let filterOptions: string[];
-  $: filterOptions = [];
+	let filterOptions: string[];
+	$: filterOptions = [];
 
-  function toggleSearch() {
-    searchActivated = !searchActivated;
-    if (!searchActivated) {
-      searchString = '';
-      filteredData = data.resources;
-    }
-  }
+	function toggleSearch() {
+		searchActivated = !searchActivated;
+		if (!searchActivated) {
+			searchString = '';
+			filteredData = data.resources;
+		}
+	}
 
-  let sortAscending = false;
+	let sortAscending = false;
 
-  function sort(sortBy: string) {
-    sortAscending = !sortAscending;
+	function sort(sortBy: string) {
+		sortAscending = !sortAscending;
 
-    switch (sortBy) {
-      case 'name':
-        filteredData.sort((a, b) => {
-          if (sortAscending) return a.properties['name'].localeCompare(b.properties.name);
-          else return b.properties['name'].localeCompare(a.properties.name);
-        });
-        break;
-      case 'type':
-        filteredData.sort((a, b) => {
-          if (sortAscending) return a.resourceType.localeCompare(b.resourceType);
-          else return b.resourceType.localeCompare(a.resourceType);
-        });
-        break;
-    }
-    currentData = paginate(filteredData, currentPage);
-  }
+		switch (sortBy) {
+			case 'name':
+				filteredData.sort((a, b) => {
+					if (sortAscending) return a.properties['name'].localeCompare(b.properties.name);
+					else return b.properties['name'].localeCompare(a.properties.name);
+				});
+				break;
+			case 'type':
+				filteredData.sort((a, b) => {
+					if (sortAscending) return a.resourceType.localeCompare(b.resourceType);
+					else return b.resourceType.localeCompare(a.resourceType);
+				});
+				break;
+		}
+		currentData = paginate(filteredData, currentPage);
+	}
 
-  let types: Set<String> = new Set();
-  let typeArray: String[] = [];
+	let types: Set<String> = new Set();
+	let typeArray: String[] = [];
 
-  function paginate(results: Resource[], page: number) {
-    if (currentPage > totalPages) {
-      page = totalPages;
-      currentPage = totalPages;
-    }
+	function paginate(results: Resource[], page: number) {
+		if (currentPage > totalPages) {
+			page = totalPages;
+			currentPage = totalPages;
+		}
 
-    const startIndex = (page - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
+		const startIndex = (page - 1) * rowsPerPage;
+		const endIndex = startIndex + rowsPerPage;
 
-    types = data.resources.reduce((acc, resource) => {
-      acc.add(resource.resourceType.split(',')[0]);
-      return acc;
-    }, new Set<String>());
-    typeArray = Array.from(types);
+		types = data.resources.reduce((acc, resource) => {
+			acc.add(resource.resourceType.split(',')[0]);
+			return acc;
+		}, new Set<String>());
+		typeArray = Array.from(types);
 
-    return results.slice(startIndex, endIndex);
-  }
+		return results.slice(startIndex, endIndex);
+	}
 
-  function updatePageQuery(currentPage: number) {
-    $page.url.searchParams.set('page', String(currentPage));
-    goto(`?${$page.url.searchParams.toString()}`);
-  }
+	function updatePageQuery(currentPage: number) {
+		$page.url.searchParams.set('page', String(currentPage));
+		goto(`?${$page.url.searchParams.toString()}`);
+	}
 
-  function prevPage() {
-    if (currentPage > 1) {
-      currentPage--;
-      updatePageQuery(currentPage);
-    }
-  }
+	function prevPage() {
+		if (currentPage > 1) {
+			currentPage--;
+			updatePageQuery(currentPage);
+		}
+	}
 
-  function nextPage() {
-    if (currentPage < totalPages) {
-      currentPage++;
-      updatePageQuery(currentPage);
-    }
-  }
+	function nextPage() {
+		if (currentPage < totalPages) {
+			currentPage++;
+			updatePageQuery(currentPage);
+		}
+	}
 
-  async function copyId(id: string) {
-    if (copyingId !== null) return;
-    copyingId = id;
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 250));
-      navigator.clipboard.writeText(id);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      copyingId = null;
-    }
-  }
+	async function copyId(id: string) {
+		if (copyingId !== null) return;
+		copyingId = id;
+		try {
+			await new Promise((resolve) => setTimeout(resolve, 250));
+			navigator.clipboard.writeText(id);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			copyingId = null;
+		}
+	}
 
-  let filterOptionsVisible = false;
+	let filterOptionsVisible = false;
 
-  function toggleFilterOptions() {
-    filterOptionsVisible = !filterOptionsVisible;
-  }
+	function toggleFilterOptions() {
+		filterOptionsVisible = !filterOptionsVisible;
+	}
 
-  function goToAssessmentResults(resourceId: string) {
-    goto(`/cloud/${data.service.id}/assessments/?filterResourceId=${resourceId}`);
-  }
+	function goToAssessmentResults(resourceId: string) {
+		goto(`/cloud/${data.service.id}/assessments/?filterResourceId=${resourceId}`);
+	}
 
-  async function countAssessmentResults(resourceId: string) {
-    const results = data.results.filter((result) => result.resourceId === resourceId);
-    return results.length;
-  }
+	async function countAssessmentResults(resourceId: string) {
+		const results = data.results.filter((result) => result.resourceId === resourceId);
+		return results.length;
+	}
 </script>
 
 {#if data.resources.length == 0}
-  <StarterHint type="discovered resources" icon={Squares2x2}>
-    <span slot="component">
-      Clouditor Discovery with with the cloud service ID <pre>{data.service.id}</pre>
-    </span>
-  </StarterHint>
+	<StarterHint type="discovered resources" icon={Squares2x2}>
+		<span slot="component">
+			Clouditor Discovery with with the cloud service ID <pre>{data.service.id}</pre>
+		</span>
+	</StarterHint>
 {:else}
-  <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-      <table class="min-w-full divide-y divide-gray-300">
-        <thead class="bg-gray-50">
-          <tr>
-            <th
-              scope="col"
-              class="px-3 py-3 text-left text-xs font-medium text-gray-500 tracking-wider w-1/4"
-            >
-              Actions
-            </th>
-            <th
-              scope="col"
-              class="group py-3 px-3 pl-0 align-middle text-left text-xs font-medium text-gray-500 tracking-wider w-6/12"
-            >
-              <div class="flex">
-                <button
-                  type="button"
-                  class=" flex items-center align-middle"
-                  on:click={() => sort('name')}
-                >
-                  Name
-                  <span
-                    class="invisible ml-2 flex items-center rounded text-gray-400 group-hover:visible group-focus:visible"
-                  >
-                    <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  class="flex uppercase align-middle items-center group-hover:visible group-focus:visible"
-                  on:click={() => toggleSearch()}
-                >
-                  <span
-                    class="invisible ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
-                  >
-                    <Icon
-                      src={searchActivated ? XCircle : MagnifyingGlass}
-                      class="h-5 w-5 text-gray-400"
-                    />
-                  </span>
-                </button>
-                {#if searchActivated}
-                  <div>
-                    <div class="relative rounded-md shadow-sm">
-                      <div
-                        class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-                      >
-                        <Icon src={MagnifyingGlass} class="h-5 w-5 text-gray-400" />
-                      </div>
-                      <input
-                        name="search"
-                        id="search"
-                        class="block w-full h-7 rounded-md border-0 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        placeholder="Search Resources"
-                        bind:value={searchString}
-                      />
-                    </div>
-                  </div>
-                {/if}
-              </div>
-            </th>
-            <th
-              scope="col"
-              class="group py-3 px-3 text-left text-xs font-medium text-gray-500 uppercase sm:pl-0 w-1/4"
-            >
-              <div class="flex">
-                <button type="button" class="inline-flex" on:click={() => sort('type')}>
-                  Type
-                  <span
-                    class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
-                  >
-                    <Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
-                  </span>
-                </button>
-                <div
-                  class="invisible max-w-3xl text-center lg:max-w-7xl group-hover:visible group-focus:visible"
-                >
-                  <div class="flex items-center justify-between">
-                    <div class="flex inline-flex text-left">
-                      <div class="flex">
-                        <button
-                          type="button"
-                          class="inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
-                          aria-expanded="false"
-                          on:click={toggleFilterOptions}
-                        >
-                          <Icon
-                            src={Funnel}
-                            class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                          />
-                          <span
-                            class="ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700"
-                            >{filterOptions.length}</span
-                          >
-                        </button>
-                      </div>
-                      {#if filterOptionsVisible}
-                        <div
-                          class="absolute z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
-                        >
-                          <form class="space-y-4">
-                            {#each typeArray as type}
-                              <div class="flex items-center">
-                                <input
-                                  id="filter-category-0"
-                                  name="category[]"
-                                  value={type}
-                                  type="checkbox"
-                                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                  bind:group={filterOptions}
-                                />
-                                <label
-                                  for="filter-category-0"
-                                  class="ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900"
-                                  >{type}</label
-                                >
-                              </div>
-                            {/each}
-                          </form>
-                        </div>
-                      {/if}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
-          {#each currentData as resource}
-            <tr>
-              <td class="px-6 py-4 pl-2 whitespace-nowrap">
-                <button
-                  class="inline-flex items-center px-4 py-2 pl-0 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
-                  on:click={() => copyId(resource.id)}
-                  title={resource.id}
-                  disabled={copyingId !== null}
-                >
-                  {#if copyingId === resource.id}
-                    <Icon src={Check} class="h-5 w-5 mr-2" />
-                  {:else}
-                    <Icon src={Clipboard} class="h-5 w-5 mr-2" />
-                  {/if}
-                  Copy ID
-                </button>
-                {#await countAssessmentResults(resource.id) then assessmentResultCount}
-                  <button
-                    class={'inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200' +
-                      (assessmentResultCount === 0 ? ' cursor-not-allowed opacity-50' : '')}
-                    title={'Go to ' +
-                      assessmentResultCount +
-                      ' assessment result' +
-                      (assessmentResultCount === 1 ? '' : 's') +
-                      ' for ' +
-                      resource.properties.name +
-                      '.'}
-                    on:click={() => goToAssessmentResults(resource.properties.id)}
-                    disabled={assessmentResultCount === 0}
-                  >
-                    <Icon src={QueueList} class="h-5 w-5 mr-2" />
+	<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+		<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+			<table class="min-w-full divide-y divide-gray-300">
+				<thead class="bg-gray-50">
+					<tr>
+						<th
+							scope="col"
+							class="w-1/4 px-3 py-3 text-left text-xs font-medium tracking-wider text-gray-500"
+						>
+							Actions
+						</th>
+						<th
+							scope="col"
+							class="group w-6/12 px-3 py-3 pl-0 text-left align-middle text-xs font-medium tracking-wider text-gray-500"
+						>
+							<div class="flex">
+								<button
+									type="button"
+									class=" flex items-center align-middle"
+									on:click={() => sort('name')}
+								>
+									Name
+									<span
+										class="invisible ml-2 flex items-center rounded text-gray-400 group-hover:visible group-focus:visible"
+									>
+										<Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
+									</span>
+								</button>
+								<button
+									type="button"
+									class="flex items-center align-middle uppercase group-hover:visible group-focus:visible"
+									on:click={() => toggleSearch()}
+								>
+									<span
+										class="invisible ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
+									>
+										<Icon
+											src={searchActivated ? XCircle : MagnifyingGlass}
+											class="h-5 w-5 text-gray-400"
+										/>
+									</span>
+								</button>
+								{#if searchActivated}
+									<div>
+										<div class="relative rounded-md shadow-sm">
+											<div
+												class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+											>
+												<Icon src={MagnifyingGlass} class="h-5 w-5 text-gray-400" />
+											</div>
+											<input
+												name="search"
+												id="search"
+												class="block h-7 w-full rounded-md border-0 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+												placeholder="Search Resources"
+												bind:value={searchString}
+											/>
+										</div>
+									</div>
+								{/if}
+							</div>
+						</th>
+						<th
+							scope="col"
+							class="group w-1/4 px-3 py-3 text-left text-xs font-medium uppercase text-gray-500 sm:pl-0"
+						>
+							<div class="flex">
+								<button type="button" class="inline-flex" on:click={() => sort('type')}>
+									Type
+									<span
+										class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
+									>
+										<Icon src={sortAscending ? ChevronDown : ChevronUp} class="h-4 w-4" />
+									</span>
+								</button>
+								<div
+									class="invisible max-w-3xl text-center group-hover:visible group-focus:visible lg:max-w-7xl"
+								>
+									<div class="flex items-center justify-between">
+										<div class="flex inline-flex text-left">
+											<div class="flex">
+												<button
+													type="button"
+													class="inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+													aria-expanded="false"
+													on:click={toggleFilterOptions}
+												>
+													<Icon
+														src={Funnel}
+														class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+													/>
+													<span
+														class="ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700"
+														>{filterOptions.length}</span
+													>
+												</button>
+											</div>
+											{#if filterOptionsVisible}
+												<div
+													class="absolute z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+												>
+													<form class="space-y-4">
+														{#each typeArray as type}
+															<div class="flex items-center">
+																<input
+																	id="filter-category-0"
+																	name="category[]"
+																	value={type}
+																	type="checkbox"
+																	class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+																	bind:group={filterOptions}
+																/>
+																<label
+																	for="filter-category-0"
+																	class="ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900"
+																	>{type}</label
+																>
+															</div>
+														{/each}
+													</form>
+												</div>
+											{/if}
+										</div>
+									</div>
+								</div>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-200 bg-white">
+					{#each currentData as resource}
+						<tr>
+							<td class="whitespace-nowrap px-6 py-4 pl-2">
+								<button
+									class="inline-flex items-center rounded-md bg-gray-100 px-4 py-2 pl-0 text-sm font-medium text-gray-500 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+									on:click={() => copyId(resource.id)}
+									title={resource.id}
+									disabled={copyingId !== null}
+								>
+									{#if copyingId === resource.id}
+										<Icon src={Check} class="mr-2 h-5 w-5" />
+									{:else}
+										<Icon src={Clipboard} class="mr-2 h-5 w-5" />
+									{/if}
+									Copy ID
+								</button>
+								{#await countAssessmentResults(resource.id) then assessmentResultCount}
+									<button
+										class={'inline-flex items-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none' +
+											(assessmentResultCount === 0 ? ' cursor-not-allowed opacity-50' : '')}
+										title={'Go to ' +
+											assessmentResultCount +
+											' assessment result' +
+											(assessmentResultCount === 1 ? '' : 's') +
+											' for ' +
+											resource.properties.name +
+											'.'}
+										on:click={() => goToAssessmentResults(resource.properties.id)}
+										disabled={assessmentResultCount === 0}
+									>
+										<Icon src={QueueList} class="mr-2 h-5 w-5" />
 
-                    {assessmentResultCount}
-                  </button>
-                {/await}
-              </td>
-              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-0">
-                <span class="text-sm text-gray-900">{resource.properties.name}</span>
-              </td>
-              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-0">
-                <span class="text-sm text-gray-900">{resource.resourceType.split(',')[0]}</span>
-              </td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
+										{assessmentResultCount}
+									</button>
+								{/await}
+							</td>
+							<td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-0">
+								<span class="text-sm text-gray-900">{resource.properties.name}</span>
+							</td>
+							<td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-0">
+								<span class="text-sm text-gray-900">{resource.resourceType.split(',')[0]}</span>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
 
-      <div class="mt-4">
-        <button
-          class={'px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200' +
-            (currentPage === 1 ? ' cursor-not-allowed opacity-50' : '')}
-          on:click={prevPage}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span class="mx-2 text-gray-500">{currentPage} / {totalPages}</span>
-        <button
-          class={'px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200' +
-            (currentPage === totalPages ? ' cursor-not-allowed opacity-50' : '')}
-          on:click={nextPage}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  </div>
+			<div class="mt-4">
+				<button
+					class={'rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none' +
+						(currentPage === 1 ? ' cursor-not-allowed opacity-50' : '')}
+					on:click={prevPage}
+					disabled={currentPage === 1}
+				>
+					Previous
+				</button>
+				<span class="mx-2 text-gray-500">{currentPage} / {totalPages}</span>
+				<button
+					class={'rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none' +
+						(currentPage === totalPages ? ' cursor-not-allowed opacity-50' : '')}
+					on:click={nextPage}
+					disabled={currentPage === totalPages}
+				>
+					Next
+				</button>
+			</div>
+		</div>
+	</div>
 {/if}

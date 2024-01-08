@@ -1,14 +1,14 @@
 <script>
-  import { onMount, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 
-  export let node;
+	export let node;
 
-  const { getCyInstance } = getContext('graphSharedState');
-  const cy = getCyInstance();
+	const { getCyInstance } = getContext('graphSharedState');
+	const cy = getCyInstance();
 
-  cy.add({
-    group: 'nodes',
-    id: node.id,
-    data: { ...node }
-  });
+	cy.add({
+		group: 'nodes',
+		id: node.id,
+		data: { ...node }
+	});
 </script>

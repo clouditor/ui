@@ -5,7 +5,7 @@
 You can try a<a href="/cloud">list of cloud services</a>
 
 <style lang="postcss">
-  :global(html) {
-    background-color: theme(colors.gray.100);
-  }
+	:global(html) {
+		background-color: theme(colors.gray.100);
+	}
 </style>

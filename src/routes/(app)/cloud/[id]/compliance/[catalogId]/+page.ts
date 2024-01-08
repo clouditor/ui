@@ -6,30 +6,30 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch, params, url }) => {
-  if (params.id == undefined) {
-    throw error(405, 'Required parameter missing');
-  }
+	if (params.id == undefined) {
+		throw error(405, 'Required parameter missing');
+	}
 
-  const catalog = getCatalog(params.catalogId, fetch);
+	const catalog = getCatalog(params.catalogId, fetch);
 
-  const evaluations = listEvaluationResults(
-    {
-      cloudServiceId: params.id,
-      catalogId: params.catalogId
-    },
-    true,
-    fetch
-  );
+	const evaluations = listEvaluationResults(
+		{
+			cloudServiceId: params.id,
+			catalogId: params.catalogId
+		},
+		true,
+		fetch
+	);
 
-  const controls = new Map(
-    (await listControls(params.catalogId, undefined, fetch)).map((c) => [c.id, c])
-  );
-  const filterStatus = url.searchParams.getAll('status');
+	const controls = new Map(
+		(await listControls(params.catalogId, undefined, fetch)).map((c) => [c.id, c])
+	);
+	const filterStatus = url.searchParams.getAll('status');
 
-  return {
-    evaluations,
-    catalog,
-    controls,
-    filterStatus
-  };
+	return {
+		evaluations,
+		catalog,
+		controls,
+		filterStatus
+	};
 }) satisfies PageLoad;

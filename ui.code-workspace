@@ -5,13 +5,7 @@
 		}
 	],
 	"settings": {
-		"cSpell.words": [
-			"clouditor",
-			"headlessui",
-			"popperjs",
-			"rgossiaux",
-			"tailwindcss"
-		],
+		"cSpell.words": ["clouditor", "headlessui", "popperjs", "rgossiaux", "tailwindcss"],
 		"editor.tabSize": 2
 	}
 }
