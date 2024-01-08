@@ -9,7 +9,7 @@ export default {
       },
       fontFamily: {
         sans: [
-          'Inter var, sans-serif',
+          'InterVariable, sans-serif',
           {
             fontFeatureSettings: '"cv11", "ss01"'
           }
