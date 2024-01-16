@@ -8,7 +8,7 @@ export const load = (async ({ fetch, params, url }) => {
 		throw error(405, 'Required parameter missing');
 	}
 
-	const results = listAssessmentResults(fetch, true);
+	const results = await listAssessmentResults(fetch, true);
 	const edges = await listGraphEdges(fetch);
 	const id = url.searchParams.get('id');
 	const tab = url.searchParams.get('tab');
