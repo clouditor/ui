@@ -13,7 +13,7 @@ export const client = new OidcClient(settings);
 
 export async function redirectLogin(backTo = '/') {
 	client.createSigninRequest({ state: backTo }).then((req) => {
-		goto(req.url);
+		window.location.href = req.url;
 	});
 }
 
