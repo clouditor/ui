@@ -26,20 +26,20 @@
 			plugins: {
 				tooltip: {
 					titleFont: {
-						family: 'Inter var'
+						family: 'InterVariable'
 					},
 					bodyFont: {
-						family: 'Inter var'
+						family: 'InterVariable'
 					},
 					footerFont: {
-						family: 'Inter var'
+						family: 'InterVariable'
 					}
 				},
 				legend: {
 					display: false,
 					labels: {
 						font: {
-							family: 'Inter var'
+							family: 'InterVariable'
 						}
 					}
 				}
