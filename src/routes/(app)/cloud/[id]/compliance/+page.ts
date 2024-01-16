@@ -9,7 +9,7 @@ export const load = (async ({ fetch, params }) => {
 
 	// Retrieve the result of each "parent" (aka the top controls), because in the
 	// overview we are only interested in that
-	const topControlResults = listEvaluationResults(
+	const topControlResults = await listEvaluationResults(
 		{ cloudServiceId: params.id, parentsOnly: true },
 		true,
 		fetch
