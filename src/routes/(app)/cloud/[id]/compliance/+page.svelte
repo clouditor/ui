@@ -10,15 +10,6 @@
 	import EnableCatalogButton from '$lib/components/EnableCatalogButton.svelte';
 	import type { PageData } from './$types';
 
-	$: enabledItems = data.catalogs.flatMap((catalog) => {
-		let toe = data.targets.find((toe) => toe.catalogId == catalog.id);
-		if (toe === undefined) {
-			return [];
-		}
-
-		return [{ catalog, toe }];
-	});
-
 	export let data: PageData;
 
 	// TODO: This should be done in the backend
@@ -60,7 +51,7 @@
 </script>
 
 <ul class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
-	{#each enabledItems as item, i (item.catalog.id)}
+	{#each data.enabledItems as item, i (item.catalog.id)}
 		<CatalogComplianceItem
 			{...item}
 			on:remove={remove}

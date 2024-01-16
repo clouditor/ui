@@ -10,9 +10,8 @@ export const load = (async ({ fetch, params, url }) => {
 		throw error(405, 'Required parameter missing');
 	}
 
-	const catalog = getCatalog(params.catalogId, fetch);
-
-	const evaluations = listEvaluationResults(
+	const catalog = await getCatalog(params.catalogId, fetch);
+	const evaluations = await listEvaluationResults(
 		{
 			cloudServiceId: params.id,
 			catalogId: params.catalogId
