@@ -33,7 +33,7 @@
 		"flat": "^6.0.1",
 		"inter-ui": "^4.0.1",
 		"oidc-client-ts": "^2.4.0",
-		"postcss": "^8.4.33",
+		"postcss": "^8.4.35",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.1.1",
 		"prettier-plugin-tailwindcss": "^0.5.11",
