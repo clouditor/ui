@@ -17,9 +17,12 @@
 		Folder,
 		Key,
 		LockClosed,
+		Newspaper,
+		PuzzlePiece,
 		RectangleGroup,
 		ServerStack,
-		Share
+		Share,
+		ShieldCheck
 	} from '@steeze-ui/heroicons';
 	import type { IconSource } from '@steeze-ui/svelte-icon';
 	import cytoscape, { type EdgeDefinition, type NodeDefinition, type Stylesheet } from 'cytoscape';
@@ -151,7 +154,10 @@
 			...nodeStyle('CodeRepository', Folder, overlay),
 			...nodeStyle('KeyVault', LockClosed, overlay),
 			...nodeStyle('Key', Key, overlay),
-			...nodeStyle('Object', Document, overlay)
+			...nodeStyle('Secret', PuzzlePiece, overlay),
+			...nodeStyle('Certificate', Newspaper, overlay),
+			...nodeStyle('Object', Document, overlay),
+			...nodeStyle('NetworkSecurityGroup', ShieldCheck, overlay)
 		]);
 
 		return styles;
