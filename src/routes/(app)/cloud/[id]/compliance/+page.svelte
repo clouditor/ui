@@ -5,7 +5,7 @@
 		type ComplianceStatus,
 		type EvaluationResult
 	} from '$lib/api/evaluation';
-	import { removeTargetOfEvaluation, type TargetOfEvaluation } from '$lib/api/orchestrator';
+	import { removeAuditScope, type AuditScope } from '$lib/api/orchestrator';
 	import CatalogComplianceItem from '$lib/components/CatalogComplianceItem.svelte';
 	import EnableCatalogButton from '$lib/components/EnableCatalogButton.svelte';
 	import type { PageData } from './$types';
@@ -35,7 +35,7 @@
 		return all;
 	}
 
-	async function remove(e: CustomEvent<{ toe: TargetOfEvaluation }>) {
+	async function remove(e: CustomEvent<{ toe: AuditScope }>) {
 		let really = confirm('Do you really want to remove this target of evaluation?');
 
 		if (!really) {
@@ -43,10 +43,10 @@
 		}
 
 		await stopEvaluation(e.detail.toe);
-		await removeTargetOfEvaluation(e.detail.toe);
+		await removeAuditScope(e.detail.toe);
 
 		// refresh our ToEs
-		invalidate((url) => url.pathname == `/v1/orchestrator/cloud_services/${data.service.id}/toes`);
+		invalidate((url) => url.pathname == `/v1/orchestrator/certification_targets/${data.service.id}/toes`);
 	}
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Catalog, TargetOfEvaluation } from '$lib/api/orchestrator';
+	import type { Catalog, AuditScope } from '$lib/api/orchestrator';
 	import AssuranceLevelPopover, {
 		type AssuranceLevelEvent
 	} from '$lib/components/AssuranceLevelPopover.svelte';
@@ -33,7 +33,7 @@
 		// Check, if catalog already exists in the ToE
 		if (!selected.get(catalog.id)) {
 			// Does not exist yet -> create new ToE
-			const toe: TargetOfEvaluation = {
+			const toe: AuditScope = {
 				catalogId: catalog.id,
 				// This will not be the final ID, since we do not know it at this point.
 				// This needs to be set by the caller of save()

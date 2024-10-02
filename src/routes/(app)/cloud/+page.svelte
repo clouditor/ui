@@ -7,7 +7,7 @@
 	export let data: PageData;
 
 	// Make sure, that our list of cloud services is up-to-date
-	invalidate((url) => url.pathname == '/v1/orchestrator/cloud_services');
+	invalidate((url) => url.pathname == '/v1/orchestrator/certification_targets');
 </script>
 
 <Header

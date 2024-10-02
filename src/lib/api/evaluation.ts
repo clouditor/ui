@@ -1,6 +1,6 @@
 import { clouditorize } from '$lib/api/util';
 import { throwError } from './errors';
-import type { TargetOfEvaluation } from './orchestrator';
+import type { AuditScope } from './orchestrator';
 
 export interface StartEvaluationResponse {
 	succesful: boolean;
@@ -32,7 +32,7 @@ export interface EvaluationResult {
 	validUntil?: string;
 }
 
-export async function startEvaluation(toe: TargetOfEvaluation): Promise<StartEvaluationResponse> {
+export async function startEvaluation(toe: AuditScope): Promise<StartEvaluationResponse> {
 	const apiUrl = clouditorize(
 		`/v1/evaluation/evaluate/${toe.cloudServiceId}/${toe.catalogId}/start`
 	);
@@ -45,7 +45,7 @@ export async function startEvaluation(toe: TargetOfEvaluation): Promise<StartEva
 	}).then((res) => res.json());
 }
 
-export async function stopEvaluation(toe: TargetOfEvaluation): Promise<{}> {
+export async function stopEvaluation(toe: AuditScope): Promise<{}> {
 	const apiUrl = clouditorize(
 		`/v1/evaluation/evaluate/${toe.cloudServiceId}/${toe.catalogId}/stop`
 	);

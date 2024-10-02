@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { ComplianceStatus } from '$lib/api/evaluation';
-	import type { TargetOfEvaluation } from '$lib/api/orchestrator';
+	import type { AuditScope } from '$lib/api/orchestrator';
 	import { Chart, type ChartConfiguration, type ChartData } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 
 	let canvas: HTMLCanvasElement;
 	let chart: Chart<'doughnut', { status: string[]; num: number }[]>;
 	export let compliance: Map<string, ComplianceStatus>;
-	export let toe: TargetOfEvaluation;
+	export let toe: AuditScope;
 
 	let merge = true;
 

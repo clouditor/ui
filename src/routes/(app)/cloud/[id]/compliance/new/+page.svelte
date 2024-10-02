@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
 	import { startEvaluation } from '$lib/api/evaluation';
-	import { createTargetOfEvaluation } from '$lib/api/orchestrator';
+	import { createAuditScope } from '$lib/api/orchestrator';
 	import type { WizardData } from '$lib/components/Wizard.svelte';
 	import WizardStepCatalog from '$lib/components/WizardStepCatalog.svelte';
 	import WizardStepSave from '$lib/components/WizardStepSave.svelte';
@@ -21,13 +21,13 @@
 		// Afterwards, create the targets of evaluation
 		let toes = await Promise.all(
 			event.detail.toes.map((toe) => {
-				return createTargetOfEvaluation(toe);
+				return createAuditScope(toe);
 			})
 		);
 
 		await Promise.all(toes.map((toe) => startEvaluation(toe)));
 		await invalidate(
-			(url) => url.pathname === `/v1/orchestrator/cloud_services/${data.service.id}/toes`
+			(url) => url.pathname === `/v1/orchestrator/certification_targets/${data.service.id}/toes`
 		);
 		goto('../');
 	}

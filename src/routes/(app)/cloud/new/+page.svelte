@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
-	import { createTargetOfEvaluation, registerCloudService } from '$lib/api/orchestrator';
+	import { createAuditScope, registerCloudService } from '$lib/api/orchestrator';
 	import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import type { PageData } from './$types';
@@ -42,7 +42,7 @@
 			event.detail.toes.map((toe) => {
 				// Set the correct cloud service id
 				toe.cloudServiceId = service.id;
-				return createTargetOfEvaluation(toe);
+				return createAuditScope(toe);
 			})
 		);
 
@@ -52,7 +52,7 @@
 		}
 
 		// Invalidate the list of cloud services
-		await invalidate((url) => url.pathname === '/v1/orchestrator/cloud_services');
+		await invalidate((url) => url.pathname === '/v1/orchestrator/certification_targets');
 		goto(`/cloud/${service.id}`);
 	}
 

@@ -4,7 +4,7 @@
 	export interface WizardData {
 		service: CloudService;
 		catalogs: Catalog[];
-		toes: TargetOfEvaluation[];
+		toes: AuditScope[];
 		mode: 'create' | 'edit';
 	}
 </script>
@@ -16,7 +16,7 @@
 	import WizardStepInfo from './WizardStepInfo.svelte';
 	import WizardStepSave from './WizardStepSave.svelte';
 	import WizardStepCatalog from './WizardStepCatalog.svelte';
-	import type { Catalog, CloudService, TargetOfEvaluation } from '$lib/api/orchestrator';
+	import type { Catalog, CloudService, AuditScope } from '$lib/api/orchestrator';
 	import type { SvelteComponent } from 'svelte';
 
 	export let current: number = 0;
