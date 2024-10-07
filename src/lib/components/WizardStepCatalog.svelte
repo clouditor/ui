@@ -11,7 +11,7 @@
 	$: selected = new Map(
 		data.catalogs.map((catalog) => [
 			catalog.id,
-			data.toes.find((toe) => toe.catalogId == catalog.id) !== undefined
+			data.auditScopes.find((auditScope) => auditScope.catalogId == catalog.id) !== undefined
 		])
 	);
 
@@ -30,10 +30,10 @@
 	 * @param assuranceLevel the assurance level, if the catalog needs it
 	 */
 	function toggle(catalog: Catalog, assuranceLevel?: string) {
-		// Check, if catalog already exists in the ToE
+		// Check, if catalog already exists in the Audit Scope
 		if (!selected.get(catalog.id)) {
-			// Does not exist yet -> create new ToE
-			const toe: AuditScope = {
+			// Does not exist yet -> create new Audit Scope
+			const auditScope: AuditScope = {
 				catalogId: catalog.id,
 				// This will not be the final ID, since we do not know it at this point.
 				// This needs to be set by the caller of save()
@@ -41,10 +41,10 @@
 				assuranceLevel: assuranceLevel
 			};
 
-			data.toes = [...data.toes, toe];
+			data.auditScopes = [...data.auditScopes, auditScope];
 		} else {
-			// Already exists -> remove it from the ToE list
-			data.toes = data.toes.filter((toe) => toe.catalogId != catalog.id);
+			// Already exists -> remove it from the Audit Scope list
+			data.auditScopes = data.auditScopes.filter((auditScope) => auditScope.catalogId != catalog.id);
 		}
 	}
 </script>

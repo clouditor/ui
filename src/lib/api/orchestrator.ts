@@ -329,7 +329,7 @@ export async function listMetricConfigurations(
 }
 
 /**
- * Creates a new cloud service
+ * Creates a new certification target
  */
 export async function registerCertificationTarget(service: CertificationTarget): Promise<CertificationTarget> {
 	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets`);
@@ -349,7 +349,7 @@ export async function registerCertificationTarget(service: CertificationTarget):
 }
 
 /**
- * Removes a cloud service.
+ * Removes a certification target.
  */
 export async function removeCertificationTarget(targetId: string): Promise<void> {
 	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${targetId}`);
@@ -365,7 +365,7 @@ export async function removeCertificationTarget(targetId: string): Promise<void>
 }
 
 /**
- * Retrieves a list of cloud services from the orchestrator service.
+ * Retrieves a list of certification targets from the orchestrator service.
  *
  * @returns an array of {@link CertificationTarget}s.
  */
@@ -605,9 +605,9 @@ export async function listControls(
 }
 
 /**
- * Retrieve a cloud service from the orchestrator service using its ID.
+ * Retrieve a certification target from the orchestrator service using its ID.
  *
- * @returns the cloud service
+ * @returns the certification target
  */
 export async function getCertificationTarget(id: string, fetch = window.fetch): Promise<CertificationTarget> {
 	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${id}`);

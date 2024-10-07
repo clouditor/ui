@@ -44,7 +44,7 @@
 	];
 
 	async function remove(e: CustomEvent) {
-		let really = confirm('Do you really want to delete this cloud service?');
+		let really = confirm('Do you really want to delete this certification target?');
 
 		if (!really) {
 			return;

@@ -4,7 +4,7 @@
 	export interface WizardData {
 		service: CertificationTarget;
 		catalogs: Catalog[];
-		toes: AuditScope[];
+		auditScopes: AuditScope[];
 		mode: 'create' | 'edit';
 	}
 </script>
@@ -34,14 +34,14 @@
 		content: typeof SvelteComponent;
 	}[] = [
 		{
-			name: 'Create cloud service',
-			description: 'Please provide a name for the cloud service.',
+			name: 'Create certification target',
+			description: 'Please provide a name for the certification target.',
 			href: '?step=0',
 			content: WizardStepName
 		},
 		{
 			name: 'Service information',
-			description: 'Optionally specify additional information about the cloud service.',
+			description: 'Optionally specify additional information about the certification target.',
 			href: '?step=1',
 			content: WizardStepInfo
 		},
@@ -53,7 +53,7 @@
 		},
 		{
 			name: 'Confirm',
-			description: 'Confirm creation of cloud service.',
+			description: 'Confirm creation of certification target.',
 			href: '?step=3',
 			content: WizardStepSave
 		}

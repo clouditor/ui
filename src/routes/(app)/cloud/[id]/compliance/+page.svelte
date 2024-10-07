@@ -35,15 +35,15 @@
 		return all;
 	}
 
-	async function remove(e: CustomEvent<{ toe: AuditScope }>) {
+	async function remove(e: CustomEvent<{ auditScope: AuditScope }>) {
 		let really = confirm('Do you really want to remove this target of evaluation?');
 
 		if (!really) {
 			return;
 		}
 
-		await stopEvaluation(e.detail.toe);
-		await removeAuditScope(e.detail.toe);
+		await stopEvaluation(e.detail.auditScope);
+		await removeAuditScope(e.detail.auditScope);
 
 		// refresh our ToEs
 		invalidate((url) => url.pathname == `/v1/orchestrator/certification_targets/${data.service.id}/audit_scopes`);

@@ -13,19 +13,19 @@
 	let wizard = {
 		service: data.service,
 		catalogs: data.leftOverCatalogs,
-		toes: [],
+		auditScopes: [],
 		mode: 'edit'
 	} satisfies WizardData;
 
 	async function save(event: CustomEvent<WizardData>) {
 		// Afterwards, create the targets of evaluation
-		let toes = await Promise.all(
-			event.detail.toes.map((toe) => {
-				return createAuditScope(toe);
+		let auditScopes = await Promise.all(
+			event.detail.auditScopes.map((auditScope) => {
+				return createAuditScope(auditScope);
 			})
 		);
 
-		await Promise.all(toes.map((toe) => startEvaluation(toe)));
+		await Promise.all(auditScopes.map((auditScope) => startEvaluation(auditScope)));
 		await invalidate(
 			(url) => url.pathname === `/v1/orchestrator/certification_targets/${data.service.id}/audit_scopes`
 		);

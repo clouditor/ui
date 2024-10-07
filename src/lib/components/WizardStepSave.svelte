@@ -18,21 +18,21 @@
 
 <div class="mb-5 text-sm">
 	{#if data.service.name.length == 0}
-		Please provide at least a name for the new cloud service.
+		Please provide at least a name for the new certification target.
 	{:else}
 		{#if data.mode == 'create'}
-			This will create a new cloud service called <b>{data.service.name}</b> with
+			This will create a new certification target called <b>{data.service.name}</b> with
 		{:else}
-			This will change the cloud service called <b>{data.service.name}</b> with
+			This will change the certification target called <b>{data.service.name}</b> with
 		{/if}
-		{#if data.toes.length > 0}
+		{#if data.auditScopes.length > 0}
 			the following targets of evaluation:
 			<ul class="ml-4 mt-1 list-disc">
-				{#each data.toes as toe}
+				{#each data.auditScopes as auditScope}
 					<li>
-						{toe.catalogId}
-						{#if toe.assuranceLevel !== undefined}
-							({toe.assuranceLevel})
+						{auditScope.catalogId}
+						{#if auditScope.assuranceLevel !== undefined}
+							({auditScope.assuranceLevel})
 						{/if}
 					</li>
 				{/each}

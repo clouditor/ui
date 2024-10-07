@@ -32,9 +32,9 @@ export interface EvaluationResult {
 	validUntil?: string;
 }
 
-export async function startEvaluation(toe: AuditScope): Promise<StartEvaluationResponse> {
+export async function startEvaluation(auditScope: AuditScope): Promise<StartEvaluationResponse> {
 	const apiUrl = clouditorize(
-		`/v1/evaluation/evaluate/${toe.certificationTargetId}/${toe.catalogId}/start`
+		`/v1/evaluation/evaluate/${auditScope.certificationTargetId}/${auditScope.catalogId}/start`
 	);
 
 	return fetch(apiUrl, {
@@ -45,9 +45,9 @@ export async function startEvaluation(toe: AuditScope): Promise<StartEvaluationR
 	}).then((res) => res.json());
 }
 
-export async function stopEvaluation(toe: AuditScope): Promise<{}> {
+export async function stopEvaluation(auditScope: AuditScope): Promise<{}> {
 	const apiUrl = clouditorize(
-		`/v1/evaluation/evaluate/${toe.certificationTargetId}/${toe.catalogId}/stop`
+		`/v1/evaluation/evaluate/${auditScope.certificationTargetId}/${auditScope.catalogId}/stop`
 	);
 
 	return fetch(apiUrl, {
