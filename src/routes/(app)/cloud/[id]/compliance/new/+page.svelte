@@ -27,7 +27,7 @@
 
 		await Promise.all(toes.map((toe) => startEvaluation(toe)));
 		await invalidate(
-			(url) => url.pathname === `/v1/orchestrator/certification_targets/${data.service.id}/toes`
+			(url) => url.pathname === `/v1/orchestrator/certification_targets/${data.service.id}/audit_scopes`
 		);
 		goto('../');
 	}

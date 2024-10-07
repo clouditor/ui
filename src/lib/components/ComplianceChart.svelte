@@ -63,7 +63,7 @@
 					params.append('status', s);
 				}
 
-				goto(`/cloud/${toe.cloudServiceId}/compliance/${toe.catalogId}?${params.toString()}`);
+				goto(`/cloud/${toe.certificationTargetId}/compliance/${toe.catalogId}?${params.toString()}`);
 			}
 		};
 	});

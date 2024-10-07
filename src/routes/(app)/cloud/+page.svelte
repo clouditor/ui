@@ -11,7 +11,7 @@
 </script>
 
 <Header
-	name="Cloud Services"
+	name="Certification Targets"
 	description="{data.services.length} cloud service(s) configured"
 	buttons={false}
 	icon={false}

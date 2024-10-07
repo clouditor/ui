@@ -2,7 +2,7 @@
 	// WizardData contains all the data that the wizard creates, such as the cloud
 	// service, its meta-data and optionally some target of evaluations.
 	export interface WizardData {
-		service: CloudService;
+		service: CertificationTarget;
 		catalogs: Catalog[];
 		toes: AuditScope[];
 		mode: 'create' | 'edit';
@@ -16,7 +16,7 @@
 	import WizardStepInfo from './WizardStepInfo.svelte';
 	import WizardStepSave from './WizardStepSave.svelte';
 	import WizardStepCatalog from './WizardStepCatalog.svelte';
-	import type { Catalog, CloudService, AuditScope } from '$lib/api/orchestrator';
+	import type { Catalog, CertificationTarget, AuditScope } from '$lib/api/orchestrator';
 	import type { SvelteComponent } from 'svelte';
 
 	export let current: number = 0;

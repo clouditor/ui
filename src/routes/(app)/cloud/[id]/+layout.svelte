@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { removeCloudService } from '$lib/api/orchestrator';
+	import { removeCertificationTarget } from '$lib/api/orchestrator';
 	import Header from '$lib/components/Header.svelte';
 	import Tabs from '$lib/components/Tabs.svelte';
 	import { CheckBadge, Cog6Tooth, QueueList, Squares2x2, Sun, User } from '@steeze-ui/heroicons';
@@ -50,7 +50,7 @@
 			return;
 		}
 
-		await removeCloudService(data.service.id);
+		await removeCertificationTarget(data.service.id);
 		goto('/cloud');
 	}
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
-	import { createAuditScope, registerCloudService } from '$lib/api/orchestrator';
+	import { createAuditScope, registerCertificationTarget } from '$lib/api/orchestrator';
 	import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import type { PageData } from './$types';
@@ -35,13 +35,13 @@
 		}
 
 		// First, register the cloud service
-		service = await registerCloudService(service);
+		service = await registerCertificationTarget(service);
 
 		// Afterwards, create the targets of evaluation
 		let toes = await Promise.all(
 			event.detail.toes.map((toe) => {
 				// Set the correct cloud service id
-				toe.cloudServiceId = service.id;
+				toe.certificationTargetId = service.id;
 				return createAuditScope(toe);
 			})
 		);
