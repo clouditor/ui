@@ -51,7 +51,7 @@
 			startEvaluation(auditScope);
 		}
 
-		// Invalidate the list of cloud services
+		// Invalidate the list of evaluation targets
 		await invalidate((url) => url.pathname === '/v1/orchestrator/certification_targets');
 		goto(`/cloud/${service.id}`);
 	}

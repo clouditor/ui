@@ -2,7 +2,7 @@
 
 <p class="text-base">Very awesome stuff here</p>
 
-You can try a<a href="/cloud">list of cloud services</a>
+You can try a<a href="/cloud">list of evaluation targets</a>
 
 <style lang="postcss">
 	:global(html) {
