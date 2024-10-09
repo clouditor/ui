@@ -142,7 +142,7 @@ export interface ListCertificationTargetsResponse {
 	targets: CertificationTarget[];
 }
 
-export interface ListTargetsOfEvaluationResponse {
+export interface ListAuditScopesResponse {
 	auditScope: AuditScope[];
 }
 
@@ -476,7 +476,7 @@ export async function removeControlFromScope(
  *
  * @returns an array of {@link AuditScope}s.
  */
-export async function listTargetsOfEvaluation(
+export async function listAuditScopes(
 	serviceId: string,
 	fetch = window.fetch
 ): Promise<AuditScope[]> {
@@ -490,7 +490,7 @@ export async function listTargetsOfEvaluation(
 	})
 		.then(throwError)
 		.then((res) => res.json())
-		.then((response: ListTargetsOfEvaluationResponse) => {
+		.then((response: ListAuditScopesResponse) => {
 			return response.auditScope;
 		});
 }

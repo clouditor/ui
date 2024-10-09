@@ -1,5 +1,5 @@
 import { listEvaluationResults } from '$lib/api/evaluation';
-import { listTargetsOfEvaluation } from '$lib/api/orchestrator';
+import { listAuditScopes } from '$lib/api/orchestrator';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
@@ -8,7 +8,7 @@ export const load = (async ({ fetch, params, parent }) => {
 		throw error(405, 'Required parameter missing');
 	}
 
-	const targets = await listTargetsOfEvaluation(params.id, fetch);
+	const targets = await listAuditScopes(params.id, fetch);
 	const data = await parent();
 
 	const leftOverCatalogs = data.catalogs.filter((c) => {
