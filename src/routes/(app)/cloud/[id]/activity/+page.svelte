@@ -44,7 +44,7 @@
 		const date = new Date(data.service.createdAt);
 
 		timeline.push({
-			content: 'Created cloud service',
+			content: 'Created certification target',
 			target: data.service.name,
 			href: '/cloud/' + data.service.id,
 			date: formatDate(date),

@@ -1,5 +1,5 @@
 import { listEvaluationResults } from '$lib/api/evaluation';
-import { listTargetsOfEvaluation } from '$lib/api/orchestrator';
+import { listAuditScopes } from '$lib/api/orchestrator';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
@@ -8,20 +8,20 @@ export const load = (async ({ fetch, params, parent }) => {
 		throw error(405, 'Required parameter missing');
 	}
 
-	const targets = await listTargetsOfEvaluation(params.id, fetch);
+	const targets = await listAuditScopes(params.id, fetch);
 	const data = await parent();
 
 	const leftOverCatalogs = data.catalogs.filter((c) => {
-		return targets.find((toe) => toe.catalogId == c.id) === undefined;
+		return targets.find((auditScope) => auditScope.catalogId == c.id) === undefined;
 	});
 
 	const enabledItems = data.catalogs.flatMap((catalog) => {
-		const toe = targets.find((toe) => toe.catalogId == catalog.id);
-		if (toe === undefined) {
+		const auditScope = targets.find((auditScope) => auditScope.catalogId == catalog.id);
+		if (auditScope === undefined) {
 			return [];
 		}
 
-		return [{ catalog, toe }];
+		return [{ catalog, auditScope }];
 	});
 
 	// Retrieve the result of each "parent" (aka the top controls), because in the
@@ -40,7 +40,7 @@ export const load = (async ({ fetch, params, parent }) => {
 		 */
 		leftOverCatalogs,
 		/**
-		 * This array contains all currently selected catalogs and their ToE.
+		 * This array contains all currently selected catalogs and their Audit Scope.
 		 */
 		enabledItems,
 		topControlResults

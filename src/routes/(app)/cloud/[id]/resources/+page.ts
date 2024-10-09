@@ -1,4 +1,4 @@
-import { listCloudServiceAssessmentResults } from '$lib/api/orchestrator';
+import { listCertificationTargetAssessmentResults } from '$lib/api/orchestrator';
 
 import { error } from '@sveltejs/kit';
 
@@ -10,7 +10,7 @@ export const load = (async ({ fetch, params, url }) => {
 		throw error(405, 'Required parameter missing');
 	}
 
-	const results = await listCloudServiceAssessmentResults(params.id, fetch);
+	const results = await listCertificationTargetAssessmentResults(params.id, fetch);
 	const edges = await listGraphEdges();
 	const page = Number(url.searchParams.get('page'));
 

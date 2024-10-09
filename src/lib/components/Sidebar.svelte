@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CloudService } from '$lib/api/orchestrator';
+	import type { CertificationTarget } from '$lib/api/orchestrator';
 	import NavigationItem from '$lib/components/NavigationItem.svelte';
 	import {
 		AdjustmentsHorizontal,
@@ -11,14 +11,14 @@
 	} from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 
-	export let services: CloudService[];
+	export let services: CertificationTarget[];
 	export let mobile: boolean = false;
 
 	// Build navigation menu with dynamic components
 	$: navigation = [
 		{ name: 'Dashboard', href: '/dashboard', icon: Home, disabled: true },
 		{
-			name: 'Cloud Services',
+			name: 'Certification Targets',
 			href: '/cloud',
 			icon: Folder,
 			children: [

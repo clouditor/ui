@@ -6,20 +6,20 @@
 
 	export let data: PageData;
 
-	// Make sure, that our list of cloud services is up-to-date
-	invalidate((url) => url.pathname == '/v1/orchestrator/cloud_services');
+	// Make sure, that our list of certification targets is up-to-date
+	invalidate((url) => url.pathname == '/v1/orchestrator/certification_targets');
 </script>
 
 <Header
-	name="Cloud Services"
-	description="{data.services.length} cloud service(s) configured"
+	name="Certification Targets"
+	description="{data.services.length} certification target(s) configured"
 	buttons={false}
 	icon={false}
 />
 
 <BelowHeader>
-	This page provides an overview of all configured cloud services within Clouditor. Click on the
-	name of a cloud service to display more information about it.
+	This page provides an overview of all configured certification targets within Clouditor. Click on the
+	name of a certification target to display more information about it.
 </BelowHeader>
 
 <ul class="divide-y divide-gray-100">

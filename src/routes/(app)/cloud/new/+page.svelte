@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
-	import { createTargetOfEvaluation, registerCloudService } from '$lib/api/orchestrator';
+	import { createAuditScope, registerCertificationTarget } from '$lib/api/orchestrator';
 	import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import type { PageData } from './$types';
@@ -34,25 +34,25 @@
 			}
 		}
 
-		// First, register the cloud service
-		service = await registerCloudService(service);
+		// First, register the certification target
+		service = await registerCertificationTarget(service);
 
 		// Afterwards, create the targets of evaluation
-		let toes = await Promise.all(
-			event.detail.toes.map((toe) => {
-				// Set the correct cloud service id
-				toe.cloudServiceId = service.id;
-				return createTargetOfEvaluation(toe);
+		let auditScopes = await Promise.all(
+			event.detail.auditScopes.map((auditScope) => {
+				// Set the correct certification target id
+				auditScope.certificationTargetId = service.id;
+				return createAuditScope(auditScope);
 			})
 		);
 
 		// And also automatically start the evaluation
-		for (let toe of toes) {
-			startEvaluation(toe);
+		for (let auditScope of auditScopes) {
+			startEvaluation(auditScope);
 		}
 
-		// Invalidate the list of cloud services
-		await invalidate((url) => url.pathname === '/v1/orchestrator/cloud_services');
+		// Invalidate the list of evaluation targets
+		await invalidate((url) => url.pathname === '/v1/orchestrator/certification_targets');
 		goto(`/cloud/${service.id}`);
 	}
 
@@ -66,7 +66,7 @@
 				updatedAt: new Date().toISOString()
 			},
 			catalogs: data.catalogs,
-			toes: [],
+			auditScopes: [],
 			mode: 'create'
 		};
 	}
@@ -77,7 +77,7 @@
 			return;
 		}
 
-		// Reset cloud service data and reset step to the beginning
+		// Reset certification target data and reset step to the beginning
 		restart();
 
 		// Reset step to the beginning
@@ -87,12 +87,12 @@
 
 <Header
 	name={wizard.service.name}
-	description={wizard.service.description ?? 'A new cloud service'}
+	description={wizard.service.description ?? 'A new certification target'}
 	buttons={false}
 />
 
 <BelowHeader>
-	You can use this page to create a new cloud service. This wizard will guide you through all the
+	You can use this page to create a new certification target. This wizard will guide you through all the
 	necessary steps. To move to the next step, either click on the name of the step or the circle next
 	to it.
 </BelowHeader>

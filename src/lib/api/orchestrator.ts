@@ -22,7 +22,7 @@ export interface Tag {
 	tag: object;
 }
 
-export interface CloudService {
+export interface CertificationTarget {
 	id: string;
 	name: string;
 	description?: string;
@@ -33,16 +33,16 @@ export interface CloudService {
 	updatedAt: string;
 }
 
-export interface TargetOfEvaluation {
-	cloudServiceId: string;
+export interface AuditScope {
+	certificationTargetId: string;
 	catalogId: string;
 	assuranceLevel?: string;
 	controlsInScope?: Control[];
 }
 
 export interface ControlInScope {
-	targetOfEvaluationCloudServiceId: string;
-	targetOfEvaluationCatalogId: string;
+	auditScopeCertificationTargetId: string;
+	auditScopeCatalogId: string;
 	controlId: string;
 	controlCategoryName: string;
 	controlCategoryCatalogId: string;
@@ -104,7 +104,7 @@ export interface ListMetricConfigurationsResponse {
 export interface Certificate {
 	id: string;
 	name: string;
-	cloudServiceId: string;
+	certificationTargetId: string;
 	issueDate: string;
 	expirationDate: string;
 	standard: string;
@@ -138,12 +138,12 @@ export interface ListAssessmentResultsResponse {
 	results: AssessmentResult[];
 }
 
-export interface ListCloudServicesResponse {
-	services: CloudService[];
+export interface ListCertificationTargetsResponse {
+	targets: CertificationTarget[];
 }
 
-export interface ListTargetsOfEvaluationResponse {
-	targetOfEvaluation: TargetOfEvaluation[];
+export interface ListAuditScopesResponse {
+	auditScope: AuditScope[];
 }
 
 export interface ListControlsInScopeResponse {
@@ -202,12 +202,12 @@ export async function listAssessmentResults(
  *
  * @returns an array of {@link AssessmentResult}s.
  */
-export async function listCloudServiceAssessmentResults(
+export async function listCertificationTargetAssessmentResults(
 	serviceId: string,
 	fetch = window.fetch
 ): Promise<AssessmentResult[]> {
 	const apiUrl = clouditorize(
-		`/v1/orchestrator/assessment_results?pageSize=1000&filter.cloudServiceId=${serviceId}&orderBy=timestamp&asc=false`
+		`/v1/orchestrator/assessment_results?pageSize=1000&filter.certificationTargetId=${serviceId}&orderBy=timestamp&asc=false`
 	);
 
 	return fetch(apiUrl, {
@@ -270,7 +270,7 @@ export async function getMetricImplementation(id: string): Promise<MetricImpleme
 /**
  * Retrieves a particular metric configuration from the orchestrator service.
  *
- * @param serviceId the Cloud Service ID
+ * @param serviceId the Certification Target ID
  * @param metricId the metric id
  * @returns metric configuration
  */
@@ -279,7 +279,7 @@ export async function getMetricConfiguration(
 	metricId: string
 ): Promise<MetricConfiguration> {
 	const apiUrl = clouditorize(
-		`/v1/orchestrator/cloud_services/${serviceId}/metric_configurations/${metricId}`
+		`/v1/orchestrator/certification_targets/${serviceId}/metric_configurations/${metricId}`
 	);
 
 	return fetch(apiUrl, {
@@ -305,7 +305,7 @@ export async function listMetricConfigurations(
 	serviceId: string,
 	skipDefault = false
 ): Promise<Map<string, MetricConfiguration>> {
-	const apiUrl = clouditorize(`/v1/orchestrator/cloud_services/${serviceId}/metric_configurations`);
+	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${serviceId}/metric_configurations`);
 
 	return fetch(apiUrl, {
 		method: 'GET',
@@ -329,10 +329,10 @@ export async function listMetricConfigurations(
 }
 
 /**
- * Creates a new cloud service
+ * Creates a new certification target
  */
-export async function registerCloudService(service: CloudService): Promise<CloudService> {
-	const apiUrl = clouditorize(`/v1/orchestrator/cloud_services`);
+export async function registerCertificationTarget(service: CertificationTarget): Promise<CertificationTarget> {
+	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets`);
 
 	return fetch(apiUrl, {
 		method: 'POST',
@@ -343,16 +343,16 @@ export async function registerCloudService(service: CloudService): Promise<Cloud
 	})
 		.then(throwError)
 		.then((res) => res.json())
-		.then((response: CloudService) => {
+		.then((response: CertificationTarget) => {
 			return response;
 		});
 }
 
 /**
- * Removes a cloud service.
+ * Removes a certification target.
  */
-export async function removeCloudService(serviceId: string): Promise<void> {
-	const apiUrl = clouditorize(`/v1/orchestrator/cloud_services/${serviceId}`);
+export async function removeCertificationTarget(targetId: string): Promise<void> {
+	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${targetId}`);
 
 	return fetch(apiUrl, {
 		method: 'DELETE',
@@ -365,12 +365,12 @@ export async function removeCloudService(serviceId: string): Promise<void> {
 }
 
 /**
- * Retrieves a list of cloud services from the orchestrator service.
+ * Retrieves a list of certification targets from the orchestrator service.
  *
- * @returns an array of {@link CloudService}s.
+ * @returns an array of {@link CertificationTarget}s.
  */
-export async function listCloudServices(fetch = window.fetch): Promise<CloudService[]> {
-	const apiUrl = clouditorize(`/v1/orchestrator/cloud_services`);
+export async function listCertificationTargets(fetch = window.fetch): Promise<CertificationTarget[]> {
+	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets`);
 
 	return fetch(apiUrl, {
 		method: 'GET',
@@ -380,18 +380,18 @@ export async function listCloudServices(fetch = window.fetch): Promise<CloudServ
 	})
 		.then(throwError)
 		.then((res) => res.json())
-		.then((response: ListCloudServicesResponse) => {
-			return response.services;
+		.then((response: ListCertificationTargetsResponse) => {
+			return response.targets;
 		});
 }
 
 /**
  * Creates a new target of evaluation.
  */
-export async function createTargetOfEvaluation(
-	target: TargetOfEvaluation
-): Promise<TargetOfEvaluation> {
-	const apiUrl = clouditorize(`/v1/orchestrator/toes`);
+export async function createAuditScope(
+	target: AuditScope
+): Promise<AuditScope> {
+	const apiUrl = clouditorize(`/v1/orchestrator/audit_scopes`);
 
 	return fetch(apiUrl, {
 		method: 'POST',
@@ -407,11 +407,11 @@ export async function createTargetOfEvaluation(
 /**
  * Removes a target of evaluation.
  */
-export async function removeTargetOfEvaluation(
-	target: TargetOfEvaluation
-): Promise<TargetOfEvaluation> {
+export async function removeAuditScope(
+	target: AuditScope
+): Promise<AuditScope> {
 	const apiUrl = clouditorize(
-		`/v1/orchestrator/cloud_services/${target.cloudServiceId}/toes/${target.catalogId}`
+		`/v1/orchestrator/certification_targets/${target.certificationTargetId}/audit_scopes/${target.catalogId}`
 	);
 
 	return fetch(apiUrl, {
@@ -433,7 +433,7 @@ export async function addControlToScope(
 	fetch = window.fetch
 ): Promise<ControlInScope> {
 	const apiUrl = clouditorize(
-		`/v1/orchestrator/cloud_services/${scope.targetOfEvaluationCloudServiceId}/toes/${scope.targetOfEvaluationCatalogId}/controls_in_scope`
+		`/v1/orchestrator/certification_targets/${scope.auditScopeCertificationTargetId}/audit_scopes/${scope.auditScopeCatalogId}/controls_in_scope`
 	);
 
 	return fetch(apiUrl, {
@@ -458,7 +458,7 @@ export async function removeControlFromScope(
 	fetch = window.fetch
 ): Promise<ControlInScope> {
 	const apiUrl = clouditorize(
-		`/v1/orchestrator/cloud_services/${scope.targetOfEvaluationCloudServiceId}/toes/${scope.targetOfEvaluationCatalogId}/controls_in_scope/categories/${scope.controlCategoryName}/controls/${scope.controlId}`
+		`/v1/orchestrator/certification_targets/${scope.auditScopeCertificationTargetId}/audit_scopes/${scope.auditScopeCatalogId}/controls_in_scope/categories/${scope.controlCategoryName}/controls/${scope.controlId}`
 	);
 
 	return fetch(apiUrl, {
@@ -474,13 +474,13 @@ export async function removeControlFromScope(
 /**
  * Retrieves a list of targets of evaluation from the orchestrator service.
  *
- * @returns an array of {@link TargetOfEvaluation}s.
+ * @returns an array of {@link AuditScope}s.
  */
-export async function listTargetsOfEvaluation(
+export async function listAuditScopes(
 	serviceId: string,
 	fetch = window.fetch
-): Promise<TargetOfEvaluation[]> {
-	const apiUrl = clouditorize(`/v1/orchestrator/cloud_services/${serviceId}/toes`);
+): Promise<AuditScope[]> {
+	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${serviceId}/audit_scopes`);
 
 	return fetch(apiUrl, {
 		method: 'GET',
@@ -490,8 +490,8 @@ export async function listTargetsOfEvaluation(
 	})
 		.then(throwError)
 		.then((res) => res.json())
-		.then((response: ListTargetsOfEvaluationResponse) => {
-			return response.targetOfEvaluation;
+		.then((response: ListAuditScopesResponse) => {
+			return response.auditScope;
 		});
 }
 
@@ -506,7 +506,7 @@ export async function listControlsInScope(
 	fetch = window.fetch
 ): Promise<ControlInScope[]> {
 	const apiUrl = clouditorize(
-		`/v1/orchestrator/cloud_services/${serviceId}/toes/${catalogId}/controls_in_scope?pageSize=1500&orderBy=control_id&asc=true`
+		`/v1/orchestrator/certification_targets/${serviceId}/audit_scopes/${catalogId}/controls_in_scope?pageSize=1500&orderBy=control_id&asc=true`
 	);
 
 	return fetch(apiUrl, {
@@ -605,12 +605,12 @@ export async function listControls(
 }
 
 /**
- * Retrieve a cloud service from the orchestrator service using its ID.
+ * Retrieve a certification target from the orchestrator service using its ID.
  *
- * @returns the cloud service
+ * @returns the certification target
  */
-export async function getCloudService(id: string, fetch = window.fetch): Promise<CloudService> {
-	const apiUrl = clouditorize(`/v1/orchestrator/cloud_services/${id}`);
+export async function getCertificationTarget(id: string, fetch = window.fetch): Promise<CertificationTarget> {
+	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${id}`);
 
 	return fetch(apiUrl, {
 		method: 'GET',
@@ -622,11 +622,11 @@ export async function getCloudService(id: string, fetch = window.fetch): Promise
 		.then((res) => res.json());
 }
 
-export async function updateCloudService(
-	service: CloudService,
+export async function updateCertificationTarget(
+	service: CertificationTarget,
 	fetch = window.fetch
-): Promise<CloudService> {
-	const apiUrl = clouditorize(`/v1/orchestrator/cloud_services/${service.id}`);
+): Promise<CertificationTarget> {
+	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${service.id}`);
 
 	return fetch(apiUrl, {
 		method: 'PUT',
@@ -637,7 +637,7 @@ export async function updateCloudService(
 	})
 		.then(throwError)
 		.then((res) => res.json())
-		.then((response: CloudService) => {
+		.then((response: CertificationTarget) => {
 			return response;
 		});
 }
@@ -645,9 +645,9 @@ export async function updateCloudService(
 export async function updateControlInScope(
 	scope: ControlInScope,
 	fetch = window.fetch
-): Promise<CloudService> {
+): Promise<CertificationTarget> {
 	const apiUrl = clouditorize(
-		`/v1/orchestrator/cloud_services/${scope.targetOfEvaluationCloudServiceId}/toes/${scope.targetOfEvaluationCatalogId}/controls_in_scope/categories/${scope.controlCategoryName}/controls/${scope.controlId}`
+		`/v1/orchestrator/certification_targets/${scope.auditScopeCertificationTargetId}/audit_scopes/${scope.auditScopeCatalogId}/controls_in_scope/categories/${scope.controlCategoryName}/controls/${scope.controlId}`
 	);
 
 	return fetch(apiUrl, {
@@ -659,7 +659,7 @@ export async function updateControlInScope(
 	})
 		.then(throwError)
 		.then((res) => res.json())
-		.then((response: CloudService) => {
+		.then((response: CertificationTarget) => {
 			return response;
 		});
 }

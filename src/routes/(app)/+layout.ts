@@ -1,9 +1,9 @@
-import { listCatalogs, listCloudServices, listMetrics } from '$lib/api/orchestrator';
+import { listCatalogs, listCertificationTargets, listMetrics } from '$lib/api/orchestrator';
 import type { LayoutLoad } from './$types';
 
 export const load = (async ({ fetch }) => {
 	const [services, catalogs, metricList] = await Promise.all([
-		listCloudServices(fetch),
+		listCertificationTargets(fetch),
 		listCatalogs(fetch),
 		listMetrics(fetch)
 	]);

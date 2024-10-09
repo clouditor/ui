@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { ComplianceStatus } from '$lib/api/evaluation';
-	import type { TargetOfEvaluation } from '$lib/api/orchestrator';
+	import type { AuditScope } from '$lib/api/orchestrator';
 	import { Chart, type ChartConfiguration, type ChartData } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 
 	let canvas: HTMLCanvasElement;
 	let chart: Chart<'doughnut', { status: string[]; num: number }[]>;
 	export let compliance: Map<string, ComplianceStatus>;
-	export let toe: TargetOfEvaluation;
+	export let auditScope: AuditScope;
 
 	let merge = true;
 
@@ -63,7 +63,7 @@
 					params.append('status', s);
 				}
 
-				goto(`/cloud/${toe.cloudServiceId}/compliance/${toe.catalogId}?${params.toString()}`);
+				goto(`/cloud/${auditScope.certificationTargetId}/compliance/${auditScope.catalogId}?${params.toString()}`);
 			}
 		};
 	});
@@ -81,7 +81,7 @@
 				labels: ['Non Compliant', 'Compliant', 'Waiting for Data'],
 				datasets: [
 					{
-						label: toe.catalogId,
+						label: auditScope.catalogId,
 						data: [
 							filter([
 								'EVALUATION_STATUS_NOT_COMPLIANT',
@@ -106,7 +106,7 @@
 				],
 				datasets: [
 					{
-						label: toe.catalogId,
+						label: auditScope.catalogId,
 						data: [
 							filter(['EVALUATION_STATUS_NOT_COMPLIANT']),
 							filter(['EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY']),
@@ -134,19 +134,19 @@
 	<div class="relative mb-2 flex items-start">
 		<div class="flex h-6 items-center">
 			<input
-				id="merge-{toe.catalogId}"
-				aria-describedby="merge-description-{toe.catalogId}"
-				name="merge-{toe.catalogId}"
+				id="merge-{auditScope.catalogId}"
+				aria-describedby="merge-description-{auditScope.catalogId}"
+				name="merge-{auditScope.catalogId}"
 				type="checkbox"
 				class="h-4 w-4 rounded border-gray-300 text-clouditor focus:ring-clouditor"
 				bind:checked={merge}
 			/>
 		</div>
 		<div class="ml-3 text-sm leading-6">
-			<label for="merge-{toe.catalogId}" class="font-medium text-gray-900"
+			<label for="merge-{auditScope.catalogId}" class="font-medium text-gray-900"
 				>Merge manual results</label
 			>
-			<span id="merge-description-{toe.catalogId}" class="text-gray-500">
+			<span id="merge-description-{auditScope.catalogId}" class="text-gray-500">
 				<span class="sr-only">Merge manual results </span>
 				with automatic results.
 			</span>
