@@ -36,3 +36,14 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## Environment variables
+The following environment variables can be set to configure the UI. The values are all default values.
+
+```
+PUBLIC_OAUTH_AUTHORITY=http://localhost:8080 
+PUBLIC_OAUTH_CLIENT_ID=dashboard
+PUBLIC_OAUTH_REDIRECT_URI=http://localhost:5173/callback
+PUBLIC_OAUTH_SCOPE=profile email
+PUBLIC_CLOUDITOR_URL=http://localhost:8080
+```

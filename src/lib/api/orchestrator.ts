@@ -143,7 +143,7 @@ export interface ListCertificationTargetsResponse {
 }
 
 export interface ListAuditScopesResponse {
-	auditScope: AuditScope[];
+	auditScopes: AuditScope[];
 }
 
 export interface ListControlsInScopeResponse {
@@ -481,7 +481,7 @@ export async function listAuditScopes(
 	fetch = window.fetch
 ): Promise<AuditScope[]> {
 	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${serviceId}/audit_scopes`);
-
+	
 	return fetch(apiUrl, {
 		method: 'GET',
 		headers: {
@@ -491,7 +491,7 @@ export async function listAuditScopes(
 		.then(throwError)
 		.then((res) => res.json())
 		.then((response: ListAuditScopesResponse) => {
-			return response.auditScope;
+			return response.auditScopes;
 		});
 }
 
