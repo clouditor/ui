@@ -8,7 +8,7 @@ export const load = (async ({ fetch, params, parent }) => {
 		throw error(405, 'Required parameter missing');
 	}
 
-	const targets = await listAuditScopes(params.id, fetch);
+	const targets = await listAuditScopes(params.id, fetch) || [];;
 	const data = await parent();
 
 	const leftOverCatalogs = data.catalogs.filter((c) => {
