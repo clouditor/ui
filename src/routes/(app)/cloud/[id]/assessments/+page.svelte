@@ -70,6 +70,34 @@
 	}
 </script>
 
+<style>
+	.text-wrap {
+			white-space: pre-wrap; /* Beibehaltung von Zeilenumbrüchen und Umbruch von langen Zeilen */
+			word-wrap: break-word; /* Ermöglicht den Umbruch in langen Wörtern */
+			overflow-wrap: break-word; /* Für zusätzliche Browserkompatibilität */
+	}
+	.modal-background {
+        position: fixed; /* Fixiert das Modal in der Ansicht */
+        top: 0;
+        left: 0;
+        right: 0; /* Füllt die gesamte Breite */
+        bottom: 0; /* Füllt die gesamte Höhe */
+        display: flex; /* Flexbox benutzen */
+        align-items: center; /* Vertikal zentrieren */
+        justify-content: center; /* Horizontal zentrieren */
+        background-color: rgba(0, 0, 0, 0.5); /* Dunkler Hintergrund für das Modal */
+    }
+
+    .modal-content {
+        /* max-width: 600px; Maximale Breite des Modals */
+        width: 70%; /* Breite des Modals */
+        background: white; /* Hintergrundfarbe des Modals */
+        border-radius: 8px; /* Abgerundete Ecken */
+        padding: 20px; /* Innenabstand */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Schatten für das Modal */
+    }
+</style>
+
 {#if data.resources.length == 0}
 	<StarterHint type="assessment results" icon={QueueList}>
 		<span slot="component">Clouditor Assessment component</span>
@@ -130,15 +158,11 @@
 						{#each currentData as assessment}
 							{#if showModalId == assessment.id}
 								<tr>
-									<div
-										class=" inset-0 flex max-w-80 items-center justify-center bg-gray-100 bg-opacity-75"
-									>
-										<div class="rounded bg-white p-6 shadow-lg">
-											<pre class="overflow-y-auto rounded bg-gray-100 p-4">{JSON.stringify(
-													assessment,
-													null,
-													5
-												)}</pre>
+									<div class="modal-background"	>
+										<div class="modal-content">
+											<pre class="overflow-y-auto rounded bg-gray-100 p-4 text-wrap">
+												{JSON.stringify(assessment,null,5)}
+											</pre>
 											<Button on:click={closeModal} class="mt-2">Close</Button>
 										</div>
 									</div>
