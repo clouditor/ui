@@ -5,6 +5,7 @@
 
 <script lang="ts">
 	import {
+		Beaker,
 		BuildingLibrary,
 		CircleStack,
 		Cloud,
@@ -157,7 +158,8 @@
 			...nodeStyle('Secret', PuzzlePiece, overlay),
 			...nodeStyle('Certificate', Newspaper, overlay),
 			...nodeStyle('Object', Document, overlay),
-			...nodeStyle('NetworkSecurityGroup', ShieldCheck, overlay)
+			...nodeStyle('NetworkSecurityGroup', ShieldCheck, overlay),
+			...nodeStyle('MachineLearningWorkspace', Beaker, overlay)
 		]);
 
 		return styles;
