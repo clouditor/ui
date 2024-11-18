@@ -159,7 +159,7 @@
 			...nodeStyle('Certificate', Newspaper, overlay),
 			...nodeStyle('Object', Document, overlay),
 			...nodeStyle('NetworkSecurityGroup', ShieldCheck, overlay),
-			...nodeStyle('MachineLearningWorkspace', Beaker, overlay)
+			...nodeStyle('MLWorkspace', Beaker, overlay)
 		]);
 
 		return styles;
