@@ -7,6 +7,7 @@
 	import {
 		Beaker,
 		BuildingLibrary,
+		ChartPie,
 		CircleStack,
 		Cloud,
 		CodeBracket,
