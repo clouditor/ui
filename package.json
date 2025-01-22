@@ -16,7 +16,7 @@
 		"@steeze-ui/heroicons": "^2.3.0",
 		"@steeze-ui/svelte-icon": "^1.5.0",
 		"@sveltejs/adapter-node": "^4.0.1",
-		"@sveltejs/kit": "^2.5.6",
+		"@sveltejs/kit": "^2.16.1",
 		"@tailwindcss/forms": "^0.5.7",
 		"@types/cytoscape": "^3.19.16",
 		"@types/cytoscape-dagre": "^2.3.3",
@@ -43,7 +43,7 @@
 		"tailwindcss": "^3.4.13",
 		"tslib": "^2.6.2",
 		"typescript": "^5.4.4",
-		"vite": "^5.2.7"
+		"vite": "^5.4.14"
 	},
 	"type": "module",
 	"overrides": {
