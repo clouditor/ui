@@ -23,7 +23,7 @@
 		"@types/cytoscape-euler": "^1.2.3",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^6.21.0",
-		"autoprefixer": "^10.4.17",
+		"autoprefixer": "^10.4.21",
 		"chart.js": "^4.4.1",
 		"cytoscape": "^3.28.1",
 		"cytoscape-cola": "^2.5.1",
