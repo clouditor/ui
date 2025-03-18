@@ -4,10 +4,10 @@
 	import type { Control } from '$lib/api/orchestrator';
 	import type { AddEvaluationResultEvent } from '$lib/components/AddEvaluationResultDialog.svelte';
 	import ControlComplianceItem from '$lib/components/ControlComplianceItem.svelte';
-	import { Disclosure, DisclosureButton, DisclosurePanel } from '@rgossiaux/svelte-headlessui';
 	import { Minus, Plus } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import type { PageData } from './$types';
+	import { createDisclosure } from 'svelte-headlessui';
 
 	interface Props {
 		data: PageData;
@@ -19,7 +19,6 @@
 		result: EvaluationResult;
 		children: EvaluationResult[];
 	}
-
 
 	/**
 	 * This function builds a tree-like structure out of the evaluation results,
@@ -58,7 +57,7 @@
 		return tree;
 	}
 
-	async function addResult(e: CustomEvent<AddEvaluationResultEvent>, control?: Control) {
+	async function addResult(e: AddEvaluationResultEvent, control?: Control) {
 		if (control == undefined) {
 			return;
 		}
@@ -70,17 +69,19 @@
 			controlCategoryName: control.categoryName,
 			controlCatalogId: data.catalog.id,
 			parentControlId: control.parentControlId,
-			status: e.detail.status,
+			status: e.status,
 			timestamp: new Date().toISOString(),
 			failingAssessmentResultIds: [],
-			comment: e.detail.comment,
-			validUntil: e.detail.validUntil.toISOString()
+			comment: e.comment,
+			validUntil: e.validUntil.toISOString()
 		};
 
 		result = await createEvaluationResult(result);
 		invalidate((url) => url.pathname == '/v1/evaluation/results');
 	}
 	let tree = $derived(buildTree(data.evaluations, data.filterStatus));
+
+	const disc = createDisclosure({ label: 'Details', expanded: true });
 </script>
 
 <div class="border-b border-gray-200 pb-5">
@@ -92,34 +93,38 @@
 
 <dl class="space-y-6 divide-y divide-gray-900/10">
 	{#each [...tree] as [_, item] (item.result.id)}
-		<Disclosure as="div" class="pt-6" >
-			{#snippet children({ open })}
-						<dt>
-					<div class="flex w-full items-start justify-between text-left text-gray-900">
-						<ControlComplianceItem
-							result={item.result}
-							control={data.controls.get(item.result.controlId)}
-							on:addResult={(e) => addResult(e, data.controls.get(item.result.controlId))}
-						/>
-						<DisclosureButton>
-							<span class="ml-6 flex h-7 items-center">
-								{#if !open}
-									<Icon src={Plus} class="h-6 w-6" aria-hidden="true" />
-								{:else}
-									<Icon src={Minus} class="h-6 w-6" aria-hidden="true" />
-								{/if}
-							</span>
-						</DisclosureButton>
-					</div>
-					<DisclosurePanel as="dd" class="mt-2 pr-12">
+		<div class="pt-6">
+			<dt>
+				<div class="flex w-full items-start justify-between text-left text-gray-900">
+					<ControlComplianceItem
+						result={item.result}
+						control={data.controls.get(item.result.controlId)}
+						addResult={(e) => addResult(e, data.controls.get(item.result.controlId))}
+					/>
+					<button use:disc.button>
+						<span class="ml-6 flex h-7 items-center">
+							{#if !open}
+								<Icon src={Plus} class="h-6 w-6" aria-hidden="true" />
+							{:else}
+								<Icon src={Minus} class="h-6 w-6" aria-hidden="true" />
+							{/if}
+						</span>
+					</button>
+				</div>
+				{#if $disc.expanded}
+					<div class="mt-2 pr-12">
 						{#each item.children as result (result.controlId)}
 							<div class="ml-12 mt-6">
-								<ControlComplianceItem {result} control={data.controls.get(result.controlId)} />
+								<ControlComplianceItem
+									{result}
+									{addResult}
+									control={data.controls.get(result.controlId)}
+								/>
 							</div>
 						{/each}
-					</DisclosurePanel>
-				</dt>
-								{/snippet}
-				</Disclosure>
+					</div>
+				{/if}
+			</dt>
+		</div>
 	{/each}
 </dl>
