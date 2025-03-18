@@ -72,38 +72,11 @@ https://svelte.dev/e/node_invalid_placement -->
 	}
 </script>
 
-<style>
-	.text-wrap {
-			white-space: pre-wrap; /* Beibehaltung von Zeilenumbrüchen und Umbruch von langen Zeilen */
-			word-wrap: break-word; /* Ermöglicht den Umbruch in langen Wörtern */
-			overflow-wrap: break-word; /* Für zusätzliche Browserkompatibilität */
-	}
-	.modal-background {
-        position: fixed; /* Fixiert das Modal in der Ansicht */
-        top: 0;
-        left: 0;
-        right: 0; /* Füllt die gesamte Breite */
-        bottom: 0; /* Füllt die gesamte Höhe */
-        display: flex; /* Flexbox benutzen */
-        align-items: center; /* Vertikal zentrieren */
-        justify-content: center; /* Horizontal zentrieren */
-        background-color: rgba(0, 0, 0, 0.5); /* Dunkler Hintergrund für das Modal */
-    }
-
-    .modal-content {
-        /* max-width: 600px; Maximale Breite des Modals */
-        width: 70%; /* Breite des Modals */
-        background: white; /* Hintergrundfarbe des Modals */
-        border-radius: 8px; /* Abgerundete Ecken */
-        padding: 20px; /* Innenabstand */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Schatten für das Modal */
-    }
-</style>
-
 {#if data.resources.length == 0}
-	<StarterHint type="assessment results" icon={QueueList}>
+	{#snippet hint()}
 		<span slot="component">Clouditor Assessment component</span>
-	</StarterHint>
+	{/snippet}
+	<StarterHint type="assessment results" icon={QueueList} component={hint}></StarterHint>
 {:else}
 	<main>
 		<div class="-mx-4 -my-2 overflow-x-clip sm:-mx-6 lg:-mx-8">
@@ -152,57 +125,45 @@ https://svelte.dev/e/node_invalid_placement -->
 								<th
 									scope="col"
 									class="w-1/12 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500"
-								/>
+								>
+								</th>
 							{/if}
 						</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 bg-white">
 						{#each currentData as assessment}
-							{#if showModalId == assessment.id}
-								<tr>
-									<div class="modal-background"	>
-										<div class="modal-content">
-											<pre class="overflow-y-auto rounded bg-gray-100 p-4 text-wrap">
-												{JSON.stringify(assessment,null,5)}
-											</pre>
-											<Button on:click={closeModal} class="mt-2">Close</Button>
-										</div>
-									</div>
-								</tr>
-							{:else}
-								<tr>
-									<td class="whitespace-nowrap px-6 py-4">
-										<AssessmentIcon result={assessment} />
-									</td>
-									<td class="whitespace-nowrap px-6 py-4">
-										<span class="text-sm text-gray-900"
-											>{new Date(assessment.timestamp).toLocaleString()}</span
-										>
-									</td>
-									<td class="max-w-0 truncate whitespace-nowrap px-6 py-4">
-										<span class="text-sm text-gray-900">
-											<a href="/metrics/{data.service.id}/{assessment.metricId}">
-												{assessment.metricId}
-											</a>
-										</span>
-									</td>
-									<td class="max-w-xs truncate whitespace-nowrap px-6 py-4">
-										<span class="text-sm text-gray-900">
-											<a href={`/cloud/${data.service.id}/graph/?id=${assessment.resourceId}`}>
-												{assessment.resourceId.split('/')[
-													assessment.resourceId.split('/').length - 1
-												]}
-											</a>
-										</span>
-									</td>
-									<td class="whitespace-nowrap px-6 py-4">
-										<span class="text-sm text-gray-900">{assessment.resourceTypes[0]}</span>
-									</td>
-									<td class="whitespace-nowrap px-6 py-4">
-										<Button on:click={() => showDetails(assessment.id)}>More Details</Button>
-									</td>
-								</tr>
-							{/if}
+							<tr>
+								<td class="whitespace-nowrap px-6 py-4">
+									<AssessmentIcon result={assessment} />
+								</td>
+								<td class="whitespace-nowrap px-6 py-4">
+									<span class="text-sm text-gray-900"
+										>{new Date(assessment.timestamp).toLocaleString()}</span
+									>
+								</td>
+								<td class="max-w-0 truncate whitespace-nowrap px-6 py-4">
+									<span class="text-sm text-gray-900">
+										<a href="/metrics/{data.service.id}/{assessment.metricId}">
+											{assessment.metricId}
+										</a>
+									</span>
+								</td>
+								<td class="max-w-xs truncate whitespace-nowrap px-6 py-4">
+									<span class="text-sm text-gray-900">
+										<a href={`/cloud/${data.service.id}/graph/?id=${assessment.resourceId}`}>
+											{assessment.resourceId.split('/')[
+												assessment.resourceId.split('/').length - 1
+											]}
+										</a>
+									</span>
+								</td>
+								<td class="whitespace-nowrap px-6 py-4">
+									<span class="text-sm text-gray-900">{assessment.resourceTypes[0]}</span>
+								</td>
+								<td class="whitespace-nowrap px-6 py-4">
+									<Button on:click={() => showDetails(assessment.id)}>More Details</Button>
+								</td>
+							</tr>
 						{/each}
 					</tbody>
 				</table>

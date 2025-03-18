@@ -12,12 +12,14 @@
 	let { data = $bindable() }: Props = $props();
 
 	// Reactive property for the selection status of all catalogs
-	let selected = $derived(new Map(
-		data.catalogs.map((catalog) => [
-			catalog.id,
-			data.auditScopes.find((auditScope) => auditScope.catalogId == catalog.id) !== undefined
-		])
-	));
+	let selected = $derived(
+		new Map(
+			data.catalogs.map((catalog) => [
+				catalog.id,
+				data.auditScopes.find((auditScope) => auditScope.catalogId == catalog.id) !== undefined
+			])
+		)
+	);
 
 	function assuranceLevelSelected(e: CustomEvent<AssuranceLevelEvent>) {
 		toggle(e.detail.catalog, e.detail.assuranceLevel);
@@ -48,7 +50,9 @@
 			data.auditScopes = [...data.auditScopes, auditScope];
 		} else {
 			// Already exists -> remove it from the Audit Scope list
-			data.auditScopes = data.auditScopes.filter((auditScope) => auditScope.catalogId != catalog.id);
+			data.auditScopes = data.auditScopes.filter(
+				(auditScope) => auditScope.catalogId != catalog.id
+			);
 		}
 	}
 </script>

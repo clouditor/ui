@@ -40,12 +40,7 @@
 		overlay: boolean;
 	}
 
-	let {
-		edges,
-		nodes,
-		initialSelect,
-		overlay
-	}: Props = $props();
+	let { edges, nodes, initialSelect, overlay }: Props = $props();
 
 	let graph: HTMLElement = $state();
 	let cy: cytoscape.Core = $state();

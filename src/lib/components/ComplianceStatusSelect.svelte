@@ -73,7 +73,7 @@
 					{@const active = $listbox.active === option.status}
 					{@const selected = $listbox.selected === option.status}
 					<li
-						use:listbox.item={{ option.status }}
+						use:listbox.item={{ value: option.status }}
 						class="{active
 							? 'bg-clouditor text-white'
 							: 'text-gray-900'} cursor-default select-none p-4 text-sm"

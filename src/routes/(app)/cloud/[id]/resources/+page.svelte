@@ -29,8 +29,6 @@
 
 	let rowsPerPage = 8;
 
-
-
 	let copyingId: string | null = $state(null);
 
 	let filterOptions: string[] = $state([]);
@@ -137,9 +135,9 @@
 		currentPage = data.page ? data.page : 1;
 	});
 	let searchString = $state('');
-	
+
 	let query = $derived(searchString.toLowerCase());
-	
+
 	let filteredData;
 	run(() => {
 		filteredData = data.resources.filter((resource) => {
@@ -151,7 +149,7 @@
 	});
 	let totalPages = $derived(Math.ceil(filteredData.length / rowsPerPage));
 	let searchActivated = $state(false);
-	
+
 	let currentData;
 	run(() => {
 		currentData = paginate(filteredData, currentPage);
@@ -161,10 +159,10 @@
 {#if data.resources.length == 0}
 	<StarterHint type="discovered resources" icon={Squares2x2}>
 		{#snippet component()}
-				<span >
+			<span>
 				Clouditor Discovery with with the certification target ID <pre>{data.service.id}</pre>
 			</span>
-			{/snippet}
+		{/snippet}
 	</StarterHint>
 {:else}
 	<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

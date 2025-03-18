@@ -22,8 +22,8 @@
 />
 
 <BelowHeader>
-	This page provides an overview of all configured certification targets within Clouditor. Click on the
-	name of a certification target to display more information about it.
+	This page provides an overview of all configured certification targets within Clouditor. Click on
+	the name of a certification target to display more information about it.
 </BelowHeader>
 
 <ul class="divide-y divide-gray-100">

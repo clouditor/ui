@@ -305,7 +305,9 @@ export async function listMetricConfigurations(
 	serviceId: string,
 	skipDefault = false
 ): Promise<Map<string, MetricConfiguration>> {
-	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${serviceId}/metric_configurations`);
+	const apiUrl = clouditorize(
+		`/v1/orchestrator/certification_targets/${serviceId}/metric_configurations`
+	);
 
 	return fetch(apiUrl, {
 		method: 'GET',
@@ -331,7 +333,9 @@ export async function listMetricConfigurations(
 /**
  * Creates a new certification target
  */
-export async function registerCertificationTarget(service: CertificationTarget): Promise<CertificationTarget> {
+export async function registerCertificationTarget(
+	service: CertificationTarget
+): Promise<CertificationTarget> {
 	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets`);
 
 	return fetch(apiUrl, {
@@ -369,7 +373,9 @@ export async function removeCertificationTarget(targetId: string): Promise<void>
  *
  * @returns an array of {@link CertificationTarget}s.
  */
-export async function listCertificationTargets(fetch = window.fetch): Promise<CertificationTarget[]> {
+export async function listCertificationTargets(
+	fetch = window.fetch
+): Promise<CertificationTarget[]> {
 	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets`);
 
 	return fetch(apiUrl, {
@@ -388,9 +394,7 @@ export async function listCertificationTargets(fetch = window.fetch): Promise<Ce
 /**
  * Creates a new target of evaluation.
  */
-export async function createAuditScope(
-	target: AuditScope
-): Promise<AuditScope> {
+export async function createAuditScope(target: AuditScope): Promise<AuditScope> {
 	const apiUrl = clouditorize(`/v1/orchestrator/audit_scopes`);
 
 	return fetch(apiUrl, {
@@ -407,9 +411,7 @@ export async function createAuditScope(
 /**
  * Removes a target of evaluation.
  */
-export async function removeAuditScope(
-	target: AuditScope
-): Promise<AuditScope> {
+export async function removeAuditScope(target: AuditScope): Promise<AuditScope> {
 	const apiUrl = clouditorize(
 		`/v1/orchestrator/certification_targets/${target.certificationTargetId}/audit_scopes/${target.catalogId}`
 	);
@@ -426,52 +428,6 @@ export async function removeAuditScope(
 }
 
 /**
- * Adds a control to the scope of a target of evaluation.
- */
-export async function addControlToScope(
-	scope: ControlInScope,
-	fetch = window.fetch
-): Promise<ControlInScope> {
-	const apiUrl = clouditorize(
-		`/v1/orchestrator/certification_targets/${scope.auditScopeCertificationTargetId}/audit_scopes/${scope.auditScopeCatalogId}/controls_in_scope`
-	);
-
-	return fetch(apiUrl, {
-		method: 'POST',
-		headers: {
-			Authorization: `Bearer ${localStorage.token}`
-		},
-		body: JSON.stringify(scope)
-	})
-		.then(throwError)
-		.then((res) => res.json())
-		.then((response: ControlInScope) => {
-			return response;
-		});
-}
-
-/**
- * Remove a control from the scope of a target of evaluation.
- */
-export async function removeControlFromScope(
-	scope: ControlInScope,
-	fetch = window.fetch
-): Promise<ControlInScope> {
-	const apiUrl = clouditorize(
-		`/v1/orchestrator/certification_targets/${scope.auditScopeCertificationTargetId}/audit_scopes/${scope.auditScopeCatalogId}/controls_in_scope/categories/${scope.controlCategoryName}/controls/${scope.controlId}`
-	);
-
-	return fetch(apiUrl, {
-		method: 'DELETE',
-		headers: {
-			Authorization: `Bearer ${localStorage.token}`
-		}
-	})
-		.then(throwError)
-		.then((res) => res.json());
-}
-
-/**
  * Retrieves a list of targets of evaluation from the orchestrator service.
  *
  * @returns an array of {@link AuditScope}s.
@@ -480,8 +436,10 @@ export async function listAuditScopes(
 	serviceId: string,
 	fetch = window.fetch
 ): Promise<AuditScope[]> {
-	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${serviceId}/audit_scopes`);
-	
+	const apiUrl = clouditorize(
+		`/v1/orchestrator/audit_scopes?filter.certificationTargetId=${serviceId}`
+	);
+
 	return fetch(apiUrl, {
 		method: 'GET',
 		headers: {
@@ -492,33 +450,6 @@ export async function listAuditScopes(
 		.then((res) => res.json())
 		.then((response: ListAuditScopesResponse) => {
 			return response.auditScopes;
-		});
-}
-
-/**
- * Retrieves a list of controls in scope of a particular target of evaluation from the orchestrator service.
- *
- * @returns an array of {@link ControlInScope} objects.
- */
-export async function listControlsInScope(
-	serviceId: string,
-	catalogId: string,
-	fetch = window.fetch
-): Promise<ControlInScope[]> {
-	const apiUrl = clouditorize(
-		`/v1/orchestrator/certification_targets/${serviceId}/audit_scopes/${catalogId}/controls_in_scope?pageSize=1500&orderBy=control_id&asc=true`
-	);
-
-	return fetch(apiUrl, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${localStorage.token}`
-		}
-	})
-		.then(throwError)
-		.then((res) => res.json())
-		.then((response: ListControlsInScopeResponse) => {
-			return response.controlsInScope;
 		});
 }
 
@@ -609,7 +540,10 @@ export async function listControls(
  *
  * @returns the certification target
  */
-export async function getCertificationTarget(id: string, fetch = window.fetch): Promise<CertificationTarget> {
+export async function getCertificationTarget(
+	id: string,
+	fetch = window.fetch
+): Promise<CertificationTarget> {
 	const apiUrl = clouditorize(`/v1/orchestrator/certification_targets/${id}`);
 
 	return fetch(apiUrl, {

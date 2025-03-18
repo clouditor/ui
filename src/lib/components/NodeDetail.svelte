@@ -6,7 +6,6 @@
 	import AssessmentIcon from './AssessmentIcon.svelte';
 	import { flatten } from 'flat';
 
-	
 	interface Props {
 		selected: Resource;
 		results: AssessmentResult[];
@@ -15,12 +14,7 @@
 		tab?: string;
 	}
 
-	let {
-		selected,
-		results,
-		metrics,
-		tab = 'results'
-	}: Props = $props();
+	let { selected, results, metrics, tab = 'results' }: Props = $props();
 
 	function name(id: string) {
 		let rr = id.split('/');
@@ -177,7 +171,7 @@
 																	day: 'numeric'
 																}).format(v * 1000)}
 															</time>
-															{:else}
+														{:else}
 															<time>Invalid Date</time>
 														{/if}
 													{:else}

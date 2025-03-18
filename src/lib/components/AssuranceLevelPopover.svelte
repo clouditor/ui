@@ -8,7 +8,7 @@
 <script lang="ts">
 	import type { Catalog } from '$lib/api/orchestrator';
 	import { createPopover } from 'svelte-headlessui';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, type Snippet } from 'svelte';
 	import Transition from 'svelte-transition';
 
 	const dispatch = createEventDispatcher<{
@@ -28,7 +28,7 @@
 
 	interface Props {
 		catalog: Catalog;
-		children?: import('svelte').Snippet;
+		children: Snippet;
 	}
 
 	let { catalog, children }: Props = $props();
@@ -37,7 +37,7 @@
 
 <div class="z-20">
 	<div class="h-full w-full" use:popover.button>
-		{@render children?.()}
+		{@render children()}
 	</div>
 
 	<Transition
@@ -62,7 +62,7 @@
 
 				{#each catalog.assuranceLevels as level}
 					<div class="relative rounded-lg p-4 hover:bg-gray-50">
-						<button onclick={popover.close} class="font-semibold text-gray-900">
+						<button onclick={() => select(level)} class="font-semibold text-gray-900">
 							{level}
 							<span class="absolute inset-0"></span>
 						</button>

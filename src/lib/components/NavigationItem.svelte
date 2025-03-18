@@ -18,11 +18,10 @@
 </script>
 
 <script lang="ts">
-	
 	interface Props {
 		/**
-	 * The data for this navigation item.
-	 */
+		 * The data for this navigation item.
+		 */
 		item: NavigationItemData;
 	}
 

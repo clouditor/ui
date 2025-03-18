@@ -96,9 +96,9 @@
 />
 
 <BelowHeader>
-	You can use this page to create a new certification target. This wizard will guide you through all the
-	necessary steps. To move to the next step, either click on the name of the step or the circle next
-	to it.
+	You can use this page to create a new certification target. This wizard will guide you through all
+	the necessary steps. To move to the next step, either click on the name of the step or the circle
+	next to it.
 </BelowHeader>
 
 <Wizard current={data.step} bind:data={wizard} on:save={save} on:cancel={cancel} />

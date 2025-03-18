@@ -11,12 +11,10 @@
 </script>
 
 <script lang="ts">
-	
-
 	interface Props {
 		/**
-	 * The data for this tab item.
-	 */
+		 * The data for this tab item.
+		 */
 		item: TabItemData;
 		mobile?: boolean;
 	}

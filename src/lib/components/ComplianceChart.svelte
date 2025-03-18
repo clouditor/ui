@@ -18,7 +18,6 @@
 
 	let merge = $state(true);
 
-
 	let config: ChartConfiguration<'doughnut', { status: string[]; num: number }[]> = {
 		type: 'doughnut',
 		data: buildData(merge),
@@ -67,7 +66,9 @@
 					params.append('status', s);
 				}
 
-				goto(`/cloud/${auditScope.certificationTargetId}/compliance/${auditScope.catalogId}?${params.toString()}`);
+				goto(
+					`/cloud/${auditScope.certificationTargetId}/compliance/${auditScope.catalogId}?${params.toString()}`
+				);
 			}
 		};
 	});

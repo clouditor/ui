@@ -9,12 +9,7 @@
 		icon?: string | false;
 	}
 
-	let {
-		name,
-		description,
-		buttons = true,
-		icon = ''
-	}: Props = $props();
+	let { name, description, buttons = true, icon = '' }: Props = $props();
 
 	const dispatch = createEventDispatcher<{ remove: {} }>();
 
