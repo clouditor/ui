@@ -9,14 +9,17 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	interface TreeItemData {
 		result: EvaluationResult;
 		children: EvaluationResult[];
 	}
 
-	$: tree = buildTree(data.evaluations, data.filterStatus);
 
 	/**
 	 * This function builds a tree-like structure out of the evaluation results,
@@ -77,6 +80,7 @@
 		result = await createEvaluationResult(result);
 		invalidate((url) => url.pathname == '/v1/evaluation/results');
 	}
+	let tree = $derived(buildTree(data.evaluations, data.filterStatus));
 </script>
 
 <div class="border-b border-gray-200 pb-5">
@@ -88,32 +92,34 @@
 
 <dl class="space-y-6 divide-y divide-gray-900/10">
 	{#each [...tree] as [_, item] (item.result.id)}
-		<Disclosure as="div" class="pt-6" let:open>
-			<dt>
-				<div class="flex w-full items-start justify-between text-left text-gray-900">
-					<ControlComplianceItem
-						result={item.result}
-						control={data.controls.get(item.result.controlId)}
-						on:addResult={(e) => addResult(e, data.controls.get(item.result.controlId))}
-					/>
-					<DisclosureButton>
-						<span class="ml-6 flex h-7 items-center">
-							{#if !open}
-								<Icon src={Plus} class="h-6 w-6" aria-hidden="true" />
-							{:else}
-								<Icon src={Minus} class="h-6 w-6" aria-hidden="true" />
-							{/if}
-						</span>
-					</DisclosureButton>
-				</div>
-				<DisclosurePanel as="dd" class="mt-2 pr-12">
-					{#each item.children as result (result.controlId)}
-						<div class="ml-12 mt-6">
-							<ControlComplianceItem {result} control={data.controls.get(result.controlId)} />
-						</div>
-					{/each}
-				</DisclosurePanel>
-			</dt>
-		</Disclosure>
+		<Disclosure as="div" class="pt-6" >
+			{#snippet children({ open })}
+						<dt>
+					<div class="flex w-full items-start justify-between text-left text-gray-900">
+						<ControlComplianceItem
+							result={item.result}
+							control={data.controls.get(item.result.controlId)}
+							on:addResult={(e) => addResult(e, data.controls.get(item.result.controlId))}
+						/>
+						<DisclosureButton>
+							<span class="ml-6 flex h-7 items-center">
+								{#if !open}
+									<Icon src={Plus} class="h-6 w-6" aria-hidden="true" />
+								{:else}
+									<Icon src={Minus} class="h-6 w-6" aria-hidden="true" />
+								{/if}
+							</span>
+						</DisclosureButton>
+					</div>
+					<DisclosurePanel as="dd" class="mt-2 pr-12">
+						{#each item.children as result (result.controlId)}
+							<div class="ml-12 mt-6">
+								<ControlComplianceItem {result} control={data.controls.get(result.controlId)} />
+							</div>
+						{/each}
+					</DisclosurePanel>
+				</dt>
+								{/snippet}
+				</Disclosure>
 	{/each}
 </dl>

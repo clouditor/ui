@@ -7,10 +7,14 @@
 	import { startEvaluation } from '$lib/api/evaluation';
 	import BelowHeader from '$lib/components/BelowHeader.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	// Create data for the wizard
-	let wizard: WizardData;
+	let wizard: WizardData = $state();
 	restart();
 
 	// Fetch an up-to-date version of all catalogs because we need to select

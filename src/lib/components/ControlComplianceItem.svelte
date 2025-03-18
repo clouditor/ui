@@ -6,14 +6,18 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import AddEvaluationResultDialog from './AddEvaluationResultDialog.svelte';
 
-	export let result: EvaluationResult;
-	export let control: Control | undefined;
+	interface Props {
+		result: EvaluationResult;
+		control: Control | undefined;
+	}
+
+	let { result, control }: Props = $props();
 
 	function addResult() {
 		open = true;
 	}
 
-	let open = false;
+	let open = $state(false);
 </script>
 
 <div class="flex">
@@ -25,7 +29,7 @@
 		{:else if result.status == 'EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY'}
 			<Icon src={XCircle} theme="solid" class="h-8 w-8 text-red-800" />
 		{:else if result.status == 'EVALUATION_STATUS_PENDING'}
-			<button on:click={addResult}>
+			<button onclick={addResult}>
 				<Icon src={EllipsisHorizontalCircle} theme="solid" class="h-8 w-8 text-gray-400" />
 			</button>
 		{:else}

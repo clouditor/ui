@@ -3,7 +3,11 @@
 	import { CheckCircle, XCircle } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 
-	export let result: AssessmentResult;
+	interface Props {
+		result: AssessmentResult;
+	}
+
+	let { result }: Props = $props();
 </script>
 
 {#if result.compliant}

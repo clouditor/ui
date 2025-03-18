@@ -5,7 +5,7 @@ import { listAssessmentResults } from '$lib/api/orchestrator';
 
 export const load = (async ({ fetch, params, url }) => {
 	if (params.id == undefined) {
-		throw error(405, 'Required parameter missing');
+		error(405, 'Required parameter missing');
 	}
 
 	const results = await listAssessmentResults(fetch, true);

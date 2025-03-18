@@ -4,7 +4,11 @@
 	import Header from '$lib/components/Header.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	// Make sure, that our list of certification targets is up-to-date
 	invalidate((url) => url.pathname == '/v1/orchestrator/certification_targets');
@@ -41,7 +45,7 @@
 				</div>
 			</div>
 			<div class="hidden sm:flex sm:flex-col sm:items-end">
-				<p class="text-sm leading-6 text-gray-900" />
+				<p class="text-sm leading-6 text-gray-900"></p>
 				<p class="mt-1 text-xs leading-5 text-gray-500">
 					Last updated <time datetime={service.updatedAt}>{service.updatedAt}</time>
 				</p>

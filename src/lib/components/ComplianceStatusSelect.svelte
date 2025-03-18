@@ -32,10 +32,14 @@
 		}
 	];
 
-	export let status: ComplianceStatus = 'EVALUATION_STATUS_COMPLIANT_MANUALLY';
+	interface Props {
+		status?: ComplianceStatus;
+	}
 
-	$: selected =
-		status == 'EVALUATION_STATUS_COMPLIANT_MANUALLY' ? publishingOptions[0] : publishingOptions[1];
+	let { status = $bindable('EVALUATION_STATUS_COMPLIANT_MANUALLY') }: Props = $props();
+
+	let selected =
+		$derived(status == 'EVALUATION_STATUS_COMPLIANT_MANUALLY' ? publishingOptions[0] : publishingOptions[1]);
 </script>
 
 <Listbox bind:value={status} class="mt-2">
@@ -61,27 +65,29 @@
 				class="absolute right-0 z-10 mt-2 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 			>
 				{#each publishingOptions as option (option.name)}
-					<ListboxOption value={option.status} let:active let:selected>
-						<li
-							class="{active
-								? 'bg-clouditor text-white'
-								: 'text-gray-900'} cursor-default select-none p-4 text-sm"
-						>
-							<div class="flex flex-col">
-								<div class="flex justify-between">
-									<p class={selected ? 'font-semibold' : 'font-normal'}>{option.name}</p>
-									{#if selected}
-										<span class="active ? 'text-white' : 'text-clouditor'">
-											<Icon src={Check} class="h-5 w-5" aria-hidden="true" />
-										</span>
-									{/if}
+					<ListboxOption value={option.status}  >
+						{#snippet children({ active, selected })}
+												<li
+								class="{active
+									? 'bg-clouditor text-white'
+									: 'text-gray-900'} cursor-default select-none p-4 text-sm"
+							>
+								<div class="flex flex-col">
+									<div class="flex justify-between">
+										<p class={selected ? 'font-semibold' : 'font-normal'}>{option.name}</p>
+										{#if selected}
+											<span class="active ? 'text-white' : 'text-clouditor'">
+												<Icon src={Check} class="h-5 w-5" aria-hidden="true" />
+											</span>
+										{/if}
+									</div>
+									<p class="{active ? 'text-indigo-200' : 'text-gray-500'} mt-2">
+										{option.description}
+									</p>
 								</div>
-								<p class="{active ? 'text-indigo-200' : 'text-gray-500'} mt-2">
-									{option.description}
-								</p>
-							</div>
-						</li>
-					</ListboxOption>
+							</li>
+																	{/snippet}
+										</ListboxOption>
 				{/each}
 			</ListboxOptions>
 		</Transition>

@@ -1,19 +1,23 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { goto } from '$app/navigation';
 	import type { ComplianceStatus } from '$lib/api/evaluation';
 	import type { AuditScope } from '$lib/api/orchestrator';
 	import { Chart, type ChartConfiguration, type ChartData } from 'chart.js/auto';
 	import { onMount } from 'svelte';
 
-	let canvas: HTMLCanvasElement;
+	let canvas: HTMLCanvasElement = $state();
 	let chart: Chart<'doughnut', { status: string[]; num: number }[]>;
-	export let compliance: Map<string, ComplianceStatus>;
-	export let auditScope: AuditScope;
+	interface Props {
+		compliance: Map<string, ComplianceStatus>;
+		auditScope: AuditScope;
+	}
 
-	let merge = true;
+	let { compliance, auditScope }: Props = $props();
 
-	$: data = buildData(merge);
-	$: updateChart(data);
+	let merge = $state(true);
+
 
 	let config: ChartConfiguration<'doughnut', { status: string[]; num: number }[]> = {
 		type: 'doughnut',
@@ -128,6 +132,10 @@
 			num: Array.from(compliance.values()).filter((value) => status.includes(value)).length
 		};
 	}
+	let data = $derived(buildData(merge));
+	run(() => {
+		updateChart(data);
+	});
 </script>
 
 <div class="py-3">
@@ -152,5 +160,5 @@
 			</span>
 		</div>
 	</div>
-	<canvas id="chart" bind:this={canvas} class="ml-auto mr-auto h-72 w-72" />
+	<canvas id="chart" bind:this={canvas} class="ml-auto mr-auto h-72 w-72"></canvas>
 </div>

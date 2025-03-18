@@ -3,7 +3,11 @@
 	import Button from './Button.svelte';
 	import type { WizardData } from './Wizard.svelte';
 
-	export let data: WizardData;
+	interface Props {
+		data: WizardData;
+	}
+
+	let { data }: Props = $props();
 
 	const dispatch = createEventDispatcher<{ save: WizardData; cancel: {} }>();
 

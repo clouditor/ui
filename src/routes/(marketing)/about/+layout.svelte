@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { CloudArrowUp, LockOpen, PuzzlePiece } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	const features = [
 		{
@@ -60,7 +65,7 @@
 					</dl>
 				</div>
 			</div>
-			<slot />
+			{@render children?.()}
 		</div>
 	</div>
 </div>

@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	import { Icon, type IconSource } from '@steeze-ui/svelte-icon';
 
 	export interface ActivityItemData {
@@ -13,14 +13,18 @@
 </script>
 
 <script lang="ts">
-	export let event: ActivityItemData;
-	export let last = false;
+	interface Props {
+		event: ActivityItemData;
+		last?: boolean;
+	}
+
+	let { event, last = false }: Props = $props();
 </script>
 
 <li>
 	<div class="relative pb-8">
 		{#if !last}
-			<span class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
+			<span class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
 		{/if}
 		<div class="relative flex space-x-3">
 			<div>

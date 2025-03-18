@@ -8,7 +8,11 @@
 	import { ViewfinderCircle } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data = $bindable() }: Props = $props();
 
 	enum Status {
 		WAITING,
@@ -16,7 +20,7 @@
 		BAD
 	}
 
-	$: nodes = data.resources.map((n) => {
+	let nodes = $derived(data.resources.map((n) => {
 		let status = Status.WAITING;
 
 		// fetch assessment results
@@ -40,17 +44,17 @@
 				type: n.resourceType.split(',').reduce((a, v) => ({ ...a, [v]: true }), {})
 			}
 		} satisfies NodeDefinition;
-	});
+	}));
 
-	$: edges = data.edges.map((e) => {
+	let edges = $derived(data.edges.map((e) => {
 		return {
 			data: e
 		} satisfies EdgeDefinition;
-	});
+	}));
 
-	$: selected = data.resources.find((r) => {
+	let selected = $derived(data.resources.find((r) => {
 		return r.id == data.id;
-	});
+	}));
 
 	function select(e: CustomEvent<ElementDefinition | null>) {
 		if (e.detail == null) {
@@ -75,9 +79,9 @@
 		history.replaceState({}, '', url);
 	}
 
-	$: results = data.results.filter((r) => r.resourceId == data.id);
+	let results = $derived(data.results.filter((r) => r.resourceId == data.id));
 
-	let overlay = false;
+	let overlay = $state(false);
 </script>
 
 <div class="overflow-hidden rounded-xl border border-gray-200">

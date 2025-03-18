@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: `<div>` cannot be a child of `<tr>`. `<tr>` only allows these children: `<th>`, `<td>`, `<style>`, `<script>`, `<template>`. The browser will 'repair' the HTML (by moving, removing, or inserting elements) which breaks Svelte's assumptions about the structure of your components.
+https://svelte.dev/e/node_invalid_placement -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';

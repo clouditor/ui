@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	export interface AssuranceLevelEvent {
 		catalog: Catalog;
 		assuranceLevel: string;
@@ -33,12 +33,17 @@
 		});
 	}
 
-	export let catalog: Catalog;
+	interface Props {
+		catalog: Catalog;
+		children?: import('svelte').Snippet;
+	}
+
+	let { catalog, children }: Props = $props();
 </script>
 
 <Popover class="z-20">
 	<PopoverButton as="div" use={[popperRef]} class="h-full w-full">
-		<slot />
+		{@render children?.()}
 	</PopoverButton>
 
 	<PopoverPanel use={[[popperContent, popperOptions]]}>
@@ -54,9 +59,9 @@
 
 			{#each catalog.assuranceLevels as level}
 				<div class="relative rounded-lg p-4 hover:bg-gray-50">
-					<button on:click={() => select(level)} class="font-semibold text-gray-900">
+					<button onclick={() => select(level)} class="font-semibold text-gray-900">
 						{level}
-						<span class="absolute inset-0" />
+						<span class="absolute inset-0"></span>
 					</button>
 				</div>
 			{/each}

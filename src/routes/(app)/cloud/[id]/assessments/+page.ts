@@ -6,7 +6,7 @@ import type { PageLoad } from './$types';
 
 export const load = (async ({ fetch, params, url }) => {
 	if (params.id == undefined) {
-		throw error(405, 'Required parameter missing');
+		error(405, 'Required parameter missing');
 	}
 
 	const filterIds = url.searchParams.get('filterIds')?.split(',') ?? [];

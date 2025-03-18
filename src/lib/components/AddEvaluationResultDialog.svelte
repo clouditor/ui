@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	export interface AddEvaluationResultEvent {
 		name: string;
 		comment: string;
@@ -18,9 +18,13 @@
 	} from '@rgossiaux/svelte-headlessui';
 	import { createEventDispatcher } from 'svelte';
 	import ComplianceStatusSelect from './ComplianceStatusSelect.svelte';
-	export let open = false;
-	let name: string;
-	let comment: string;
+	interface Props {
+		open?: boolean;
+	}
+
+	let { open = $bindable(false) }: Props = $props();
+	let name: string = $state();
+	let comment: string = $state();
 
 	const dispatch = createEventDispatcher<{
 		addResult: AddEvaluationResultEvent;
@@ -37,7 +41,7 @@
 		open = false;
 	}
 
-	let status: ComplianceStatus = 'EVALUATION_STATUS_COMPLIANT_MANUALLY';
+	let status: ComplianceStatus = $state('EVALUATION_STATUS_COMPLIANT_MANUALLY');
 </script>
 
 <TransitionRoot show={open}>
@@ -103,7 +107,7 @@
 													rows="3"
 													class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clouditor sm:text-sm sm:leading-6"
 													bind:value={comment}
-												/>
+												></textarea>
 											</div>
 											<p class="mt-3 text-sm leading-6 text-gray-600">
 												Please consider that an auditor will judge the fulfillment of this control
@@ -133,14 +137,14 @@
 										<button
 											type="button"
 											class="inline-flex w-full justify-center rounded-md bg-clouditor px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-clouditor-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clouditor sm:col-start-2"
-											on:click={submit}
+											onclick={submit}
 										>
 											Save
 										</button>
 										<button
 											type="button"
 											class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-											on:click={() => (open = false)}
+											onclick={() => (open = false)}
 											>Cancel
 										</button>
 									</div>

@@ -5,7 +5,7 @@ import type { LayoutLoad } from './$types';
 
 export const load = (async ({ fetch, params, parent }) => {
 	if (params.id == undefined) {
-		throw error(405, 'Required parameter missing');
+		error(405, 'Required parameter missing');
 	}
 
 	const targets = await listAuditScopes(params.id, fetch) || [];;
