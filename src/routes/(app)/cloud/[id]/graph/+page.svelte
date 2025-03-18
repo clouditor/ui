@@ -7,6 +7,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import { ViewfinderCircle } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import { pushState, replaceState } from '$app/navigation';
 
 	interface Props {
 		data: PageData;
@@ -48,9 +49,8 @@
 		})
 	);
 
-	const urlParams = new URLSearchParams(window.location.search);
-	let id = $state(urlParams.get('id'));
-	let tab = $state(urlParams.get('tab'));
+	let id = $state(page.url.searchParams.get('id'));
+	let tab = $state(page.url.searchParams.get('tab') ?? 'results');
 
 	let edges = $derived(
 		data.edges.map((e) => {
@@ -72,26 +72,23 @@
 		} else {
 			id = e.detail.data.id ?? null;
 		}
-
-		replaceHistory();
 	}
 
-	// a crude attempt to implement shallow routing until
-	// https://github.com/sveltejs/kit/pull/9847 is merged
-	function replaceHistory() {
+	let results = $derived(data.results.filter((r) => r.resourceId == id));
+
+	let overlay = $state(false);
+
+	$effect(() => {
 		const url = new URL(page.url);
 		if (id != null) {
 			url.searchParams.set('id', id);
 		} else {
 			url.searchParams.set('id', '');
 		}
+		url.searchParams.set('tab', tab);
 
 		history.replaceState({}, '', url);
-	}
-
-	let results = $derived(data.results.filter((r) => r.resourceId == id));
-
-	let overlay = $state(false);
+	});
 </script>
 
 <div class="overflow-hidden rounded-xl border border-gray-200">
@@ -134,6 +131,6 @@
 
 <div class="absolute right-8 top-64 z-20 max-w-md">
 	{#if selected}
-		<NodeDetail {selected} {results} metrics={data.metrics} tab={tab ?? 'results'} />
+		<NodeDetail {selected} {results} metrics={data.metrics} bind:tab />
 	{/if}
 </div>

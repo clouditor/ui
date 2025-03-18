@@ -14,7 +14,7 @@
 		tab?: string;
 	}
 
-	let { selected, results, metrics, tab = 'results' }: Props = $props();
+	let { selected, results, metrics, tab = $bindable('results') }: Props = $props();
 
 	function name(id: string) {
 		let rr = id.split('/');
@@ -90,8 +90,8 @@
 				<div class="border-b border-gray-200">
 					<nav class="-mb-px flex space-x-8" aria-label="Tabs">
 						{#each tabs as t (t.name)}
-							<a
-								href="?id={selected.id}&tab={t.id}"
+							<button
+								onclick={() => (tab = t.id)}
 								class="{t.id == tab
 									? 'border-clouditor-light text-clouditor'
 									: 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700'} flex whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium"
@@ -107,7 +107,7 @@
 										>{t.count}</span
 									>
 								{/if}
-							</a>
+							</button>
 						{/each}
 					</nav>
 				</div>
