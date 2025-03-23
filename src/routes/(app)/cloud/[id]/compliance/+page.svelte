@@ -47,10 +47,7 @@
 		await removeAuditScope(e.detail.auditScope);
 
 		// refresh our ToEs
-		invalidate(
-			(url) =>
-				url.pathname == `/v1/orchestrator/certification_targets/${data.service.id}/audit_scopes`
-		);
+		invalidate((url) => url.pathname == `/v1/orchestrator/audit_scopes`);
 	}
 	// TODO: This should be done in the backend
 	let compliance = $derived(buildCompliance(data.topControlResults));

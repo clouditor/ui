@@ -34,6 +34,7 @@ export interface CertificationTarget {
 }
 
 export interface AuditScope {
+	id: string;
 	certificationTargetId: string;
 	catalogId: string;
 	assuranceLevel?: string;
@@ -412,9 +413,7 @@ export async function createAuditScope(target: AuditScope): Promise<AuditScope> 
  * Removes a target of evaluation.
  */
 export async function removeAuditScope(target: AuditScope): Promise<AuditScope> {
-	const apiUrl = clouditorize(
-		`/v1/orchestrator/certification_targets/${target.certificationTargetId}/audit_scopes/${target.catalogId}`
-	);
+	const apiUrl = clouditorize(`/v1/orchestrator/audit_scopes/${target.id}`);
 
 	return fetch(apiUrl, {
 		method: 'DELETE',
