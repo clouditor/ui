@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	export interface AddEvaluationResultEvent {
 		name: string;
 		comment: string;
@@ -9,40 +9,32 @@
 
 <script lang="ts">
 	import type { ComplianceStatus } from '$lib/api/evaluation';
-	import {
-		Dialog,
-		DialogOverlay,
-		DialogTitle,
-		TransitionChild,
-		TransitionRoot
-	} from '@rgossiaux/svelte-headlessui';
-	import { createEventDispatcher } from 'svelte';
-	import ComplianceStatusSelect from './ComplianceStatusSelect.svelte';
-	export let open = false;
-	let name: string;
-	let comment: string;
+	import ComplianceStatusSelect from '$lib/components/ComplianceStatusSelect.svelte';
+	import { createDialog } from 'svelte-headlessui';
+	import { Transition } from 'svelte-transition';
 
-	const dispatch = createEventDispatcher<{
-		addResult: AddEvaluationResultEvent;
-	}>();
-
-	interface $$Events {
-		addResult: CustomEvent<AddEvaluationResultEvent>;
+	interface Props {
+		open?: boolean;
+		addResult: (event: AddEvaluationResultEvent) => void;
 	}
 
+	let { open = $bindable(false), addResult }: Props = $props();
+	let name = $state('');
+	let comment = $state('');
 	function submit() {
 		let date = new Date();
 		date.setDate(date.getDate() + 30);
-		dispatch('addResult', { comment: comment, name: name, validUntil: date, status: status });
+		addResult({ comment: comment, name: name, validUntil: date, status: status });
 		open = false;
 	}
 
-	let status: ComplianceStatus = 'EVALUATION_STATUS_COMPLIANT_MANUALLY';
+	let status: ComplianceStatus = $state('EVALUATION_STATUS_COMPLIANT_MANUALLY');
+	const dialog = createDialog({ label: 'Add Evaluation Result', expanded: open });
 </script>
 
-<TransitionRoot show={open}>
-	<Dialog as="div" class="relative z-10" on:close={() => (open = false)}>
-		<TransitionChild
+<Transition show={$dialog.expanded}>
+	<div class="relative z-10">
+		<Transition
 			enter="ease-out duration-300"
 			enterFrom="opacity-0"
 			enterTo="opacity-100"
@@ -50,11 +42,11 @@
 			leaveFrom="opacity-100"
 			leaveTo="opacity-0"
 		>
-			<DialogOverlay class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-		</TransitionChild>
+			<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+		</Transition>
 		<div class="fixed inset-0 z-10 overflow-y-auto">
 			<div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-				<TransitionChild
+				<Transition
 					enter="ease-out duration-300"
 					enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					enterTo="opacity-100 translate-y-0 sm:scale-100"
@@ -68,9 +60,9 @@
 						<div>
 							<div class="space-y-12">
 								<div class="">
-									<DialogTitle class="text-base font-semibold leading-7 text-gray-900">
+									<div class="text-base font-semibold leading-7 text-gray-900">
 										Provide a manual evaluation result
-									</DialogTitle>
+									</div>
 									<p class="mt-1 text-sm leading-6 text-gray-600">
 										Using this form, you can provide a manual evaluation result that will be
 										considered as <ComplianceStatusSelect bind:status />
@@ -103,7 +95,7 @@
 													rows="3"
 													class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clouditor sm:text-sm sm:leading-6"
 													bind:value={comment}
-												/>
+												></textarea>
 											</div>
 											<p class="mt-3 text-sm leading-6 text-gray-600">
 												Please consider that an auditor will judge the fulfillment of this control
@@ -133,23 +125,24 @@
 										<button
 											type="button"
 											class="inline-flex w-full justify-center rounded-md bg-clouditor px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-clouditor-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clouditor sm:col-start-2"
-											on:click={submit}
+											onclick={submit}
 										>
 											Save
 										</button>
 										<button
 											type="button"
 											class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-											on:click={() => (open = false)}
-											>Cancel
+											onclick={dialog.close}
+										>
+											Cancel
 										</button>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</TransitionChild>
+				</Transition>
 			</div>
 		</div>
-	</Dialog>
-</TransitionRoot>
+	</div>
+</Transition>

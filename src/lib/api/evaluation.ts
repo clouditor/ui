@@ -33,9 +33,7 @@ export interface EvaluationResult {
 }
 
 export async function startEvaluation(auditScope: AuditScope): Promise<StartEvaluationResponse> {
-	const apiUrl = clouditorize(
-		`/v1/evaluation/evaluate/${auditScope.certificationTargetId}/${auditScope.catalogId}/start`
-	);
+	const apiUrl = clouditorize(`/v1/evaluation/evaluate/${auditScope.id}/start`);
 
 	return fetch(apiUrl, {
 		method: 'POST',
@@ -73,7 +71,7 @@ export async function listEvaluationResults(
 	let apiUrl = clouditorize(`/v1/evaluation/results?`);
 
 	if (filter?.cloudServiceId != undefined) {
-		apiUrl += `&filter.cloud_service_id=${filter?.cloudServiceId}`;
+		apiUrl += `&filter.certification_target_id=${filter?.cloudServiceId}`;
 	}
 	if (filter?.catalogId != undefined) {
 		apiUrl += `&filter.catalog_id=${filter?.catalogId}`;

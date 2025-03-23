@@ -2,13 +2,18 @@
 	import DiscoveryGraph, { shouldCenter } from '$lib/components/DiscoveryGraph.svelte';
 	import type { NodeDefinition, EdgeDefinition, ElementDefinition } from 'cytoscape';
 	import type { PageData } from './$types';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import NodeDetail from '$lib/components/NodeDetail.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { ViewfinderCircle } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import { pushState, replaceState } from '$app/navigation';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data = $bindable() }: Props = $props();
 
 	enum Status {
 		WAITING,
@@ -16,68 +21,74 @@
 		BAD
 	}
 
-	$: nodes = data.resources.map((n) => {
-		let status = Status.WAITING;
+	let nodes = $derived(
+		data.resources.map((n) => {
+			let status = Status.WAITING;
 
-		// fetch assessment results
-		let results = data.results.filter((r) => {
-			return r.resourceId == n.id;
-		});
+			// fetch assessment results
+			let results = data.results.filter((r) => {
+				return r.resourceId == n.id;
+			});
 
-		if (results.length >= 1) {
-			if (results.filter((r) => r.compliant == false).length > 0) {
-				status = Status.BAD;
-			} else {
-				status = Status.GOOD;
+			if (results.length >= 1) {
+				if (results.filter((r) => r.compliant == false).length > 0) {
+					status = Status.BAD;
+				} else {
+					status = Status.GOOD;
+				}
 			}
-		}
 
-		return {
-			data: {
-				id: n.id,
-				status: status,
-				label: n.properties.name,
-				type: n.resourceType.split(',').reduce((a, v) => ({ ...a, [v]: true }), {})
-			}
-		} satisfies NodeDefinition;
-	});
+			return {
+				data: {
+					id: n.id,
+					status: status,
+					label: n.properties.name,
+					type: n.resourceType.split(',').reduce((a, v) => ({ ...a, [v]: true }), {})
+				}
+			} satisfies NodeDefinition;
+		})
+	);
 
-	$: edges = data.edges.map((e) => {
-		return {
-			data: e
-		} satisfies EdgeDefinition;
-	});
+	let id = $state(page.url.searchParams.get('id'));
+	let tab = $state(page.url.searchParams.get('tab') ?? 'results');
 
-	$: selected = data.resources.find((r) => {
-		return r.id == data.id;
-	});
+	let edges = $derived(
+		data.edges.map((e) => {
+			return {
+				data: e
+			} satisfies EdgeDefinition;
+		})
+	);
+
+	let selected = $derived(
+		data.resources.find((r) => {
+			return r.id == id;
+		})
+	);
 
 	function select(e: CustomEvent<ElementDefinition | null>) {
 		if (e.detail == null) {
-			data.id = null;
+			id = null;
 		} else {
-			data.id = e.detail.data.id ?? null;
+			id = e.detail.data.id ?? null;
 		}
-
-		replaceHistory();
 	}
 
-	// a crude attempt to implement shallow routing until
-	// https://github.com/sveltejs/kit/pull/9847 is merged
-	function replaceHistory() {
-		const url = new URL($page.url);
-		if (data.id != null) {
-			url.searchParams.set('id', data.id);
+	let results = $derived(data.results.filter((r) => r.resourceId == id));
+
+	let overlay = $state(false);
+
+	$effect(() => {
+		const url = new URL(page.url);
+		if (id != null) {
+			url.searchParams.set('id', id);
 		} else {
 			url.searchParams.set('id', '');
 		}
+		url.searchParams.set('tab', tab);
 
 		history.replaceState({}, '', url);
-	}
-
-	$: results = data.results.filter((r) => r.resourceId == data.id);
-
-	let overlay = false;
+	});
 </script>
 
 <div class="overflow-hidden rounded-xl border border-gray-200">
@@ -114,12 +125,12 @@
 	</div>
 
 	<dl class="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
-		<DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={data.id} {overlay} />
+		<DiscoveryGraph {nodes} {edges} on:select={select} initialSelect={id} {overlay} />
 	</dl>
 </div>
 
 <div class="absolute right-8 top-64 z-20 max-w-md">
 	{#if selected}
-		<NodeDetail {selected} {results} metrics={data.metrics} tab={data.tab ?? 'results'} />
+		<NodeDetail {selected} {results} metrics={data.metrics} bind:tab />
 	{/if}
 </div>

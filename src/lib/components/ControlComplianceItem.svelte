@@ -1,19 +1,21 @@
 <script lang="ts">
 	import type { EvaluationResult } from '$lib/api/evaluation';
 	import type { Control } from '$lib/api/orchestrator';
-	import { DisclosureButton } from '@rgossiaux/svelte-headlessui';
+	import AddEvaluationResultDialog, {
+		type AddEvaluationResultEvent
+	} from '$lib/components/AddEvaluationResultDialog.svelte';
 	import { CheckCircle, EllipsisHorizontalCircle, XCircle } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import AddEvaluationResultDialog from './AddEvaluationResultDialog.svelte';
 
-	export let result: EvaluationResult;
-	export let control: Control | undefined;
-
-	function addResult() {
-		open = true;
+	interface Props {
+		result: EvaluationResult;
+		control: Control | undefined;
+		addResult: (event: AddEvaluationResultEvent) => void;
 	}
 
-	let open = false;
+	let { result, control, addResult }: Props = $props();
+
+	let open = $state(false);
 </script>
 
 <div class="flex">
@@ -25,7 +27,7 @@
 		{:else if result.status == 'EVALUATION_STATUS_NOT_COMPLIANT_MANUALLY'}
 			<Icon src={XCircle} theme="solid" class="h-8 w-8 text-red-800" />
 		{:else if result.status == 'EVALUATION_STATUS_PENDING'}
-			<button on:click={addResult}>
+			<button onclick={() => addResult}>
 				<Icon src={EllipsisHorizontalCircle} theme="solid" class="h-8 w-8 text-gray-400" />
 			</button>
 		{:else}
@@ -37,9 +39,9 @@
 	<div>
 		<h4 class="text-base font-semibold">
 			{#if control?.parentControlId === undefined}
-				<DisclosureButton>
+				<div>
 					{result.controlId}{#if control?.name !== undefined && control.name != ''}: {control.name}{/if}
-				</DisclosureButton>
+				</div>
 			{:else}
 				{result.controlId}{#if control?.name !== undefined && control.name != ''}: {control.name}{/if}
 			{/if}
@@ -50,4 +52,4 @@
 	</div>
 </div>
 
-<AddEvaluationResultDialog bind:open on:addResult />
+<AddEvaluationResultDialog bind:open {addResult} />

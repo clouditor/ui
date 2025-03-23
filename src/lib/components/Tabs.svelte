@@ -1,7 +1,11 @@
 <script lang="ts">
 	import TabItem, { type TabItemData } from './TabItem.svelte';
 
-	export let items: TabItemData[];
+	interface Props {
+		items: TabItemData[];
+	}
+
+	let { items }: Props = $props();
 </script>
 
 <div class="mt-4">

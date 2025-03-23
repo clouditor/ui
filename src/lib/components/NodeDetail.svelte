@@ -1,24 +1,30 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import type { AssessmentResult, Metric } from '$lib/api/assessment';
 	import type { Resource, listResources } from '$lib/api/discovery';
 	import AssessmentIcon from './AssessmentIcon.svelte';
 	import { flatten } from 'flat';
 
-	export let selected: Resource;
-	export let results: AssessmentResult[];
-	// TODO(oxisto): convert this to a store?!
-	export let metrics: Map<string, Metric>;
-	export let tab: string = 'results';
+	interface Props {
+		selected: Resource;
+		results: AssessmentResult[];
+		// TODO(oxisto): convert this to a store?!
+		metrics: Map<string, Metric>;
+		tab?: string;
+	}
+
+	let { selected, results, metrics, tab = $bindable('results') }: Props = $props();
 
 	function name(id: string) {
 		let rr = id.split('/');
 		return rr[rr.length - 1];
 	}
 
-	const tabs = [
+	const tabs = $state([
 		{ name: 'Assessment Results', id: 'results', count: 0 },
 		{ name: 'Properties', id: 'properties', count: 0 }
-	];
+	]);
 
 	/**
 	 * This function returns an appropriate subset of properties out of the
@@ -40,9 +46,11 @@
 		});
 	}
 
-	$: (() => {
-		tabs[0].count = results.length;
-	})();
+	run(() => {
+		(() => {
+			tabs[0].count = results.length;
+		})();
+	});
 </script>
 
 <div class="flex flex-col bg-white shadow-xl">
@@ -82,8 +90,8 @@
 				<div class="border-b border-gray-200">
 					<nav class="-mb-px flex space-x-8" aria-label="Tabs">
 						{#each tabs as t (t.name)}
-							<a
-								href="?id={selected.id}&tab={t.id}"
+							<button
+								onclick={() => (tab = t.id)}
 								class="{t.id == tab
 									? 'border-clouditor-light text-clouditor'
 									: 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700'} flex whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium"
@@ -99,7 +107,7 @@
 										>{t.count}</span
 									>
 								{/if}
-							</a>
+							</button>
 						{/each}
 					</nav>
 				</div>
@@ -163,7 +171,7 @@
 																	day: 'numeric'
 																}).format(v * 1000)}
 															</time>
-															{:else}
+														{:else}
 															<time>Invalid Date</time>
 														{/if}
 													{:else}
