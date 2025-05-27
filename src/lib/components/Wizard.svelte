@@ -2,7 +2,7 @@
 	// WizardData contains all the data that the wizard creates, such as the cloud
 	// service, its meta-data and optionally some target of evaluations.
 	export interface WizardData {
-		service: CertificationTarget;
+		service: TargetOfEvaluation;
 		catalogs: Catalog[];
 		auditScopes: AuditScope[];
 		mode: 'create' | 'edit';
@@ -16,7 +16,7 @@
 	import WizardStepInfo from './WizardStepInfo.svelte';
 	import WizardStepSave from './WizardStepSave.svelte';
 	import WizardStepCatalog from './WizardStepCatalog.svelte';
-	import type { Catalog, CertificationTarget, AuditScope } from '$lib/api/orchestrator';
+	import type { Catalog, TargetOfEvaluation, AuditScope } from '$lib/api/orchestrator';
 	import type { SvelteComponent } from 'svelte';
 
 	export let current: number = 0;
@@ -34,14 +34,14 @@
 		content: typeof SvelteComponent;
 	}[] = [
 		{
-			name: 'Create certification target',
-			description: 'Please provide a name for the certification target.',
+			name: 'Create target of evaluation',
+			description: 'Please provide a name for the target of evaluation.',
 			href: '?step=0',
 			content: WizardStepName
 		},
 		{
 			name: 'Service information',
-			description: 'Optionally specify additional information about the certification target.',
+			description: 'Optionally specify additional information about the target of evaluation.',
 			href: '?step=1',
 			content: WizardStepInfo
 		},
@@ -53,7 +53,7 @@
 		},
 		{
 			name: 'Confirm',
-			description: 'Confirm creation of certification target.',
+			description: 'Confirm creation of target of evaluation.',
 			href: '?step=3',
 			content: WizardStepSave
 		}

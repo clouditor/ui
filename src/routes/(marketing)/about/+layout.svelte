@@ -21,7 +21,7 @@
 			name: 'Holistic.',
 			path: '/about/page3',
 			description:
-				'Using integrations with other tools, such as Codyze, we can provide a holistic view of the certification target, from infrastructure to code.',
+				'Using integrations with other tools, such as Codyze, we can provide a holistic view of the target of evaluation, from infrastructure to code.',
 			icon: PuzzlePiece
 		}
 	];
@@ -40,7 +40,7 @@
 					</p>
 					<p class="mt-6 text-lg leading-8 text-gray-600">
 						Clouditor, developed by Fraunhofer AISEC, is an open-source cloud compliance tool that
-						helps security professionals to get a continuous evaluation of their certification target.
+						helps security professionals to get a continuous evaluation of their target of evaluation.
 					</p>
 					<dl class="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
 						{#each features as feature (feature.name)}

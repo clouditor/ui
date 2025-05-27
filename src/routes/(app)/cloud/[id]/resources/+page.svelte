@@ -144,7 +144,7 @@
 {#if data.resources.length == 0}
 	<StarterHint type="discovered resources" icon={Squares2x2}>
 		<span slot="component">
-			Clouditor Discovery with with the certification target ID <pre>{data.service.id}</pre>
+			Clouditor Discovery with with the target of evaluation ID <pre>{data.service.id}</pre>
 		</span>
 	</StarterHint>
 {:else}

@@ -1,4 +1,4 @@
-import { listCertificationTargetAssessmentResults } from '$lib/api/orchestrator';
+import { listTargetOfEvaluationAssessmentResults } from '$lib/api/orchestrator';
 
 import { error } from '@sveltejs/kit';
 
@@ -12,7 +12,7 @@ export const load = (async ({ fetch, params, url }) => {
 	const filterIds = url.searchParams.get('filterIds')?.split(',') ?? [];
 	const filterResourceId = url.searchParams.get('filterResourceId');
 	const page = Number(url.searchParams.get('page'));
-	const results = await listCertificationTargetAssessmentResults(params.id, fetch);
+	const results = await listTargetOfEvaluationAssessmentResults(params.id, fetch);
 
 	return {
 		filterIds,

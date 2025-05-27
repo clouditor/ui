@@ -37,7 +37,7 @@
 				catalogId: catalog.id,
 				// This will not be the final ID, since we do not know it at this point.
 				// This needs to be set by the caller of save()
-				certificationTargetId: data.service.id,
+				targetOfEvaluationId: data.service.id,
 				assuranceLevel: assuranceLevel
 			};
 

@@ -63,7 +63,7 @@
 					params.append('status', s);
 				}
 
-				goto(`/cloud/${auditScope.certificationTargetId}/compliance/${auditScope.catalogId}?${params.toString()}`);
+				goto(`/cloud/${auditScope.targetOfEvaluationId}/compliance/${auditScope.catalogId}?${params.toString()}`);
 			}
 		};
 	});

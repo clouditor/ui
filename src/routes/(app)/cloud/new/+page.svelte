@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
-	import { createAuditScope, registerCertificationTarget } from '$lib/api/orchestrator';
+	import { createAuditScope, registerTargetOfEvaluation } from '$lib/api/orchestrator';
 	import Wizard, { type WizardData } from '$lib/components/Wizard.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import type { PageData } from './$types';
@@ -34,14 +34,14 @@
 			}
 		}
 
-		// First, register the certification target
-		service = await registerCertificationTarget(service);
+		// First, register the target of evaluation
+		service = await registerTargetOfEvaluation(service);
 
 		// Afterwards, create the targets of evaluation
 		let auditScopes = await Promise.all(
 			event.detail.auditScopes.map((auditScope) => {
-				// Set the correct certification target id
-				auditScope.certificationTargetId = service.id;
+				// Set the correct target of evaluation id
+				auditScope.targetOfEvaluationId = service.id;
 				return createAuditScope(auditScope);
 			})
 		);
@@ -52,7 +52,7 @@
 		}
 
 		// Invalidate the list of evaluation targets
-		await invalidate((url) => url.pathname === '/v1/orchestrator/certification_targets');
+		await invalidate((url) => url.pathname === '/v1/orchestrator/targets_of_evaluation');
 		goto(`/cloud/${service.id}`);
 	}
 
@@ -77,7 +77,7 @@
 			return;
 		}
 
-		// Reset certification target data and reset step to the beginning
+		// Reset target of evaluation data and reset step to the beginning
 		restart();
 
 		// Reset step to the beginning
@@ -87,12 +87,12 @@
 
 <Header
 	name={wizard.service.name}
-	description={wizard.service.description ?? 'A new certification target'}
+	description={wizard.service.description ?? 'A new target of evaluation'}
 	buttons={false}
 />
 
 <BelowHeader>
-	You can use this page to create a new certification target. This wizard will guide you through all the
+	You can use this page to create a new target of evaluation. This wizard will guide you through all the
 	necessary steps. To move to the next step, either click on the name of the step or the circle next
 	to it.
 </BelowHeader>

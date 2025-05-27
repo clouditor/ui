@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { removeCertificationTarget } from '$lib/api/orchestrator';
+	import { removeTargetOfEvaluation } from '$lib/api/orchestrator';
 	import Header from '$lib/components/Header.svelte';
 	import Tabs from '$lib/components/Tabs.svelte';
 	import { CheckBadge, Cog6Tooth, QueueList, Squares2x2, Sun, User } from '@steeze-ui/heroicons';
@@ -44,13 +44,13 @@
 	];
 
 	async function remove(e: CustomEvent) {
-		let really = confirm('Do you really want to delete this certification target?');
+		let really = confirm('Do you really want to delete this target of evaluation?');
 
 		if (!really) {
 			return;
 		}
 
-		await removeCertificationTarget(data.service.id);
+		await removeTargetOfEvaluation(data.service.id);
 		goto('/cloud');
 	}
 </script>
