@@ -27,7 +27,7 @@
 
 		await Promise.all(auditScopes.map((auditScope) => startEvaluation(auditScope)));
 		await invalidate(
-			(url) => url.pathname === `/v1/orchestrator/certification_targets/${data.service.id}/audit_scopes`
+			(url) => url.pathname === `/v1/orchestrator/audit_scopes`
 		);
 		goto('../');
 	}

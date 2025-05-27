@@ -34,7 +34,7 @@ export interface EvaluationResult {
 
 export async function startEvaluation(auditScope: AuditScope): Promise<StartEvaluationResponse> {
 	const apiUrl = clouditorize(
-		`/v1/evaluation/evaluate/${auditScope.certificationTargetId}/${auditScope.catalogId}/start`
+		`/v1/evaluation/evaluate/${auditScope.id}/start`
 	);
 
 	return fetch(apiUrl, {
@@ -47,7 +47,7 @@ export async function startEvaluation(auditScope: AuditScope): Promise<StartEval
 
 export async function stopEvaluation(auditScope: AuditScope): Promise<{}> {
 	const apiUrl = clouditorize(
-		`/v1/evaluation/evaluate/${auditScope.certificationTargetId}/${auditScope.catalogId}/stop`
+		`/v1/evaluation/evaluate/${auditScope.id}/stop`
 	);
 
 	return fetch(apiUrl, {
