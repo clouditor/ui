@@ -99,7 +99,7 @@ importers:
         specifier: ^3.4.13
         version: 3.4.17
       tslib:
-        specifier: ^2.6.2
+        specifier: ^2.8.1
         version: 2.8.1
       typescript:
         specifier: ^5.5.0
