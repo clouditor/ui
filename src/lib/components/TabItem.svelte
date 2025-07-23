@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	import { Icon, type IconSource } from '@steeze-ui/svelte-icon';
 	import { page } from '$app/stores';
 
@@ -11,15 +11,18 @@
 </script>
 
 <script lang="ts">
-	/**
-	 * The data for this tab item.
-	 */
-	export let item: TabItemData;
+	interface Props {
+		/**
+		 * The data for this tab item.
+		 */
+		item: TabItemData;
+		mobile?: boolean;
+	}
 
-	export let mobile: boolean = false;
+	let { item, mobile = false }: Props = $props();
 
 	// React to changes in the route and set the current status (true/false)
-	$: current = $page.url.pathname.startsWith(item.href);
+	let current = $derived($page.url.pathname.startsWith(item.href));
 </script>
 
 {#if mobile}

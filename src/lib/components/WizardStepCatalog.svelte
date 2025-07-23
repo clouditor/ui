@@ -5,14 +5,20 @@
 	} from '$lib/components/AssuranceLevelPopover.svelte';
 	import type { WizardData } from './Wizard.svelte';
 
-	export let data: WizardData;
+	interface Props {
+		data: WizardData;
+	}
+
+	let { data = $bindable() }: Props = $props();
 
 	// Reactive property for the selection status of all catalogs
-	$: selected = new Map(
-		data.catalogs.map((catalog) => [
-			catalog.id,
-			data.auditScopes.find((auditScope) => auditScope.catalogId == catalog.id) !== undefined
-		])
+	let selected = $derived(
+		new Map(
+			data.catalogs.map((catalog) => [
+				catalog.id,
+				data.auditScopes.find((auditScope) => auditScope.catalogId == catalog.id) !== undefined
+			])
+		)
 	);
 
 	function assuranceLevelSelected(e: CustomEvent<AssuranceLevelEvent>) {
@@ -44,7 +50,9 @@
 			data.auditScopes = [...data.auditScopes, auditScope];
 		} else {
 			// Already exists -> remove it from the Audit Scope list
-			data.auditScopes = data.auditScopes.filter((auditScope) => auditScope.catalogId != catalog.id);
+			data.auditScopes = data.auditScopes.filter(
+				(auditScope) => auditScope.catalogId != catalog.id
+			);
 		}
 	}
 </script>
@@ -65,7 +73,7 @@
 				</AssuranceLevelPopover>
 			{:else}
 				<button
-					on:click={() => toggle(catalog)}
+					onclick={() => toggle(catalog)}
 					class="{selected.get(catalog.id) ? '' : 'bg-gray-400'}
        flex w-[4.5rem] flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
 					style={selected.get(catalog.id) ? 'background-color: ' + catalog.metadata.color : ''}

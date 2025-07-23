@@ -6,7 +6,11 @@
 	import type { PageData } from './$types';
 	import { Calculator, ListBullet, Trophy } from '@steeze-ui/heroicons';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <Header

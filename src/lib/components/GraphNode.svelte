@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import { getContext } from 'svelte';
 
-	export let node;
+	let { node } = $props();
 
 	const { getCyInstance } = getContext('graphSharedState');
 	const cy = getCyInstance();
