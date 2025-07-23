@@ -1,36 +1,30 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Sidebar from '$lib/components/Sidebar.svelte';
-	import {
-		Dialog,
-		DialogOverlay,
-		Menu,
-		MenuButton,
-		MenuItem,
-		MenuItems,
-		Transition,
-		TransitionChild,
-		TransitionRoot
-	} from '@rgossiaux/svelte-headlessui';
+	import { createDialog, createMenu } from 'svelte-headlessui';
+	import { Transition } from 'svelte-transition';
 	import { Bars3, Bell, ChevronDown, MagnifyingGlass, XMark } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import type { LayoutProps } from '../$types';
+
+	let { children }: LayoutProps = $props();
 
 	const userNavigation = [
 		{ name: 'Your profile', href: '#' },
 		{ name: 'Sign out', href: '#' }
 	];
 
-	let sidebarOpen = false;
-
 	// We need to use $page here because of
 	// https://github.com/sveltejs/kit/issues/627#issuecomment-1458539744 and
 	// https://github.com/sveltejs/kit/issues/10201
+	const sidebar = createDialog({ label: 'Sidebar' });
+	const userMenu = createMenu({ label: 'User menu' });
 </script>
 
 <div>
-	<TransitionRoot show={sidebarOpen}>
-		<Dialog class="relative z-50 lg:hidden" on:close={() => (sidebarOpen = false)}>
-			<TransitionChild
+	<Transition show={$sidebar.expanded}>
+		<div class="relative z-50 lg:hidden">
+			<Transition
 				enter="transition-opacity ease-linear duration-300"
 				enterFrom="opacity-0"
 				enterTo="opacity-100"
@@ -38,11 +32,11 @@
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0"
 			>
-				<div class="fixed inset-0 bg-gray-900/80" />
-			</TransitionChild>
+				<div class="fixed inset-0 bg-gray-900/80"></div>
+			</Transition>
 
 			<div class="fixed inset-0 flex">
-				<TransitionChild
+				<Transition
 					enter="transition ease-in-out duration-300 transform"
 					enterFrom="-translate-x-full"
 					enterTo="translate-x-0"
@@ -50,8 +44,8 @@
 					leaveFrom="translate-x-0"
 					leaveTo="-translate-x-full"
 				>
-					<DialogOverlay class="relative mr-16 flex h-full w-full max-w-xs flex-1">
-						<TransitionChild
+					<div class="relative mr-16 flex h-full w-full max-w-xs flex-1">
+						<Transition
 							enter="ease-in-out duration-300"
 							enterFrom="opacity-0"
 							enterTo="opacity-100"
@@ -60,18 +54,18 @@
 							leaveTo="opacity-0"
 						>
 							<div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-								<button type="button" class="-m-2.5 p-2.5" on:click={() => (sidebarOpen = false)}>
+								<button type="button" class="-m-2.5 p-2.5" onclick={sidebar.close}>
 									<span class="sr-only">Close sidebar</span>
 									<Icon src={XMark} class="h-6 w-6 text-white" aria-hidden="true" />
 								</button>
 							</div>
-						</TransitionChild>
+						</Transition>
 						<Sidebar services={$page.data.services ?? []} mobile={true} />
-					</DialogOverlay>
-				</TransitionChild>
+					</div>
+				</Transition>
 			</div>
-		</Dialog>
-	</TransitionRoot>
+		</div>
+	</Transition>
 	<!-- Static sidebar for desktop -->
 	<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
 		<Sidebar services={$page.data.services ?? []} />
@@ -80,17 +74,13 @@
 		<div
 			class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8"
 		>
-			<button
-				type="button"
-				class="-m-2.5 p-2.5 text-gray-700 lg:hidden"
-				on:click={() => (sidebarOpen = true)}
-			>
+			<button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" onclick={sidebar.open}>
 				<span class="sr-only">Open sidebar</span>
 				<Icon src={Bars3} class="h-6 w-6" aria-hidden="true" />
 			</button>
 
 			<!-- Separator -->
-			<div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
+			<div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true"></div>
 
 			<div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
 				<form class="relative flex flex-1" action="#" method="GET">
@@ -116,11 +106,11 @@
 					</button>
 
 					<!-- Separator -->
-					<div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
+					<div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true"></div>
 
 					<!-- Profile dropdown -->
-					<Menu as="div" class="relative">
-						<MenuButton class="-m-1.5 flex items-center p-1.5">
+					<div class="relative">
+						<button class="-m-1.5 flex items-center p-1.5" use:userMenu.button>
 							<span class="sr-only">Open user menu</span>
 							<img
 								class="h-8 w-8 rounded-full bg-gray-50"
@@ -129,7 +119,7 @@
 							/>
 							<span class="hidden lg:flex lg:items-center">
 								<span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-									Bob | Security Manager</span
+									Bob | Security Manager</span
 								>
 								<Icon
 									src={ChevronDown}
@@ -138,8 +128,9 @@
 									aria-hidden="true"
 								/>
 							</span>
-						</MenuButton>
+						</button>
 						<Transition
+							show={$userMenu.expanded}
 							enter="transition ease-out duration-100"
 							enterFrom="transform opacity-0 scale-95"
 							enterTo="transform opacity-100 scale-100"
@@ -147,21 +138,22 @@
 							leaveFrom="transform opacity-100 scale-100"
 							leaveTo="transform opacity-0 scale-95"
 						>
-							<MenuItems
+							<div
 								class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
 							>
 								{#each userNavigation as item}
-									<MenuItem let:active>
+									{@const active = $userMenu.active === item.name}
+									<div use:userMenu.item>
 										<a
 											href={item.href}
 											class="{active ? 'bg-gray-50' : ''}
-                      block px-3 py-1 text-sm leading-6 text-gray-900">{item.name}</a
+	                      block px-3 py-1 text-sm leading-6 text-gray-900">{item.name}</a
 										>
-									</MenuItem>
+									</div>
 								{/each}
-							</MenuItems>
+							</div>
 						</Transition>
-					</Menu>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -169,7 +161,7 @@
 		<main class="py-10">
 			<div class="ml-auto mr-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
 				<!-- Your content -->
-				<slot />
+				{@render children()}
 			</div>
 		</main>
 	</div>

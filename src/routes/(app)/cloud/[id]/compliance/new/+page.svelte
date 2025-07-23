@@ -7,15 +7,19 @@
 	import WizardStepSave from '$lib/components/WizardStepSave.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	// Create a new wizard data object to store the catalogs that will be enabled
-	let wizard = {
+	let wizard = $state({
 		service: data.service,
 		catalogs: data.leftOverCatalogs,
 		auditScopes: [],
 		mode: 'edit'
-	} satisfies WizardData;
+	} satisfies WizardData);
 
 	async function save(event: CustomEvent<WizardData>) {
 		// Afterwards, create the targets of evaluation
@@ -26,13 +30,11 @@
 		);
 
 		await Promise.all(auditScopes.map((auditScope) => startEvaluation(auditScope)));
-		await invalidate(
-			(url) => url.pathname === `/v1/orchestrator/certification_targets/${data.service.id}/audit_scopes`
-		);
+		await invalidate((url) => url.pathname === `/v1/orchestrator/audit_scopes`);
 		goto('../');
 	}
 </script>
 
 <WizardStepCatalog bind:data={wizard} />
-<div class="mt-4" />
+<div class="mt-4"></div>
 <WizardStepSave bind:data={wizard} on:cancel={() => goto('../')} on:save={save} />

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { Resource } from '$lib/api/discovery';
@@ -19,28 +21,17 @@
 	import type { EdgeDefinition, NodeDefinition } from 'cytoscape';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	$: currentPage = data.page ? data.page : 1;
+	let { data }: Props = $props();
+
 	let rowsPerPage = 8;
-	$: totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
-	$: searchString = '';
+	let copyingId: string | null = $state(null);
 
-	$: searchActivated = false;
-
-	$: query = searchString.toLowerCase();
-	$: filteredData = data.resources.filter((resource) => {
-		return (
-			resource.properties.name.toLowerCase().includes(query) &&
-			(filterOptions.length == 0 || filterOptions.includes(resource.resourceType.split(',')[0]))
-		);
-	});
-	$: currentData = paginate(filteredData, currentPage);
-	let copyingId: string | null = null;
-
-	let filterOptions: string[];
-	$: filterOptions = [];
+	let filterOptions: string[] = $state([]);
 
 	function toggleSearch() {
 		searchActivated = !searchActivated;
@@ -50,7 +41,7 @@
 		}
 	}
 
-	let sortAscending = false;
+	let sortAscending = $state(false);
 
 	function sort(sortBy: string) {
 		sortAscending = !sortAscending;
@@ -73,7 +64,7 @@
 	}
 
 	let types: Set<String> = new Set();
-	let typeArray: String[] = [];
+	let typeArray: String[] = $state([]);
 
 	function paginate(results: Resource[], page: number) {
 		if (currentPage > totalPages) {
@@ -125,7 +116,7 @@
 		}
 	}
 
-	let filterOptionsVisible = false;
+	let filterOptionsVisible = $state(false);
 
 	function toggleFilterOptions() {
 		filterOptionsVisible = !filterOptionsVisible;
@@ -139,13 +130,39 @@
 		const results = data.results.filter((result) => result.resourceId === resourceId);
 		return results.length;
 	}
+	let currentPage;
+	run(() => {
+		currentPage = data.page ? data.page : 1;
+	});
+	let searchString = $state('');
+
+	let query = $derived(searchString.toLowerCase());
+
+	let filteredData;
+	run(() => {
+		filteredData = data.resources.filter((resource) => {
+			return (
+				resource.properties.name.toLowerCase().includes(query) &&
+				(filterOptions.length == 0 || filterOptions.includes(resource.resourceType.split(',')[0]))
+			);
+		});
+	});
+	let totalPages = $derived(Math.ceil(filteredData.length / rowsPerPage));
+	let searchActivated = $state(false);
+
+	let currentData;
+	run(() => {
+		currentData = paginate(filteredData, currentPage);
+	});
 </script>
 
 {#if data.resources.length == 0}
 	<StarterHint type="discovered resources" icon={Squares2x2}>
-		<span slot="component">
-			Clouditor Discovery with with the certification target ID <pre>{data.service.id}</pre>
-		</span>
+		{#snippet component()}
+			<span>
+				Clouditor Discovery with with the certification target ID <pre>{data.service.id}</pre>
+			</span>
+		{/snippet}
 	</StarterHint>
 {:else}
 	<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -167,7 +184,7 @@
 								<button
 									type="button"
 									class=" flex items-center align-middle"
-									on:click={() => sort('name')}
+									onclick={() => sort('name')}
 								>
 									Name
 									<span
@@ -179,7 +196,7 @@
 								<button
 									type="button"
 									class="flex items-center align-middle uppercase group-hover:visible group-focus:visible"
-									on:click={() => toggleSearch()}
+									onclick={() => toggleSearch()}
 								>
 									<span
 										class="invisible ml-2 rounded text-gray-400 group-hover:visible group-focus:visible"
@@ -215,7 +232,7 @@
 							class="group w-1/4 px-3 py-3 text-left text-xs font-medium uppercase text-gray-500 sm:pl-0"
 						>
 							<div class="flex">
-								<button type="button" class="inline-flex" on:click={() => sort('type')}>
+								<button type="button" class="inline-flex" onclick={() => sort('type')}>
 									Type
 									<span
 										class="invisible ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible"
@@ -233,7 +250,7 @@
 													type="button"
 													class="inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
 													aria-expanded="false"
-													on:click={toggleFilterOptions}
+													onclick={toggleFilterOptions}
 												>
 													<Icon
 														src={Funnel}
@@ -283,7 +300,7 @@
 							<td class="whitespace-nowrap px-6 py-4 pl-2">
 								<button
 									class="inline-flex items-center rounded-md bg-gray-100 px-4 py-2 pl-0 text-sm font-medium text-gray-500 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
-									on:click={() => copyId(resource.id)}
+									onclick={() => copyId(resource.id)}
 									title={resource.id}
 									disabled={copyingId !== null}
 								>
@@ -305,7 +322,7 @@
 											' for ' +
 											resource.properties.name +
 											'.'}
-										on:click={() => goToAssessmentResults(resource.properties.id)}
+										onclick={() => goToAssessmentResults(resource.properties.id)}
 										disabled={assessmentResultCount === 0}
 									>
 										<Icon src={QueueList} class="mr-2 h-5 w-5" />
@@ -329,7 +346,7 @@
 				<button
 					class={'rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none' +
 						(currentPage === 1 ? ' cursor-not-allowed opacity-50' : '')}
-					on:click={prevPage}
+					onclick={prevPage}
 					disabled={currentPage === 1}
 				>
 					Previous
@@ -338,7 +355,7 @@
 				<button
 					class={'rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none' +
 						(currentPage === totalPages ? ' cursor-not-allowed opacity-50' : '')}
-					on:click={nextPage}
+					onclick={nextPage}
 					disabled={currentPage === totalPages}
 				>
 					Next

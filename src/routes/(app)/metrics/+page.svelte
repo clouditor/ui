@@ -3,7 +3,11 @@
 	import Header from '$lib/components/Header.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <Header name="Metrics" description="" icon={false} buttons={false} />

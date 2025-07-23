@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { WizardData } from '$lib/components/Wizard.svelte';
 
-	export let data: WizardData;
+	interface Props {
+		data: WizardData;
+	}
+
+	let { data = $bindable() }: Props = $props();
 </script>
 
 <div

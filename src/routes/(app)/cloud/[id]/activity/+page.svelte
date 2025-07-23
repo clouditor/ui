@@ -4,7 +4,11 @@
 	import { Cloud, QueueList } from '@steeze-ui/heroicons';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	function shortResourceId(id: string): string {
 		let parts = id.split('/');
@@ -79,7 +83,7 @@
 		);
 	}
 
-	$: timeline = buildTimeline(data.results);
+	let timeline = $derived(buildTimeline(data.results));
 </script>
 
 <div class="flow-root">

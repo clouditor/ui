@@ -7,10 +7,14 @@
 	import { startEvaluation } from '$lib/api/evaluation';
 	import BelowHeader from '$lib/components/BelowHeader.svelte';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	// Create data for the wizard
-	let wizard: WizardData;
+	let wizard: WizardData = $state();
 	restart();
 
 	// Fetch an up-to-date version of all catalogs because we need to select
@@ -92,9 +96,9 @@
 />
 
 <BelowHeader>
-	You can use this page to create a new certification target. This wizard will guide you through all the
-	necessary steps. To move to the next step, either click on the name of the step or the circle next
-	to it.
+	You can use this page to create a new certification target. This wizard will guide you through all
+	the necessary steps. To move to the next step, either click on the name of the step or the circle
+	next to it.
 </BelowHeader>
 
 <Wizard current={data.step} bind:data={wizard} on:save={save} on:cancel={cancel} />

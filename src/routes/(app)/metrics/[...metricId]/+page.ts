@@ -7,7 +7,7 @@ import type { PageLoad } from './$types';
 export const load = (async ({ params }) => {
 	console.log(params);
 	if (params.metricId.split('/').length < 2) {
-		throw error(405, 'Required parameter missing');
+		error(405, 'Required parameter missing');
 	}
 
 	// slugs[0] is the serviceId

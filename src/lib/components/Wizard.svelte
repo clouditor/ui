@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	// WizardData contains all the data that the wizard creates, such as the cloud
 	// service, its meta-data and optionally some target of evaluations.
 	export interface WizardData {
@@ -19,8 +19,12 @@
 	import type { Catalog, CertificationTarget, AuditScope } from '$lib/api/orchestrator';
 	import type { SvelteComponent } from 'svelte';
 
-	export let current: number = 0;
-	export let data: WizardData;
+	interface Props {
+		current?: number;
+		data: WizardData;
+	}
+
+	let { current = 0, data = $bindable() }: Props = $props();
 
 	interface $$Events {
 		save: CustomEvent<WizardData>;
@@ -69,7 +73,7 @@
 						<div
 							class="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-clouditor"
 							aria-hidden="true"
-						/>
+						></div>
 					{/if}
 					<a href={step.href} class="group relative flex items-start">
 						<span class="flex h-9 items-center">
@@ -89,14 +93,14 @@
 						<div
 							class="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300"
 							aria-hidden="true"
-						/>
+						></div>
 					{/if}
 					<span class="group relative flex items-start" aria-current="step">
 						<span class="flex h-9 items-center" aria-hidden="true">
 							<span
 								class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-clouditor bg-white"
 							>
-								<span class="h-2.5 w-2.5 rounded-full bg-clouditor" />
+								<span class="h-2.5 w-2.5 rounded-full bg-clouditor"></span>
 							</span>
 						</span>
 						<span class="ml-4 flex min-w-0 flex-col">
@@ -106,11 +110,11 @@
 					</span>
 					<div class="ml-12 mt-5 max-w-2xl">
 						{#if step.content == WizardStepCatalog}
-							<svelte:component this={step.content} bind:data />
+							<step.content bind:data />
 						{:else if step.content == WizardStepSave}
-							<svelte:component this={step.content} bind:data on:save on:cancel />
+							<step.content bind:data on:save on:cancel />
 						{:else}
-							<svelte:component this={step.content} bind:data />
+							<step.content bind:data />
 						{/if}
 					</div>
 				{:else}
@@ -118,14 +122,15 @@
 						<div
 							class="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300"
 							aria-hidden="true"
-						/>
+						></div>
 					{/if}
 					<a href={step.href} class="group relative flex items-start">
 						<span class="flex h-9 items-center" aria-hidden="true">
 							<span
 								class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400"
 							>
-								<span class="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300" />
+								<span class="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300"
+								></span>
 							</span>
 						</span>
 						<span class="ml-4 flex min-w-0 flex-col">

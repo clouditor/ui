@@ -1,9 +1,11 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	import { writable } from 'svelte/store';
 	export const shouldCenter = writable<Boolean>(false);
 </script>
 
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import {
 		Beaker,
 		BuildingLibrary,
@@ -31,13 +33,17 @@
 	import cola from 'cytoscape-cola';
 	import { createEventDispatcher, onMount, setContext } from 'svelte';
 
-	export let edges: EdgeDefinition[];
-	export let nodes: NodeDefinition[];
-	export let initialSelect: string | null;
-	export let overlay: boolean;
+	interface Props {
+		edges: EdgeDefinition[];
+		nodes: NodeDefinition[];
+		initialSelect: string | null;
+		overlay: boolean;
+	}
 
-	let graph: HTMLElement;
-	let cy: cytoscape.Core;
+	let { edges, nodes, initialSelect, overlay }: Props = $props();
+
+	let graph: HTMLElement = $state();
+	let cy: cytoscape.Core = $state();
 
 	const dispatch = createEventDispatcher<{
 		select: NodeDefinition | null;
@@ -223,16 +229,18 @@
 		return styles;
 	}
 
-	$: (() => {
-		if (cy) {
-			cy.style(style(overlay));
+	run(() => {
+		(() => {
+			if (cy) {
+				cy.style(style(overlay));
 
-			if ($shouldCenter) {
-				cy.reset();
-				$shouldCenter = false;
+				if ($shouldCenter) {
+					cy.reset();
+					$shouldCenter = false;
+				}
 			}
-		}
-	})();
+		})();
+	});
 </script>
 
-<div class="graph h-[calc(100vh-25rem)] max-w-7xl" bind:this={graph} />
+<div class="graph h-[calc(100vh-25rem)] max-w-7xl" bind:this={graph}></div>

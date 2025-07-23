@@ -5,7 +5,7 @@ import { listResources } from '$lib/api/discovery';
 
 export const load = (async ({ fetch, params }) => {
 	if (params.id == undefined) {
-		throw error(405, 'Required parameter missing');
+		error(405, 'Required parameter missing');
 	}
 
 	const service = await getCertificationTarget(params.id, fetch);
