@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { CloudArrowUp, LockOpen, PuzzlePiece } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	const features = [
 		{
@@ -40,7 +45,8 @@
 					</p>
 					<p class="mt-6 text-lg leading-8 text-gray-600">
 						Clouditor, developed by Fraunhofer AISEC, is an open-source cloud compliance tool that
-						helps security professionals to get a continuous evaluation of their certification target.
+						helps security professionals to get a continuous evaluation of their certification
+						target.
 					</p>
 					<dl class="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
 						{#each features as feature (feature.name)}
@@ -60,7 +66,7 @@
 					</dl>
 				</div>
 			</div>
-			<slot />
+			{@render children?.()}
 		</div>
 	</div>
 </div>

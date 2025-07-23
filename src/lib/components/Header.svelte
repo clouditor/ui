@@ -2,10 +2,14 @@
 	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/Button.svelte';
 
-	export let name: string;
-	export let description: string;
-	export let buttons: boolean = true;
-	export let icon: string | false = '';
+	interface Props {
+		name: string;
+		description: string;
+		buttons?: boolean;
+		icon?: string | false;
+	}
+
+	let { name, description, buttons = true, icon = '' }: Props = $props();
 
 	const dispatch = createEventDispatcher<{ remove: {} }>();
 
@@ -25,7 +29,7 @@
 						alt=""
 					/>
 
-					<span class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true" />
+					<span class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></span>
 				</div>
 			</div>
 		{/if}

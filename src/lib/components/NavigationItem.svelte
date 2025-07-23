@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	import { Icon, type IconSource } from '@steeze-ui/svelte-icon';
 	import { page } from '$app/stores';
 	import NavigationItem from '$lib/components/NavigationItem.svelte';
@@ -18,13 +18,17 @@
 </script>
 
 <script lang="ts">
-	/**
-	 * The data for this navigation item.
-	 */
-	export let item: NavigationItemData;
+	interface Props {
+		/**
+		 * The data for this navigation item.
+		 */
+		item: NavigationItemData;
+	}
+
+	let { item }: Props = $props();
 
 	// React to changes in the route and set the current status (true/false)
-	$: current = $page.url.pathname.startsWith(item.href);
+	let current = $derived($page.url.pathname.startsWith(item.href));
 </script>
 
 <li>

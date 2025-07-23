@@ -6,9 +6,14 @@
 	import { CheckBadge, Cog6Tooth, QueueList, Squares2x2, Sun, User } from '@steeze-ui/heroicons';
 	import type { LayoutData } from './$types';
 
-	export let data: LayoutData;
+	interface Props {
+		data: LayoutData;
+		children?: import('svelte').Snippet;
+	}
 
-	$: tabs = [
+	let { data, children }: Props = $props();
+
+	let tabs = $derived([
 		{
 			name: 'Activity',
 			href: '/cloud/' + data.service.id + '/activity',
@@ -41,7 +46,7 @@
 			icon: Cog6Tooth,
 			disabled: true
 		}
-	];
+	]);
 
 	async function remove(e: CustomEvent) {
 		let really = confirm('Do you really want to delete this certification target?');
@@ -69,5 +74,5 @@
 <Tabs items={tabs} />
 
 <div class="pt-8">
-	<slot />
+	{@render children?.()}
 </div>

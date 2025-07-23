@@ -10,10 +10,11 @@
 	import EnableCatalogButton from '$lib/components/EnableCatalogButton.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	// TODO: This should be done in the backend
-	$: compliance = buildCompliance(data.topControlResults);
+	let { data }: Props = $props();
 
 	function buildCompliance(
 		evaluations: EvaluationResult[]
@@ -46,8 +47,10 @@
 		await removeAuditScope(e.detail.auditScope);
 
 		// refresh our ToEs
-		invalidate((url) => url.pathname == `/v1/orchestrator/certification_targets/${data.service.id}/audit_scopes`);
+		invalidate((url) => url.pathname == `/v1/orchestrator/audit_scopes`);
 	}
+	// TODO: This should be done in the backend
+	let compliance = $derived(buildCompliance(data.topControlResults));
 </script>
 
 <ul class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">

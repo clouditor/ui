@@ -7,9 +7,13 @@
 	import Button from './Button.svelte';
 	import ComplianceChart from './ComplianceChart.svelte';
 
-	export let catalog: Catalog;
-	export let auditScope: AuditScope;
-	export let compliance: Map<string, ComplianceStatus>;
+	interface Props {
+		catalog: Catalog;
+		auditScope: AuditScope;
+		compliance: Map<string, ComplianceStatus>;
+	}
+
+	let { catalog, auditScope, compliance }: Props = $props();
 
 	const dispatch = createEventDispatcher<{
 		remove: { auditScope: AuditScope };

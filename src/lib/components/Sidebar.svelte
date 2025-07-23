@@ -11,11 +11,15 @@
 	} from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 
-	export let services: CertificationTarget[];
-	export let mobile: boolean = false;
+	interface Props {
+		services: CertificationTarget[];
+		mobile?: boolean;
+	}
+
+	let { services, mobile = false }: Props = $props();
 
 	// Build navigation menu with dynamic components
-	$: navigation = [
+	let navigation = $derived([
 		{ name: 'Dashboard', href: '/dashboard', icon: Home, disabled: true },
 		{
 			name: 'Certification Targets',
@@ -40,7 +44,7 @@
 		{ name: 'Metrics', href: '/metrics', icon: AdjustmentsHorizontal },
 		{ name: 'Catalog Data', href: '/catalogs', icon: ArchiveBox, disabled: true },
 		{ name: 'Reports', href: '/reports', icon: ChartPie, disabled: true }
-	];
+	]);
 </script>
 
 <div
