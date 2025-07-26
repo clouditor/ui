@@ -7,8 +7,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import { ViewfinderCircle } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { pushState, replaceState } from '$app/navigation';
-
+	
 	interface Props {
 		data: PageData;
 	}
@@ -39,6 +38,7 @@
 			}
 
 			return {
+				group: 'nodes',
 				data: {
 					id: n.id,
 					status: status,
@@ -55,6 +55,7 @@
 	let edges = $derived(
 		data.edges.map((e) => {
 			return {
+				group: 'edges',
 				data: e
 			} satisfies EdgeDefinition;
 		})
@@ -94,7 +95,7 @@
 <div class="overflow-hidden rounded-xl border border-gray-200">
 	<div class="flex items-center justify-between gap-x-4 border-b border-gray-900/5 bg-gray-50 p-4">
 		<div class="text-sm text-gray-500">
-			This graph provides an overview over all discovered resources of the Cloud service,
+			This graph provides an overview over all discovered resources of the Target of Evaluation,
 			infrastructure as well as application source-code.
 		</div>
 		<div class="flex gap-x-1.5">

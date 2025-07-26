@@ -27,7 +27,7 @@ export const load = (async ({ fetch, params, parent }) => {
 	// Retrieve the result of each "parent" (aka the top controls), because in the
 	// overview we are only interested in that
 	const topControlResults = await listEvaluationResults(
-		{ cloudServiceId: params.id, parentsOnly: true },
+		{ targetOfEvaluationId: params.id, parentsOnly: true },
 		true,
 		fetch
 	);
@@ -35,7 +35,7 @@ export const load = (async ({ fetch, params, parent }) => {
 	return {
 		targets,
 		/**
-		 * This array contains all catalogs which do not have a target of evaluation
+		 * This array contains all catalogs which do not have a Target of Evaluation
 		 * and are possible ready to be selected for evaluation.
 		 */
 		leftOverCatalogs,

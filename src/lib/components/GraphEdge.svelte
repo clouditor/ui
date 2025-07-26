@@ -3,7 +3,7 @@
 
 	let { edge } = $props();
 
-	const { getCyInstance } = getContext('graphSharedState');
+	const { getCyInstance } = getContext<{ getCyInstance: () => any }>('graphSharedState');
 	const cy = getCyInstance();
 
 	try {

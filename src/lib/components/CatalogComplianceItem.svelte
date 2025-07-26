@@ -30,7 +30,7 @@
 
 <li class="overflow-hidden rounded-xl border border-gray-200">
 	<div class="flex items-center justify-between gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-		<a href={'/cloud/' + auditScope.certificationTargetId + '/compliance/' + catalog.id}>
+		<a href={'/cloud/' + auditScope.targetOfEvaluationId + '/compliance/' + catalog.id}>
 			<div class="text-sm font-medium leading-6 text-gray-900">{catalog.name}</div>
 			<div class="text-sm text-gray-500">{catalog.description}</div>
 		</a>

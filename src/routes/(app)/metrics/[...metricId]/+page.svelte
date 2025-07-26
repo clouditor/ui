@@ -42,7 +42,7 @@
 				<p class="ml-16 truncate text-sm font-medium text-gray-500">Target Value</p>
 			</dt>
 			<dd class="ml-16 flex items-baseline">
-				<p class="text-2xl font-semibold text-gray-900">{data.metricConfiguration.targetValue}</p>
+				<p class="text-2xl font-semibold text-gray-900">{JSON.stringify(data.metricConfiguration.targetValue)}</p>
 			</dd>
 		</div>
 		<div class="relative overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 shadow">

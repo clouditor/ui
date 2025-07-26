@@ -26,7 +26,7 @@
 			name: 'Holistic.',
 			path: '/about/page3',
 			description:
-				'Using integrations with other tools, such as Codyze, we can provide a holistic view of the certification target, from infrastructure to code.',
+				'Using integrations with other tools, such as Codyze, we can provide a holistic view of the Target of Evaluation, from infrastructure to code.',
 			icon: PuzzlePiece
 		}
 	];

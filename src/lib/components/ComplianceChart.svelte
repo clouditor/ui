@@ -67,7 +67,7 @@
 				}
 
 				goto(
-					`/cloud/${auditScope.certificationTargetId}/compliance/${auditScope.catalogId}?${params.toString()}`
+					`/cloud/${auditScope.targetOfEvaluationId}/compliance/${auditScope.catalogId}?${params.toString()}`
 				);
 			}
 		};

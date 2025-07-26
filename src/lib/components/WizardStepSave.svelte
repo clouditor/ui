@@ -22,15 +22,15 @@
 
 <div class="mb-5 text-sm">
 	{#if data.service.name.length == 0}
-		Please provide at least a name for the new certification target.
+		Please provide at least a name for the new Target of Evaluation.
 	{:else}
 		{#if data.mode == 'create'}
-			This will create a new certification target called <b>{data.service.name}</b> with
+			This will create a new Target of Evaluation called <b>{data.service.name}</b> with
 		{:else}
-			This will change the certification target called <b>{data.service.name}</b> with
+			This will change the Target of Evaluation called <b>{data.service.name}</b> with
 		{/if}
 		{#if data.auditScopes.length > 0}
-			the following targets of evaluation:
+			the following Targets of Evaluation:
 			<ul class="ml-4 mt-1 list-disc">
 				{#each data.auditScopes as auditScope}
 					<li>
@@ -42,7 +42,7 @@
 				{/each}
 			</ul>
 		{:else}
-			no configured target of evaluation.
+			no configured Target of Evaluation.
 		{/if}
 	{/if}
 </div>

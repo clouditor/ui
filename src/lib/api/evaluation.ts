@@ -20,7 +20,7 @@ export type ComplianceStatus =
 
 export interface EvaluationResult {
 	id: string;
-	cloudServiceId: string;
+	targetOfEvaluationId: string;
 	status: ComplianceStatus;
 	controlCatalogId: string;
 	controlCategoryName?: string;
@@ -45,7 +45,7 @@ export async function startEvaluation(auditScope: AuditScope): Promise<StartEval
 
 export async function stopEvaluation(auditScope: AuditScope): Promise<{}> {
 	const apiUrl = clouditorize(
-		`/v1/evaluation/evaluate/${auditScope.certificationTargetId}/${auditScope.catalogId}/stop`
+		`/v1/evaluation/evaluate/${auditScope.id}/stop`
 	);
 
 	return fetch(apiUrl, {
@@ -57,10 +57,12 @@ export async function stopEvaluation(auditScope: AuditScope): Promise<{}> {
 }
 
 export interface ListEvaluationResultsFilter {
-	cloudServiceId?: string;
+	targetOfEvaluationId?: string;
 	catalogId?: string;
 	controlId?: string;
+	subControls?: string;
 	parentsOnly?: boolean;
+	validManualOnly?: boolean;
 }
 
 export async function listEvaluationResults(
@@ -70,8 +72,8 @@ export async function listEvaluationResults(
 ): Promise<EvaluationResult[]> {
 	let apiUrl = clouditorize(`/v1/evaluation/results?`);
 
-	if (filter?.cloudServiceId != undefined) {
-		apiUrl += `&filter.certification_target_id=${filter?.cloudServiceId}`;
+	if (filter?.targetOfEvaluationId != undefined) {
+		apiUrl += `&filter.target_of_evaluation_id=${filter?.targetOfEvaluationId}`;
 	}
 	if (filter?.catalogId != undefined) {
 		apiUrl += `&filter.catalog_id=${filter?.catalogId}`;

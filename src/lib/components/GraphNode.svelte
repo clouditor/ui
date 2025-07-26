@@ -3,7 +3,7 @@
 
 	let { node } = $props();
 
-	const { getCyInstance } = getContext('graphSharedState');
+	const { getCyInstance } = getContext<{ getCyInstance: () => any }>('graphSharedState');
 	const cy = getCyInstance();
 
 	cy.add({

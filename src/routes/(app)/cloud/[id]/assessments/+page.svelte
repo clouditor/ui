@@ -70,6 +70,7 @@ https://svelte.dev/e/node_invalid_placement -->
 	function closeModal() {
 		showModalId = null;
 	}
+  
 </script>
 
 {#if data.resources.length == 0}
@@ -84,15 +85,7 @@ https://svelte.dev/e/node_invalid_placement -->
 				<table class="min-w-full table-fixed divide-y divide-gray-200">
 					<thead class="bg-gray-50">
 						<tr>
-							{#if showModalId != null}
-								<th
-									scope="col"
-									class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500"
-								>
-									Details
-								</th>
-							{:else}
-								<th
+							<th
 									scope="col"
 									class="w-1/12 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500"
 								>
@@ -127,7 +120,6 @@ https://svelte.dev/e/node_invalid_placement -->
 									class="w-1/12 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500"
 								>
 								</th>
-							{/if}
 						</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 bg-white">
@@ -150,11 +142,16 @@ https://svelte.dev/e/node_invalid_placement -->
 								</td>
 								<td class="max-w-xs truncate whitespace-nowrap px-6 py-4">
 									<span class="text-sm text-gray-900">
-										<a href={`/cloud/${data.service.id}/graph/?id=${assessment.resourceId}`}>
+										<a href={`/cloud/${data.service.id}/resource/?id=${assessment.resourceId}`}>
 											{assessment.resourceId.split('/')[
 												assessment.resourceId.split('/').length - 1
 											]}
 										</a>
+										<!-- <a href={`/cloud/${data.service.id}/graph/?id=${assessment.resourceId}`}>
+											{assessment.resourceId.split('/')[
+												assessment.resourceId.split('/').length - 1
+											]}
+										</a> -->
 									</span>
 								</td>
 								<td class="whitespace-nowrap px-6 py-4">
@@ -164,6 +161,17 @@ https://svelte.dev/e/node_invalid_placement -->
 									<Button on:click={() => showDetails(assessment.id)}>More Details</Button>
 								</td>
 							</tr>
+							{#if showModalId === assessment.id}
+							<tr>
+								<td colspan="6" class="bg-gray-50 px-6 py-4">
+								  <pre class="whitespace-pre-wrap text-xs font-mono">
+							{JSON.stringify(assessment, null, 2)}
+								  </pre>
+							
+								  <Button on:click={closeModal}>Close</Button>
+								</td>
+							  </tr>
+							{/if}
 						{/each}
 					</tbody>
 				</table>

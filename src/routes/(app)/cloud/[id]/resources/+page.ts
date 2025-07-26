@@ -1,22 +1,23 @@
-import { listCertificationTargetAssessmentResults } from '$lib/api/orchestrator';
+import { listTargetOfEvaluationAssessmentResults } from '$lib/api/orchestrator';
 
 import { error } from '@sveltejs/kit';
 
 import type { PageLoad } from './$types';
-import { listGraphEdges } from '$lib/api/discovery';
+import { listGraphEdges, listResources } from '$lib/api/evidence_store';
 
 export const load = (async ({ fetch, params, url }) => {
 	if (params.id == undefined) {
 		error(405, 'Required parameter missing');
 	}
 
-	const results = await listCertificationTargetAssessmentResults(params.id, fetch);
-	const edges = await listGraphEdges();
+	const results = await listTargetOfEvaluationAssessmentResults(params.id, fetch);
+	// const edges = await listGraphEdges();
+	const resource = await listResources(params.id, '', fetch);
 	const page = Number(url.searchParams.get('page'));
 
 	return {
 		results,
-		edges,
+		// edges,
 		page
 	};
 }) satisfies PageLoad;

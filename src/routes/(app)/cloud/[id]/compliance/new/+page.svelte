@@ -22,9 +22,10 @@
 	} satisfies WizardData);
 
 	async function save(event: CustomEvent<WizardData>) {
-		// Afterwards, create the targets of evaluation
+		// Afterwards, create the Targets of Evaluation
 		let auditScopes = await Promise.all(
 			event.detail.auditScopes.map((auditScope) => {
+				auditScope.name = "UI generated Audit Scope"
 				return createAuditScope(auditScope);
 			})
 		);
