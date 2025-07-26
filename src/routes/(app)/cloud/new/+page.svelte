@@ -14,8 +14,7 @@
 	let { data }: Props = $props();
 
 	// Create data for the wizard
-	let initialState = $state();
-	let wizard: WizardData = initialState ?? {
+	let wizard: WizardData = $state({
 		service: {
 			id: '',
 			name: '',
@@ -26,7 +25,7 @@
 		catalogs: [],
 		auditScopes: [],
 		mode: 'create'
-	};
+	});
 	restart();
 
 	// Fetch an up-to-date version of all catalogs because we need to select
