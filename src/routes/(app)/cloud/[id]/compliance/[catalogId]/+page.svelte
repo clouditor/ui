@@ -85,7 +85,7 @@
 </script>
 
 <div class="border-b border-gray-200 pb-5">
-	<h3 class="text-base font-semibold leading-6 text-gray-900">{data.catalog.name}</h3>
+	<h3 class="text-base leading-6 font-semibold text-gray-900">{data.catalog.name}</h3>
 	<p class="mt-2 max-w-4xl text-sm text-gray-500">
 		{data.catalog.description}
 	</p>
@@ -114,7 +114,7 @@
 				{#if $disc.expanded}
 					<div class="mt-2 pr-12">
 						{#each item.children as result (result.controlId)}
-							<div class="ml-12 mt-6">
+							<div class="mt-6 ml-12">
 								<ControlComplianceItem
 									{result}
 									{addResult}

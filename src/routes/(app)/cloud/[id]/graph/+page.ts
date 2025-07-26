@@ -7,10 +7,10 @@ export const load = (async ({ fetch, params, url }) => {
 	if (params.id == undefined) {
 		error(405, 'Required parameter missing');
 	}
-	
+
 	const results = await listAssessmentResults(fetch, true);
 	const edges = await listGraphEdges(fetch);
-	
+
 	return {
 		results,
 		edges

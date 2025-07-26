@@ -37,9 +37,9 @@
 		<div
 			class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2"
 		>
-			<div class="lg:pr-8 lg:pt-4">
+			<div class="lg:pt-4 lg:pr-8">
 				<div class="lg:max-w-lg">
-					<h2 class="text-base font-semibold leading-7 text-clouditor">Be audit-ready, any time</h2>
+					<h2 class="text-clouditor text-base leading-7 font-semibold">Be audit-ready, any time</h2>
 					<p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
 						<a href="/about/start">Clouditor</a>
 					</p>
@@ -54,7 +54,7 @@
 								<dt class="inline font-semibold text-gray-900">
 									<Icon
 										src={feature.icon}
-										class="absolute left-1 top-1 h-5 w-5 text-clouditor"
+										class="text-clouditor absolute top-1 left-1 h-5 w-5"
 										aria-hidden="true"
 									/>
 									<a href={feature.path}>{feature.name}</a>

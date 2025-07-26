@@ -375,9 +375,7 @@ export async function removeTargetOfEvaluation(targetId: string): Promise<void> 
  *
  * @returns an array of {@link TargetOfEvaluation}s.
  */
-export async function listTargetsOfEvaluation(
-	fetch = window.fetch
-): Promise<TargetOfEvaluation[]> {
+export async function listTargetsOfEvaluation(fetch = window.fetch): Promise<TargetOfEvaluation[]> {
 	const apiUrl = clouditorize(`/v1/orchestrator/targets_of_evaluation`);
 
 	return fetch(apiUrl, {

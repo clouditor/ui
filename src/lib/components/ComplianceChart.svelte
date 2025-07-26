@@ -147,7 +147,7 @@
 				aria-describedby="merge-description-{auditScope.catalogId}"
 				name="merge-{auditScope.catalogId}"
 				type="checkbox"
-				class="h-4 w-4 rounded border-gray-300 text-clouditor focus:ring-clouditor"
+				class="text-clouditor focus:ring-clouditor h-4 w-4 rounded-sm border-gray-300"
 				bind:checked={merge}
 			/>
 		</div>
@@ -161,5 +161,5 @@
 			</span>
 		</div>
 	</div>
-	<canvas id="chart" bind:this={canvas} class="ml-auto mr-auto h-72 w-72"></canvas>
+	<canvas id="chart" bind:this={canvas} class="mr-auto ml-auto h-72 w-72"></canvas>
 </div>

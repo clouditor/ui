@@ -24,7 +24,7 @@
 <li>
 	<div class="relative pb-8">
 		{#if !last}
-			<span class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+			<span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
 		{/if}
 		<div class="relative flex space-x-3">
 			<div>
@@ -41,7 +41,7 @@
 						<a href={event.href} class="font-medium text-gray-900">{event.target}</a>
 					</p>
 				</div>
-				<div class="whitespace-nowrap text-right text-sm text-gray-500">
+				<div class="text-right text-sm whitespace-nowrap text-gray-500">
 					<time datetime={event.datetime}>{event.date}</time>
 				</div>
 			</div>

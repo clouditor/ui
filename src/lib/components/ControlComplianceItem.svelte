@@ -19,7 +19,7 @@
 </script>
 
 <div class="flex">
-	<div class="mr-4 flex-shrink-0">
+	<div class="mr-4 shrink-0">
 		{#if result.status == 'EVALUATION_STATUS_COMPLIANT'}
 			<Icon src={CheckCircle} theme="solid" class="h-8 w-8 text-green-800" />
 		{:else if result.status == 'EVALUATION_STATUS_COMPLIANT_MANUALLY'}

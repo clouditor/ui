@@ -42,7 +42,7 @@
 			leaveFrom="opacity-100"
 			leaveTo="opacity-0"
 		>
-			<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+			<div class="bg-opacity-75 fixed inset-0 bg-gray-500 transition-opacity"></div>
 		</Transition>
 		<div class="fixed inset-0 z-10 overflow-y-auto">
 			<div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -55,12 +55,12 @@
 					leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 				>
 					<div
-						class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+						class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
 					>
 						<div>
 							<div class="space-y-12">
 								<div class="">
-									<div class="text-base font-semibold leading-7 text-gray-900">
+									<div class="text-base leading-7 font-semibold text-gray-900">
 										Provide a manual evaluation result
 									</div>
 									<p class="mt-1 text-sm leading-6 text-gray-600">
@@ -69,7 +69,7 @@
 									</p>
 									<div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 										<div class="sm:col-span-4">
-											<label for="name" class="block text-sm font-medium leading-6 text-gray-900">
+											<label for="name" class="block text-sm leading-6 font-medium text-gray-900">
 												Name
 											</label>
 											<div class="mt-2">
@@ -78,14 +78,14 @@
 													name="name"
 													id="name"
 													autocomplete="name"
-													class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clouditor sm:text-sm sm:leading-6"
+													class="focus:ring-clouditor block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
 													bind:value={name}
 												/>
 											</div>
 										</div>
 
 										<div class="col-span-full">
-											<label for="about" class="block text-sm font-medium leading-6 text-gray-900">
+											<label for="about" class="block text-sm leading-6 font-medium text-gray-900">
 												Comment
 											</label>
 											<div class="mt-2">
@@ -93,7 +93,7 @@
 													id="about"
 													name="about"
 													rows="3"
-													class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clouditor sm:text-sm sm:leading-6"
+													class="focus:ring-clouditor block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
 													bind:value={comment}
 												></textarea>
 											</div>
@@ -106,7 +106,7 @@
 										<div class="sm:col-span-4">
 											<label
 												for="validity"
-												class="block text-sm font-medium leading-6 text-gray-900">Validity</label
+												class="block text-sm leading-6 font-medium text-gray-900">Validity</label
 											>
 											<div class="mt-2">
 												<input
@@ -114,7 +114,7 @@
 													name="first-name"
 													id="first-name"
 													autocomplete="given-name"
-													class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clouditor sm:text-sm sm:leading-6"
+													class="focus:ring-clouditor block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
 													value="1 month"
 													disabled
 												/>
@@ -124,14 +124,14 @@
 									<div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
 										<button
 											type="button"
-											class="inline-flex w-full justify-center rounded-md bg-clouditor px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-clouditor-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clouditor sm:col-start-2"
+											class="bg-clouditor hover:bg-clouditor-light focus-visible:outline-clouditor inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid sm:col-start-2"
 											onclick={submit}
 										>
 											Save
 										</button>
 										<button
 											type="button"
-											class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
+											class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:col-start-1 sm:mt-0"
 											onclick={dialog.close}
 										>
 											Cancel

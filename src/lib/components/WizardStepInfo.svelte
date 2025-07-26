@@ -8,9 +8,9 @@
 	let { data = $bindable() }: Props = $props();
 </script>
 
-<div class="isolate -space-y-px rounded-md shadow-sm">
+<div class="isolate -space-y-px rounded-md shadow-xs">
 	<div
-		class="relative rounded-md rounded-b-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-clouditor"
+		class="focus-within:ring-clouditor relative rounded-md rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-gray-300 ring-inset focus-within:z-10 focus-within:ring-2"
 	>
 		<label for="description" class="block text-xs font-medium text-gray-900">Description</label>
 		<input
@@ -23,7 +23,7 @@
 		/>
 	</div>
 	<div
-		class="relative rounded-md rounded-t-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-clouditor"
+		class="focus-within:ring-clouditor relative rounded-md rounded-t-none px-3 pt-2.5 pb-1.5 ring-1 ring-gray-300 ring-inset focus-within:z-10 focus-within:ring-2"
 	>
 		<label for="job-title" class="block text-xs font-medium text-gray-900">Tags</label>
 		<input

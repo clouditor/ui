@@ -42,9 +42,9 @@
 <div class="mt-2">
 	<div class="sr-only">Change published status</div>
 	<div class="relative">
-		<div class="inline-flex divide-x {$listbox.selected.divideColor} rounded-md shadow-sm">
+		<div class="inline-flex divide-x {$listbox.selected.divideColor} rounded-md shadow-xs">
 			<div
-				class="inline-flex items-center gap-x-1.5 rounded-l-md px-3 py-2 text-white shadow-sm {$listbox
+				class="inline-flex items-center gap-x-1.5 rounded-l-md px-3 py-2 text-white shadow-xs {$listbox
 					.selected.bgColor}"
 			>
 				<Icon src={Check} class="-ml-0.5 h-5 w-5" aria-hidden="true" />
@@ -52,7 +52,7 @@
 			</div>
 			<div use:listbox.button>
 				class="inline-flex items-center rounded-l-none rounded-r-md {$listbox.selected.bgColor}
-				{$listbox.selected.hoverColor} p-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50"
+				{$listbox.selected.hoverColor} p-2 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50"
 				>
 				<span class="sr-only">Change published status</span>
 				<Icon src={ChevronDown} class="h-5 w-5 text-white" aria-hidden="true" />
@@ -67,7 +67,7 @@
 		>
 			<ul
 				use:listbox.items
-				class="absolute right-0 z-10 mt-2 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+				class="ring-opacity-5 absolute right-0 z-10 mt-2 w-72 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black focus:outline-hidden"
 			>
 				{#each publishingOptions as option (option.name)}
 					{@const active = $listbox.active === option.status}
@@ -76,7 +76,7 @@
 						use:listbox.item={{ value: option.status }}
 						class="{active
 							? 'bg-clouditor text-white'
-							: 'text-gray-900'} cursor-default select-none p-4 text-sm"
+							: 'text-gray-900'} cursor-default p-4 text-sm select-none"
 					>
 						<div class="flex flex-col">
 							<div class="flex justify-between">

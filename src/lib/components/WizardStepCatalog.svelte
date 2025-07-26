@@ -59,13 +59,13 @@
 
 <ul class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-2">
 	{#each data.catalogs as catalog (catalog.id)}
-		<li class="col-span-1 flex rounded-md shadow-sm">
+		<li class="col-span-1 flex rounded-md shadow-xs">
 			{#if catalog.assuranceLevels.length > 0 && !selected.get(catalog.id)}
 				<AssuranceLevelPopover {catalog} on:select={assuranceLevelSelected}>
 					<button
 						class={selected.get(catalog.id)
 							? ''
-							: 'flex h-full w-[4.5rem] flex-shrink-0 items-center justify-center rounded-l-md bg-gray-400 text-sm text-white'}
+							: 'flex h-full w-18 shrink-0 items-center justify-center rounded-l-md bg-gray-400 text-sm text-white'}
 						style={selected.get(catalog.id) ? 'background-color: ' + catalog.metadata.color : ''}
 					>
 						{catalog.shortName}
@@ -75,20 +75,20 @@
 				<button
 					onclick={() => toggle(catalog)}
 					class="{selected.get(catalog.id) ? '' : 'bg-gray-400'}
-       flex w-[4.5rem] flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
+       flex w-18 shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
 					style={selected.get(catalog.id) ? 'background-color: ' + catalog.metadata.color : ''}
 				>
 					{catalog.shortName}
 				</button>
 			{/if}
 			<div
-				class="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white"
+				class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white"
 			>
 				<div class="flex-1 truncate px-4 py-2 text-sm">
 					<p class="font-medium text-gray-900 hover:text-gray-600">
 						{catalog.name}
 					</p>
-					<p class="whitespace-normal text-xs text-gray-500">
+					<p class="text-xs whitespace-normal text-gray-500">
 						{catalog.description}
 					</p>
 				</div>

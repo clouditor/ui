@@ -7,7 +7,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import { ViewfinderCircle } from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	
+
 	interface Props {
 		data: PageData;
 	}
@@ -112,7 +112,7 @@
 				aria-describedby="overlay-description"
 				name="overlay"
 				type="checkbox"
-				class="h-4 w-4 rounded border-gray-300 text-clouditor focus:ring-clouditor"
+				class="text-clouditor focus:ring-clouditor h-4 w-4 rounded-sm border-gray-300"
 				bind:checked={overlay}
 			/>
 		</div>
@@ -130,7 +130,7 @@
 	</dl>
 </div>
 
-<div class="absolute right-8 top-64 z-20 max-w-md">
+<div class="absolute top-64 right-8 z-20 max-w-md">
 	{#if selected}
 		<NodeDetail {selected} {results} metrics={data.metrics} bind:tab />
 	{/if}

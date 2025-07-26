@@ -53,7 +53,7 @@
 							leaveFrom="opacity-100"
 							leaveTo="opacity-0"
 						>
-							<div class="absolute left-full top-0 flex w-16 justify-center pt-5">
+							<div class="absolute top-0 left-full flex w-16 justify-center pt-5">
 								<button type="button" class="-m-2.5 p-2.5" onclick={sidebar.close}>
 									<span class="sr-only">Close sidebar</span>
 									<Icon src={XMark} class="h-6 w-6 text-white" aria-hidden="true" />
@@ -72,7 +72,7 @@
 	</div>
 	<div class="lg:pl-72">
 		<div
-			class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8"
+			class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8"
 		>
 			<button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" onclick={sidebar.open}>
 				<span class="sr-only">Open sidebar</span>
@@ -93,7 +93,7 @@
 					/>
 					<input
 						id="search-field"
-						class="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
+						class="block h-full w-full border-0 py-0 pr-0 pl-8 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
 						placeholder="Search..."
 						type="search"
 						name="search"
@@ -118,7 +118,7 @@
 								alt=""
 							/>
 							<span class="hidden lg:flex lg:items-center">
-								<span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
+								<span class="ml-4 text-sm leading-6 font-semibold text-gray-900" aria-hidden="true">
 									Bob | Security Manager</span
 								>
 								<Icon
@@ -139,7 +139,7 @@
 							leaveTo="transform opacity-0 scale-95"
 						>
 							<div
-								class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
+								class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-hidden"
 							>
 								{#each userNavigation as item}
 									{@const active = $userMenu.active === item.name}
@@ -159,7 +159,7 @@
 		</div>
 
 		<main class="py-10">
-			<div class="ml-auto mr-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
+			<div class="mr-auto ml-auto max-w-(--breakpoint-2xl) px-4 sm:px-6 lg:px-8">
 				<!-- Your content -->
 				{@render children()}
 			</div>

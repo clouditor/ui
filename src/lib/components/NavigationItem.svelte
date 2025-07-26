@@ -36,8 +36,8 @@
 		<span
 			class="cursor-default text-gray-400
     {item.isSub
-				? 'block rounded-md py-2 pl-9 pr-2 text-sm leading-6'
-				: 'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'}
+				? 'block rounded-md py-2 pr-2 pl-9 text-sm leading-6'
+				: 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'}
     {item.isNew ? 'border-t' : ''}
     "
 		>
@@ -51,18 +51,18 @@
 			href={item.href}
 			class="
       {current
-				? 'bg-gray-50 text-clouditor'
-				: 'text-gray-700 hover:bg-gray-50 hover:text-clouditor'}
+				? 'text-clouditor bg-gray-50'
+				: 'hover:text-clouditor text-gray-700 hover:bg-gray-50'}
       {item.isSub
-				? 'block rounded-md py-2 pl-9 pr-2 text-sm leading-6'
-				: 'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'}
+				? 'block rounded-md py-2 pr-2 pl-9 text-sm leading-6'
+				: 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'}
       {item.isNew ? 'border-t' : ''}
       "
 		>
 			{#if item.icon}
 				<Icon
 					src={item.icon}
-					class="{current ? 'text-clouditor' : 'text-gray-400 group-hover:text-clouditor'}
+					class="{current ? 'text-clouditor' : 'group-hover:text-clouditor text-gray-400'}
         h-6 w-6 shrink-0"
 					aria-hidden="true"
 				/>

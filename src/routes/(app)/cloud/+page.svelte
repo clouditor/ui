@@ -37,7 +37,7 @@
 				/>
 				<div class="min-w-0 flex-auto">
 					<a href="/cloud/{service.id}/">
-						<p class="text-sm font-semibold leading-6 text-gray-900">{service.name}</p>
+						<p class="text-sm leading-6 font-semibold text-gray-900">{service.name}</p>
 					</a>
 					<p class="mt-1 truncate text-sm leading-5 text-gray-500">
 						{service.description}

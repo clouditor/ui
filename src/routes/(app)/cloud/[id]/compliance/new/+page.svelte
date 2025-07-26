@@ -25,7 +25,7 @@
 		// Afterwards, create the Targets of Evaluation
 		let auditScopes = await Promise.all(
 			event.detail.auditScopes.map((auditScope) => {
-				auditScope.name = "UI generated Audit Scope"
+				auditScope.name = 'UI generated Audit Scope';
 				return createAuditScope(auditScope);
 			})
 		);

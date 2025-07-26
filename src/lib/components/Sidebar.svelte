@@ -76,11 +76,11 @@
 			<li class="mt-auto">
 				<a
 					href="/about"
-					class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-clouditor"
+					class="group hover:text-clouditor -mx-2 flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700 hover:bg-gray-50"
 				>
 					<Icon
 						src={InformationCircle}
-						class="h-6 w-6 shrink-0 text-gray-400 group-hover:text-clouditor"
+						class="group-hover:text-clouditor h-6 w-6 shrink-0 text-gray-400"
 						aria-hidden="true"
 					/>
 					About

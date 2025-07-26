@@ -15,7 +15,7 @@
 		<select
 			id="tabs"
 			name="tabs"
-			class="block w-full rounded-md border-gray-300 focus:border-clouditor focus:ring-clouditor"
+			class="focus:border-clouditor focus:ring-clouditor block w-full rounded-md border-gray-300"
 		>
 			{#each items as item}
 				<TabItem {item} mobile={true} />
