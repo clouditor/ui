@@ -1,6 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig } from 'vite';
-import path from 'path';
 
 const config: UserConfig = {
 	plugins: [sveltekit()],
@@ -18,14 +17,4 @@ const config: UserConfig = {
 	}
 };
 
-export default {
-	...config,
-	resolve: {
-		alias: {
-			// anpassen, falls die Datei anders heißt
-			'svelte-transition': path.resolve(
-				'./node_modules/svelte-transition/dist/index.js'
-			)
-		}
-	}
-};
+export default config;

@@ -130,12 +130,15 @@
 		const results = data.results.filter((result) => result.resourceId === resourceId);
 		return results.length;
 	}
-	let currentPage = $state(data.page ? data.page : 1);
+	let currentPage;
+	run(() => {
+		currentPage = data.page ? data.page : 1;
+	});
 	let searchString = $state('');
 
 	let query = $derived(searchString.toLowerCase());
 
-	let filteredData: Resource[] = [];
+	let filteredData;
 	run(() => {
 		filteredData = data.resources.filter((resource) => {
 			return (
@@ -147,7 +150,7 @@
 	let totalPages = $derived(Math.ceil(filteredData.length / rowsPerPage));
 	let searchActivated = $state(false);
 
-	let currentData: Resource[] = $state([]);
+	let currentData;
 	run(() => {
 		currentData = paginate(filteredData, currentPage);
 	});
