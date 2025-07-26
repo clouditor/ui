@@ -53,7 +53,7 @@
 			<div
 				class="w-screen max-w-sm flex-auto rounded-3xl bg-white p-4 text-sm leading-6 shadow-lg ring-1 ring-gray-900/5"
 			>
-				<div class="ml-4 mr-4 mt-4">
+				<div class="mt-4 mr-4 ml-4">
 					<p class="font-medium text-gray-900">Please choose an assurance level</p>
 					<p class="text-gray-500">
 						The selected catalog requires the selection of an assurance level.

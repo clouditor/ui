@@ -1,16 +1,14 @@
 import { throwError } from './errors';
 import { clouditorize } from './util';
 
-
 export interface GraphEdge {
 	id: string;
 	source: string;
 	target: string;
-    type: string;
+	type: string;
 }
 
 export interface ListGraphEdgesRequest {
-	
 	orderBy?: string;
 	pageSize?: number;
 	asc?: boolean;
@@ -28,26 +26,25 @@ export interface ListResourcesResponse {
 	results: Resource[];
 }
 
-
 export interface Filter {
 	targetOfEvaluationId?: string;
 	type?: string;
 }
 
 export interface ResourceProperties {
-    name: string;
-    raw: string;
-    type: string[];
-    serviceId: string;
-    id: string;
-    labels: object;
+	name: string;
+	raw: string;
+	type: string[];
+	serviceId: string;
+	id: string;
+	labels: object;
 }
 
 export interface Resource {
-    id: string;
-    targetOfEvaluationId: string;
-    resourceType: string;
-    properties: ResourceProperties;
+	id: string;
+	targetOfEvaluationId: string;
+	resourceType: string;
+	properties: ResourceProperties;
 }
 
 export async function listResources(
@@ -77,7 +74,7 @@ export async function listResources(
 }
 
 export async function listGraphEdges(fetch = window.fetch): Promise<GraphEdge[]> {
-	const apiUrl = clouditorize(`/v1experimental/evidence/graph/edges`);//?pageSize=1500`);
+	const apiUrl = clouditorize(`/v1experimental/evidence/graph/edges`); //?pageSize=1500`);
 
 	return fetch(apiUrl, {
 		method: 'GET',

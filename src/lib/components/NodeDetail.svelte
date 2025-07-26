@@ -56,7 +56,7 @@
 <div class="flex flex-col bg-white shadow-xl">
 	<div class="bg-clouditor px-4 py-6 sm:px-6">
 		<div class="flex items-center justify-between">
-			<div class="... truncate text-base font-semibold leading-6 text-white">
+			<div class="truncate text-base leading-6 font-semibold text-white ...">
 				{name(selected.id)}
 			</div>
 		</div>
@@ -79,7 +79,7 @@
 				<select
 					id="tabs"
 					name="tabs"
-					class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-clouditor-light focus:outline-none focus:ring-clouditor-light sm:text-sm"
+					class="focus:border-clouditor-light focus:ring-clouditor-light block w-full rounded-md border-gray-300 py-2 pr-10 pl-3 text-base focus:outline-hidden sm:text-sm"
 				>
 					{#each tabs as t (t.id)}
 						<option selected={t.id == tab}>{t.name}</option>
@@ -94,7 +94,7 @@
 								onclick={() => (tab = t.id)}
 								class="{t.id == tab
 									? 'border-clouditor-light text-clouditor'
-									: 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700'} flex whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium"
+									: 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700'} flex border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap"
 								aria-current={t.id == tab ? 'page' : undefined}
 							>
 								{t.name}
@@ -102,7 +102,7 @@
 								{#if t.count}
 									<span
 										class="{t.id == tab
-											? 'bg-indigo-100 text-clouditor'
+											? 'text-clouditor bg-indigo-100'
 											: 'bg-gray-100 text-gray-900'}ml-3 hidden rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-block"
 										>{t.count}</span
 									>
@@ -114,7 +114,7 @@
 			</div>
 		</div>
 		<!-- content -->
-		<div class="pb-5 pt-6">
+		<div class="pt-6 pb-5">
 			{#if tab == 'results'}
 				{#if results.length > 0}
 					<div>
@@ -152,11 +152,11 @@
 								<dl class="space-y-2">
 									{#each humanProperties(selected) as [k, v] (k)}
 										<div>
-											<dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+											<dt class="text-sm font-medium text-gray-500 sm:w-40 sm:shrink-0">
 												{k}
 											</dt>
 											<dd class="text-gray-900sm:col-span-2 mt-1 w-96 text-sm">
-												<p class="... truncate">
+												<p class="truncate ...">
 													{#if k == 'url'}
 														<a href={v} target="_blank">{v}</a>
 													{:else if k == 'creationTime'}

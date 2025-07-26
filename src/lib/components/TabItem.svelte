@@ -31,7 +31,7 @@
 	<span
 		class="group inline-flex cursor-default items-center border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-400"
 	>
-		<Icon src={item.icon} class="-ml-0.5 mr-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+		<Icon src={item.icon} class="mr-2 -ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
 		<span>{item.name}</span>
 	</span>
 {:else}
@@ -46,7 +46,7 @@
 		<Icon
 			src={item.icon}
 			class="{current ? 'text-clouditor' : 'text-gray-400 group-hover:text-gray-500'}
-                -ml-0.5 mr-2 h-5 w-5"
+                mr-2 -ml-0.5 h-5 w-5"
 			aria-hidden="true"
 		/>
 		<span>{item.name}</span>

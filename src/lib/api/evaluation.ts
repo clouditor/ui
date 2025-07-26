@@ -44,9 +44,7 @@ export async function startEvaluation(auditScope: AuditScope): Promise<StartEval
 }
 
 export async function stopEvaluation(auditScope: AuditScope): Promise<{}> {
-	const apiUrl = clouditorize(
-		`/v1/evaluation/evaluate/${auditScope.id}/stop`
-	);
+	const apiUrl = clouditorize(`/v1/evaluation/evaluate/${auditScope.id}/stop`);
 
 	return fetch(apiUrl, {
 		method: 'POST',

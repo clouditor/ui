@@ -1,8 +1,9 @@
+import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
-import type { UserConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
 
-const config: UserConfig = {
-	plugins: [sveltekit()],
+export default defineConfig({
+	plugins: [tailwindcss(), sveltekit()],
 
 	server: {
 		proxy: {
@@ -15,6 +16,4 @@ const config: UserConfig = {
 			'/v1/orchestrator/': 'http://localhost:8080'
 		}
 	}
-};
-
-export default config;
+});

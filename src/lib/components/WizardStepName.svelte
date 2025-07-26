@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class="rounded-md px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-clouditor"
+	class="focus-within:ring-clouditor rounded-md px-3 pt-2.5 pb-1.5 shadow-xs ring-1 ring-gray-300 ring-inset focus-within:ring-2"
 >
 	<label for="name" class="block text-xs font-medium text-gray-900">Name</label>
 	<input

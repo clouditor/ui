@@ -58,7 +58,7 @@
 			event.detail.auditScopes.map((auditScope) => {
 				// Set the correct Target of Evaluation id
 				auditScope.targetOfEvaluationId = service.id;
-				auditScope.name = "UI Generated Audit Scope"
+				auditScope.name = 'UI Generated Audit Scope';
 				return createAuditScope(auditScope);
 			})
 		);

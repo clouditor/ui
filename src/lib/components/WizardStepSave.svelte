@@ -31,7 +31,7 @@
 		{/if}
 		{#if data.auditScopes.length > 0}
 			the following Targets of Evaluation:
-			<ul class="ml-4 mt-1 list-disc">
+			<ul class="mt-1 ml-4 list-disc">
 				{#each data.auditScopes as auditScope}
 					<li>
 						{auditScope.catalogId}

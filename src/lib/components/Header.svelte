@@ -21,7 +21,7 @@
 <div class="md:flex md:items-center md:justify-between md:space-x-5">
 	<div class="flex items-start space-x-5">
 		{#if icon !== false}
-			<div class="flex-shrink-0">
+			<div class="shrink-0">
 				<div class="relative">
 					<img
 						class="h-16 w-16 rounded-full"
@@ -49,7 +49,7 @@
 		</div>
 	</div>
 	<div
-		class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-3 sm:space-y-0 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3"
+		class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-y-0 sm:space-x-3 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3"
 	>
 		{#if buttons}
 			<Button on:click={remove} class="bg-red-800 hover:bg-red-700">Delete</Button>
