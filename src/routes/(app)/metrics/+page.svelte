@@ -23,7 +23,7 @@
 						<tr>
 							<th
 								scope="col"
-								class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-3"
+								class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
 								>ID</th
 							>
 							<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -38,13 +38,13 @@
 					<tbody>
 						{#each data.metrics as metric, i}
 							<tr class={i % 2 == 0 ? 'bg-white' : 'bg-gray-50'}>
-								<td class="px-3 py-3.5 text-sm font-medium whitespace-nowrap text-gray-900">
+								<td class="whitespace-nowrap px-3 py-3.5 text-sm font-medium text-gray-900">
 									{metric.id}
 								</td>
-								<td class="px-3 py-3.5 text-sm whitespace-nowrap text-gray-500">
+								<td class="whitespace-nowrap px-3 py-3.5 text-sm text-gray-500">
 									{metric.name}
 								</td>
-								<td class="px-3 py-3.5 text-sm whitespace-nowrap text-gray-500">
+								<td class="whitespace-nowrap px-3 py-3.5 text-sm text-gray-500">
 									{metric.category}
 								</td>
 							</tr>
@@ -58,6 +58,6 @@
 
 <style lang="postcss">
 	:global(html) {
-		background-color: theme(colors.gray.100);
+		background-color: var(--color-gray-100);
 	}
 </style>
