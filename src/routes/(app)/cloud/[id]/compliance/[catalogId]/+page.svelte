@@ -65,7 +65,7 @@
 		let result: EvaluationResult = {
 			id: '',
 			controlId: control.id,
-			cloudServiceId: data.service.id,
+			targetOfEvaluationId: data.service.id,
 			controlCategoryName: control.categoryName,
 			controlCatalogId: data.catalog.id,
 			parentControlId: control.parentControlId,

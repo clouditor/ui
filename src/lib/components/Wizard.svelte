@@ -2,7 +2,7 @@
 	// WizardData contains all the data that the wizard creates, such as the cloud
 	// service, its meta-data and optionally some target of evaluations.
 	export interface WizardData {
-		service: CertificationTarget;
+		service: TargetOfEvaluation;
 		catalogs: Catalog[];
 		auditScopes: AuditScope[];
 		mode: 'create' | 'edit';
@@ -16,7 +16,7 @@
 	import WizardStepInfo from './WizardStepInfo.svelte';
 	import WizardStepSave from './WizardStepSave.svelte';
 	import WizardStepCatalog from './WizardStepCatalog.svelte';
-	import type { Catalog, CertificationTarget, AuditScope } from '$lib/api/orchestrator';
+	import type { Catalog, TargetOfEvaluation, AuditScope } from '$lib/api/orchestrator';
 	import type { SvelteComponent } from 'svelte';
 
 	interface Props {
@@ -38,14 +38,14 @@
 		content: typeof SvelteComponent;
 	}[] = [
 		{
-			name: 'Create certification target',
-			description: 'Please provide a name for the certification target.',
+			name: 'Create Target of Evaluation',
+			description: 'Please provide a name for the Target of Evaluation.',
 			href: '?step=0',
 			content: WizardStepName
 		},
 		{
 			name: 'Service information',
-			description: 'Optionally specify additional information about the certification target.',
+			description: 'Optionally specify additional information about the Target of Evaluation.',
 			href: '?step=1',
 			content: WizardStepInfo
 		},
@@ -57,7 +57,7 @@
 		},
 		{
 			name: 'Confirm',
-			description: 'Confirm creation of certification target.',
+			description: 'Confirm creation of Target of Evaluation.',
 			href: '?step=3',
 			content: WizardStepSave
 		}
@@ -65,7 +65,7 @@
 </script>
 
 <nav aria-label="Progress" class="mt-4">
-	<ol class="overflow-hidden">
+	<ol class="overflow-hidden overflow-y-visible">
 		{#each steps as step, stepIdx}
 			<li class="{stepIdx !== steps.length - 1 ? 'pb-10' : ''} relative">
 				{#if stepIdx < current}

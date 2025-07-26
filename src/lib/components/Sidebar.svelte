@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CertificationTarget } from '$lib/api/orchestrator';
+	import type { TargetOfEvaluation } from '$lib/api/orchestrator';
 	import NavigationItem from '$lib/components/NavigationItem.svelte';
 	import {
 		AdjustmentsHorizontal,
@@ -12,7 +12,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 
 	interface Props {
-		services: CertificationTarget[];
+		services: TargetOfEvaluation[];
 		mobile?: boolean;
 	}
 
@@ -22,7 +22,7 @@
 	let navigation = $derived([
 		{ name: 'Dashboard', href: '/dashboard', icon: Home, disabled: true },
 		{
-			name: 'Certification Targets',
+			name: 'Targets of Evaluation',
 			href: '/cloud',
 			icon: Folder,
 			children: [

@@ -2,7 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 	import type { AssessmentResult, Metric } from '$lib/api/assessment';
-	import type { Resource, listResources } from '$lib/api/discovery';
+	import type { Resource } from '$lib/api/evidence_store';
 	import AssessmentIcon from './AssessmentIcon.svelte';
 	import { flatten } from 'flat';
 
@@ -127,7 +127,7 @@
 									<div class="pl-7 text-sm leading-6">
 										<label for="privacy-public" class="font-medium text-gray-900">
 											<a
-												href={`/cloud/${selected.cloudServiceId}/assessments/?filterIds=${result.id}`}
+												href={`/cloud/${selected.targetOfEvaluationId}/assessments/?filterIds=${result.id}`}
 											>
 												{metrics.get(result.metricId)?.name}
 											</a>

@@ -10,20 +10,20 @@
 
 	let { data }: Props = $props();
 
-	// Make sure, that our list of certification targets is up-to-date
-	invalidate((url) => url.pathname == '/v1/orchestrator/certification_targets');
+	// Make sure, that our list of Targets of Evaluation is up-to-date
+	invalidate((url) => url.pathname == '/v1/orchestrator/targets_of_evaluation');
 </script>
 
 <Header
-	name="Certification Targets"
-	description="{data.services.length} certification target(s) configured"
+	name="Targets of Evaluation"
+	description="{data.services.length} target(s) of Evaluation configured"
 	buttons={false}
 	icon={false}
 />
 
 <BelowHeader>
-	This page provides an overview of all configured certification targets within Clouditor. Click on
-	the name of a certification target to display more information about it.
+	This page provides an overview of all configured Targets of Evaluation within Clouditor. Click on
+	the name of a Target of Evaluation to display more information about it.
 </BelowHeader>
 
 <ul class="divide-y divide-gray-100">

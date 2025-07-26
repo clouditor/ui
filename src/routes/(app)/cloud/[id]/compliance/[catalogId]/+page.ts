@@ -13,7 +13,7 @@ export const load = (async ({ fetch, params, url }) => {
 	const catalog = await getCatalog(params.catalogId, fetch);
 	const evaluations = await listEvaluationResults(
 		{
-			cloudServiceId: params.id,
+			targetOfEvaluationId: params.id,
 			catalogId: params.catalogId
 		},
 		true,

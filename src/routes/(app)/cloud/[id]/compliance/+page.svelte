@@ -37,7 +37,7 @@
 	}
 
 	async function remove(e: CustomEvent<{ auditScope: AuditScope }>) {
-		let really = confirm('Do you really want to remove this target of evaluation?');
+		let really = confirm('Do you really want to remove this Target of Evaluation?');
 
 		if (!really) {
 			return;

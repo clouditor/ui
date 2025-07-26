@@ -3,8 +3,7 @@
 
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import type { Resource } from '$lib/api/discovery';
-	import DiscoveryGraph from '$lib/components/DiscoveryGraph.svelte';
+	import type { Resource } from '$lib/api/evidence_store';
 	import StarterHint from '$lib/components/StarterHint.svelte';
 	import {
 		Check,
@@ -18,7 +17,6 @@
 		XCircle
 	} from '@steeze-ui/heroicons';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import type { EdgeDefinition, NodeDefinition } from 'cytoscape';
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -130,7 +128,7 @@
 		const results = data.results.filter((result) => result.resourceId === resourceId);
 		return results.length;
 	}
-	let currentPage;
+	let currentPage: number = $state(1);
 	run(() => {
 		currentPage = data.page ? data.page : 1;
 	});
@@ -138,7 +136,7 @@
 
 	let query = $derived(searchString.toLowerCase());
 
-	let filteredData;
+	let filteredData: Resource[] = data.resources;
 	run(() => {
 		filteredData = data.resources.filter((resource) => {
 			return (
@@ -150,7 +148,7 @@
 	let totalPages = $derived(Math.ceil(filteredData.length / rowsPerPage));
 	let searchActivated = $state(false);
 
-	let currentData;
+	let currentData: Resource[] = $state([]);
 	run(() => {
 		currentData = paginate(filteredData, currentPage);
 	});
@@ -160,7 +158,7 @@
 	<StarterHint type="discovered resources" icon={Squares2x2}>
 		{#snippet component()}
 			<span>
-				Clouditor Discovery with with the certification target ID <pre>{data.service.id}</pre>
+				Clouditor Discovery with the Target of Evaluation ID <pre>{data.service.id}</pre>
 			</span>
 		{/snippet}
 	</StarterHint>
