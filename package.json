@@ -22,7 +22,7 @@
 		"@types/cytoscape": "^3.19.16",
 		"@types/cytoscape-dagre": "^2.3.3",
 		"@types/cytoscape-euler": "^1.2.3",
-		"@typescript-eslint/eslint-plugin": "^7.0.0",
+		"@typescript-eslint/eslint-plugin": "^8.40.0",
 		"@typescript-eslint/parser": "^6.21.0",
 		"chart.js": "^4.4.1",
 		"cytoscape": "^3.28.1",
